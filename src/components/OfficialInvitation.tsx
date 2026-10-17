@@ -356,7 +356,8 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                   ■ 주의사항 ■
                 </div>
                 <ol className="list-decimal list-inside space-y-1.5 text-[#2c2621] leading-relaxed">
-                  <li><strong>참여 비용:</strong> 1차 40,000원 / 2차 예약금 20,000원 (회신서 제출 후 계좌 입금)</li>
+                  <li><strong>신청 오픈:</strong> 2026. 10. 26. (월)</li>
+                  <li><strong>참여 비용:</strong> 1차 40,000원 / 2차 예약금 20,000원 (※ 추가비 발생 가능, 2부는 추가 금액 정산 예정)</li>
                   <li><strong>드레스 코드:</strong> 학생다운 프레피룩 복장 (※ 드레스 코드는 선택 참여)</li>
                   <li><strong>준비물:</strong> 학우에게 선물할 도서 1권 이상, 필기구, 꺾이지 않는 텐션과 열린 마음</li>
                 </ol>
