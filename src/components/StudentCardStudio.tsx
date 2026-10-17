@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   ArrowLeft, Download, RefreshCw, Shuffle, Check, 
-  Sparkles, BookOpen, User, Copy, CheckCircle2, QrCode
+  Sparkles, BookOpen, User, Copy, CheckCircle2
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { toPng } from 'html-to-image';

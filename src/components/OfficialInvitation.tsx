@@ -3,7 +3,7 @@ import {
   BookOpen, Calendar, Clock, MapPin, Sparkles, Glasses, 
   CheckCircle2, ArrowLeft, Send, ShieldCheck, Award, 
   Wine, HelpCircle, Heart, Tag, Bookmark, Check,
-  ChevronRight, AlertCircle, Info, User, QrCode, Download, Copy
+  ChevronRight, AlertCircle, Info, User, Download, Copy
 } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import { EVENT_CONFIG } from '../constants/eventConfig';
@@ -11,7 +11,6 @@ import { sanitizeText, validatePhone, formatPhone } from '../utils/validation';
 import { maskPhone } from '../utils/masking';
 import confetti from 'canvas-confetti';
 import planetLogo from '../assets/planet-logo.png';
-import qrCodeImg from '../assets/qrcode.png';
 import { PencilSketchRsvp } from './PencilSketchRsvp';
 
 interface OfficialInvitationProps {
@@ -29,7 +28,6 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
   onGoToSettlement
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>('letter');
-  const [isQrModalOpen, setIsQrModalOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedAccount, setCopiedAccount] = useState(false);
   const [isDownloadingId, setIsDownloadingId] = useState(false);
@@ -185,7 +183,7 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#e8e4dc] px-3 sm:px-6 py-2.5 sm:py-3 shadow-sm">
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-2.5">
           
-          {/* 상단 1단: 티저로 돌아가기 & 학교 로고 & (모바일일 때 QR버튼) */}
+          {/* 상단 1단: 티저로 돌아가기 & 학교 로고 */}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 sm:space-x-3">
               <button
@@ -213,23 +211,11 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                 </div>
               </div>
             </div>
-
-            {/* 모바일용 QR코드 버튼 */}
-            <div className="flex items-center md:hidden">
-              <button
-                onClick={() => setIsQrModalOpen(true)}
-                className="p-1.5 rounded text-xs font-serif border border-[#d8d3c7] bg-[#f8f6f0] hover:bg-[#ede8dc] text-[#1f1b18] transition-colors flex items-center space-x-1 shadow-sm"
-                title="모바일 접속 QR코드"
-              >
-                <QrCode className="w-3.5 h-3.5 text-[#2e5238]" />
-                <span className="text-[10px] font-bold">QR</span>
-              </button>
-            </div>
           </div>
 
-          {/* 탭 네비게이션 & (데스크톱일 때 QR버튼) */}
-          <div className="flex items-center justify-between md:justify-end space-x-1 sm:space-x-2 overflow-x-auto scrollbar-none pb-0.5 -mx-1 px-1">
-            {SHOW_EXTRA_TABS && (
+          {/* 탭 네비게이션 */}
+          {SHOW_EXTRA_TABS && (
+            <div className="flex items-center justify-between md:justify-end space-x-1 sm:space-x-2 overflow-x-auto scrollbar-none pb-0.5 -mx-1 px-1">
               <nav className="flex items-center space-x-1 sm:space-x-2">
                 {[
                   { id: 'letter', label: '가정통신문' },
@@ -250,17 +236,8 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                   </button>
                 ))}
               </nav>
-            )}
-
-            <button
-              onClick={() => setIsQrModalOpen(true)}
-              className="p-1.5 sm:px-2.5 sm:py-1.5 rounded text-xs font-serif border border-[#d8d3c7] bg-[#f8f6f0] hover:bg-[#ede8dc] text-[#1f1b18] transition-colors flex items-center space-x-1 shadow-sm whitespace-nowrap"
-              title="모바일 접속 QR코드"
-            >
-              <QrCode className="w-3.5 h-3.5 text-[#2e5238]" />
-              <span className="font-bold">QR코드</span>
-            </button>
-          </div>
+            </div>
+          )}
         </div>
       </header>
 
@@ -751,68 +728,6 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                 className="px-4 py-3 rounded-xl bg-white hover:bg-[#ede8dc] border border-[#17241b] text-[#17241b] font-serif font-bold text-xs transition-all shadow"
               >
                 닫기
-              </button>
-            </div>
-
-          </div>
-        </div>
-      )}
-
-      {/* QR 코드 확대 모달 */}
-      {isQrModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fadeIn">
-          <div className="bg-[#fcfbf9] border-2 border-[#1f1b18] rounded-xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl relative">
-            
-            <button
-              onClick={() => setIsQrModalOpen(false)}
-              className="absolute top-3 right-3 text-[#777] hover:text-[#111] p-1.5 rounded-full hover:bg-[#ede8dc] transition-colors"
-              title="닫기"
-            >
-              ✕
-            </button>
-
-            <div className="space-y-1">
-              <div className="text-[10px] font-mono text-[#b82828] font-bold tracking-wider uppercase">
-                Mobile Access QR Code
-              </div>
-              <h3 className="text-lg font-serif font-bold text-[#1f1b18]">
-                플래닛 독서학교 가정통신문
-              </h3>
-              <p className="text-xs text-[#666] font-serif">
-                스마트폰 카메라로 비추면 바로 접속하실 수 있습니다.
-              </p>
-            </div>
-
-            <div className="bg-white p-4 border border-[#e2ddd3] rounded-lg inline-block shadow-inner">
-              <img 
-                src={qrCodeImg} 
-                alt="플래닛 모바일 QR 코드" 
-                className="w-52 h-52 sm:w-60 sm:h-60 object-contain mx-auto"
-              />
-            </div>
-
-            <div className="text-xs font-mono text-[#555] bg-white p-2.5 rounded border border-[#e2ddd3] break-all select-all">
-              https://hanjisubusiness22222.github.io/MVPproject/
-            </div>
-
-            <div className="flex gap-2 pt-1">
-              <a
-                href={qrCodeImg}
-                download="플래닛_연말모임_QR코드.png"
-                className="flex-1 py-2.5 rounded bg-[#2e5238] hover:bg-[#23402c] text-white font-serif font-bold text-xs transition-all shadow text-center inline-block"
-              >
-                이미지 저장
-              </a>
-              <button
-                type="button"
-                onClick={() => {
-                  navigator.clipboard.writeText('https://hanjisubusiness22222.github.io/MVPproject/');
-                  setCopiedLink(true);
-                  setTimeout(() => setCopiedLink(false), 2000);
-                }}
-                className="flex-1 py-2.5 rounded border border-[#1f1b18] bg-white hover:bg-[#f6f3eb] text-[#1f1b18] font-serif font-bold text-xs transition-all shadow"
-              >
-                {copiedLink ? '복사 완료!' : 'URL 복사'}
               </button>
             </div>
 
