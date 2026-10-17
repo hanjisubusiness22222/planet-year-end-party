@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  /* 교실 칠판 표면 질감 (초록 칠판 + 분필 가루 감성) */
+  .chalkboard-surface {
+    background-color: #17241b;
+    background-image: 
+      radial-gradient(ellipse at 50% 30%, rgba(35, 56, 42, 0.7) 0%, rgba(18, 30, 22, 0.95) 100%),
+      radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 100% 100%, 16px 16px;
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.6);
+  }
+
+  /* 나무 액자 칠판 프레임 (모바일 8px / 데스크톱 14px) */
+  .chalkboard-frame {
+    border: 8px solid #946944;
+    border-image: linear-gradient(135deg, #a77c55 0%, #7d5433 50%, #5e3c22 100%) 8;
+    box-shadow: 
+      0 12px 30px rgba(0, 0, 0, 0.6),
+      inset 0 2px 6px rgba(0, 0, 0, 0.6);
+  }
+
+  @media (min-width: 640px) {
+    .chalkboard-frame {
+      border-width: 14px;
+      border-image-slice: 14;
+      box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.7),
+        inset 0 2px 6px rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  /* 스크롤바 숨김 유틸리티 */
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* 칠판 분필 글씨 효과 */
+  .chalk-text {
+    color: #f7f5ed;
+    text-shadow: 
+      0 0 1px rgba(255, 255, 255, 0.8),
+      0 0 3px rgba(247, 245, 237, 0.4);
+    letter-spacing: -0.02em;
+  }
+
+  /* 갱지 / 모조지 가정통신문 공문서 배경 질감 (초대장.png) */
+  .retro-gazette-paper {
+    background-color: #f6f3eb;
+    background-image: 
+      radial-gradient(#cfc5b2 0.8px, transparent 0.8px),
+      linear-gradient(180deg, rgba(200, 190, 170, 0.08) 0%, transparent 100%);
+    background-size: 10px 10px, 100% 100%;
+    color: #1f1b18;
+  }
+
+  /* 학교 결재 도장 및 직인 테두리 */
+  .retro-red-seal {
+    border: 2px solid #b82828;
+    color: #b82828;
+  }
+
+  /* 교실 책상/교탁 우드 톤 */
+  .bg-school-desk {
+    background: linear-gradient(180deg, #42291d 0%, #2e1a11 100%);
+  }
+
+  /* 절취선 (Dotted Coupon Line) */
+  .tear-line {
+    border-top: 2px dashed #6b5c4f;
+  }
+
+  /* 70g 회색빛 만화용지/갱지 텍스처 (planet.html) */
+  .gengji-paper {
+    background-color: #e6e3da;
+    background-image: 
+      radial-gradient(rgba(0,0,0,0.05) 1px, transparent 0),
+      radial-gradient(rgba(0,0,0,0.03) 1px, transparent 0);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+  }
+
+  /* 드로잉 스케치북 & 줄공책 질감 */
+  .lined-notebook {
+    background-color: #fbf9f3;
+    background-image: linear-gradient(#e2e8f0 1px, transparent 1px);
+    background-size: 100% 28px;
+  }
+
+  /* 학생증 크로키 배경지 */
+  .sketch-paper {
+    background-color: #faf8f2;
+    background-image: 
+      linear-gradient(to right, rgba(168, 162, 158, 0.14) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(168, 162, 158, 0.14) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+
+  .font-hand {
+    font-family: 'Gaegu', cursive;
+  }
+
+  .font-hwp-title {
+    font-family: 'Noto Sans KR', sans-serif;
+    letter-spacing: 0.25em;
+  }
+
+  .font-hwp-body {
+    font-family: 'Nanum Myeongjo', serif;
+  }
+
+  /* 스프링 링 */
+  .spiral-ring {
+    width: 18px;
+    height: 9px;
+    background: linear-gradient(to right, #78716c, #e7e5e4, #57534e);
+    border-radius: 999px;
+    box-shadow: 1px 2px 3px rgba(0,0,0,0.25);
+  }
+
+  /* 연필 커서 하이라이트 */
+  .pen-active {
+    border-color: #292524 !important;
+    background-color: #f5f0e6 !important;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 3px 4px 0px #292524;
+  }
+
+  /* 직인 도장 */
+  .stamp-seal {
+    border: 2.5px solid #b91c1c;
+    color: #b91c1c;
+    font-family: 'Nanum Myeongjo', serif;
+    font-weight: 900;
+    transform: rotate(-6deg);
+    mix-blend-mode: multiply;
+  }
+}
+
+/* 커스텀 아날로그 스크롤바 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #121c15;
+}
+::-webkit-scrollbar-thumb {
+  background: #35533e;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #497255;
+}
