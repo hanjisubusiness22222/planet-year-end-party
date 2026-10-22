@@ -10,6 +10,8 @@
  * D열: 도서제목
  * E열: 회비
  * F열: 회비납부여부
+ * G열: 조배치 (운영진 수동 입력)
+ * H열: 기존회원 (운영진 수동 입력)
  * 
  * [설치 및 배포 방법]:
  * 1. 구글 스프레드시트 상단 메뉴 [확장 프로그램] > [Apps Script] 클릭
@@ -62,14 +64,17 @@ function doPost(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
 
-    // 3. 구글 시트 행 추가: [이름, 연락처, 참석세션, 도서제목, 회비, 회비납부여부]
+    // 3. 구글 시트 행 추가: [이름, 연락처, 참석세션, 도서제목, 회비, 회비납부여부, 조배치, 기존회원]
+    // (조배치와 기존회원은 운영진 수동 입력을 위해 기본 빈칸 처리)
     sheet.appendRow([
       name,
       phone,
       session,
       bookTitle,
       fee,
-      paymentStatus
+      paymentStatus,
+      data.seatGroup || data.group || '', // 조배치 (수동 입력용)
+      data.memberType || data.fellowType || '' // 기존회원 (수동 입력용)
     ]);
 
     // 성공 응답 반환

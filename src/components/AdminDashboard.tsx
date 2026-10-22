@@ -16,6 +16,8 @@ interface RsvpRecord {
   bookHint?: string;
   fee: number;
   paymentStatus: '입금 완료' | '입금 대기';
+  seatGroup?: string; // 조배치
+  memberType?: string; // 기존회원
   submittedAt?: string;
 }
 
@@ -51,6 +53,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             bookTitle: item.bookTitle || item.bookHint || '(선물 책 준비 중)',
             fee: typeof item.fee === 'number' ? item.fee : (typeof item.totalFee === 'number' ? item.totalFee : 40000),
             paymentStatus: item.paymentStatus || '입금 대기',
+            seatGroup: item.seatGroup || item.조배치 || '',
+            memberType: item.memberType || item.기존회원 || '',
             submittedAt: item.submittedAt ? new Date(item.submittedAt).toLocaleDateString('ko-KR') : '-'
           }));
         }
@@ -103,6 +107,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           const fee = Number(item.회비 || item.fee || item.totalFee || 0);
           const paymentStatusStr = String(item.회비납부여부 || item.입금상태 || item.paymentStatus || '');
           const paymentStatus: '입금 완료' | '입금 대기' = paymentStatusStr.includes('완료') ? '입금 완료' : '입금 대기';
+          const seatGroup = item.조배치 || item.seatGroup || item.group || item.하우스조 || '';
+          const memberType = item.기존회원 || item.memberType || item.학우구분 || item.fellowType || '';
           const submittedAt = item.신청일시 || item.접수일시 || item.submittedAt || '-';
           const studentNumber = item.학번 || item.studentNumber || `2026-PLANET-${1001 + idx}`;
 
@@ -114,6 +120,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             bookTitle,
             fee: fee > 0 ? fee : 40000,
             paymentStatus,
+            seatGroup,
+            memberType,
             submittedAt: submittedAt !== '-' ? new Date(submittedAt).toLocaleDateString('ko-KR') : '-'
           };
           return record;
@@ -177,14 +185,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     }
   };
 
-  // CSV 엑셀 다운로드 (한글 깨짐 방지 UTF-8 BOM)
+  // CSV 엑셀 다운로드 (한글 깨짐 방지 UTF-8 BOM, 조배치 및 기존회원 포함)
   const handleExportCsv = () => {
-    const headers = ['학번', '성명', '연락처', '참석세션', '도서제목', '회비(원)', '회비납부여부', '신청일시'];
+    const headers = ['학번', '성명', '기존회원', '연락처', '참석세션', '조배치', '도서제목', '회비(원)', '회비납부여부', '신청일시'];
     const rows = records.map(r => [
       r.studentNumber || '',
       r.name,
+      r.memberType || '',
       r.phone,
       r.session,
+      r.seatGroup || '',
       `"${(r.bookTitle || '').replace(/"/g, '""')}"`,
       r.fee,
       r.paymentStatus,
@@ -513,6 +523,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   <th className="p-3 font-bold">성명</th>
                   <th className="p-3 font-bold">연락처</th>
                   <th className="p-3 font-bold">참석 세션</th>
+                  <th className="p-3 font-bold text-center">조배치</th>
                   <th className="p-3 font-bold">선물 도서 제목</th>
                   <th className="p-3 font-bold">회비</th>
                   <th className="p-3 font-bold text-center">입금 여부 (토글)</th>
@@ -522,7 +533,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <tbody className="divide-y divide-[#e8e4dc]">
                 {records.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="py-16 text-center text-[#666] font-serif bg-[#fdfcfb]">
+                    <td colSpan={9} className="py-16 text-center text-[#666] font-serif bg-[#fdfcfb]">
                       <div className="flex flex-col items-center justify-center space-y-3 max-w-sm mx-auto">
                         <div className="w-12 h-12 rounded-full bg-[#f0ece1] flex items-center justify-center text-[#888] shadow-inner">
                           <Users className="w-6 h-6 text-[#777]" />
@@ -548,12 +559,32 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   filteredRecords.map((r, idx) => (
                     <tr key={idx} className="hover:bg-[#fbf9f4] transition-colors">
                       <td className="p-3 font-mono text-[11px] text-[#666]">{r.studentNumber}</td>
-                      <td className="p-3 font-bold text-sm text-[#111]">{r.name}</td>
+                      <td className="p-3">
+                        <div className="flex items-center space-x-1.5">
+                          <span className="font-bold text-sm text-[#111]">{r.name}</span>
+                          {r.memberType && r.memberType !== '-' && (
+                            <span className={`px-1.5 py-0.5 rounded text-[10px] font-sans font-bold whitespace-nowrap ${
+                              r.memberType.includes('기존') ? 'bg-[#ede8dc] text-[#5c3d2e] border border-[#d8d3c7]' : 'bg-[#e0f2fe] text-[#0369a1] border border-[#bae6fd]'
+                            }`}>
+                              {r.memberType}
+                            </span>
+                          )}
+                        </div>
+                      </td>
                       <td className="p-3 font-mono">{r.phone}</td>
                       <td className="p-3">
                         <span className="px-2 py-0.5 rounded text-[10px] bg-[#f0ece1] text-[#333] border border-[#d8d3c7]">
                           {r.session}
                         </span>
+                      </td>
+                      <td className="p-3 text-center">
+                        {r.seatGroup && r.seatGroup !== '-' ? (
+                          <span className="px-2 py-0.5 rounded text-[10px] bg-[#2e5238] text-white font-bold font-mono">
+                            {r.seatGroup}
+                          </span>
+                        ) : (
+                          <span className="text-[#aaa] text-xs">-</span>
+                        )}
                       </td>
                       <td className="p-3 text-[#555] max-w-xs truncate" title={r.bookTitle}>
                         {r.bookTitle || '-'}
@@ -586,7 +617,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={8} className="p-8 text-center text-[#888] font-serif">
+                    <td colSpan={9} className="p-8 text-center text-[#888] font-serif">
                       검색 조건에 일치하는 신청자 명단이 없습니다.
                     </td>
                   </tr>
