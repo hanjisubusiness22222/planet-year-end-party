@@ -92,13 +92,26 @@ function doPost(e) {
   }
 }
 
-// GET 요청: 구글 시트 신청자 명단 조회 API
+// GET 요청: 구글 시트 신청자 명단 조회 API (보안 인증 토큰 검증 필수)
 function doGet(e) {
   try {
+    var params = e ? (e.parameter || {}) : {};
+    var token = String(params.token || '').trim();
+    
+    // [보안] 관리자 토큰 검증 ('2099' 또는 환경 해시)
+    // 토큰이 없거나 불일치할 경우 참가자 개인정보(이름, 연락처 등) 조회 원천 차단
+    if (token !== '2099' && token !== '1aaf97e300d50bacc554c8c27a1b9687dde34e6754b8de3759dd0ab844477e37' && token !== 'c0dbfc724e52834b6e511470ce22619bfdc84e7240c5e7b57bf10bbcd1cf4ee8') {
+      return ContentService.createTextOutput(JSON.stringify({ 
+        success: false, 
+        error: 'Unauthorized: 유효한 관리자 인증 토큰이 필요합니다.',
+        data: [] 
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     var rows = sheet.getDataRange().getValues();
     if (rows.length <= 1) {
-      return ContentService.createTextOutput(JSON.stringify({ success: true, data: [] }))
+      return ContentService.createTextOutput(JSON.stringify({ success: true, count: 0, data: [] }))
         .setMimeType(ContentService.MimeType.JSON);
     }
     

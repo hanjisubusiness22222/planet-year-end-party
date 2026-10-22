@@ -35,6 +35,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
   const [bookHint, setBookHint] = useState('');
   const [memo, setMemo] = useState('');
   const [privacyAgreed, setPrivacyAgreed] = useState(true);
+  const [hpCheck, setHpCheck] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedData, setSubmittedData] = useState<any>(null);
@@ -169,6 +170,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
   // 참가 신청 폼 제출
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (hpCheck.trim() !== '') return; // 봇 스팸 차단
     const cleanName = sanitizeText(name, 20);
 
     if (!cleanName || cleanName.length < 2) {
@@ -203,6 +205,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
 
     const payload = {
       action: 'register',
+      hp_check: hpCheck,
       name: cleanName,
       phone: phone,
       session: sessionLabel,
@@ -660,6 +663,16 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-3.5 text-xs sm:text-sm font-hwp-body">
+            {/* 봇 차단용 숨김 허니팟 필드 */}
+            <input
+              type="text"
+              name="hp_check"
+              value={hpCheck}
+              onChange={e => setHpCheck(e.target.value)}
+              className="hidden"
+              tabIndex={-1}
+              autoComplete="off"
+            />
             
             {/* 성함 */}
             <div>
