@@ -4,11 +4,10 @@ import { OfficialInvitation } from './components/OfficialInvitation';
 import { ClassroomSeatShuffle } from './components/ClassroomSeatShuffle';
 import { AdminDashboard } from './components/AdminDashboard';
 import { SettlementReport } from './components/SettlementReport';
-import { StudentCardStudio } from './components/StudentCardStudio';
 import { EVENT_CONFIG } from './constants/eventConfig';
 import { Compass, ShieldCheck, BookOpen } from 'lucide-react';
 
-type ViewMode = 'teaser' | 'main' | 'seat' | 'admin' | 'settlement' | 'avatarStudio';
+type ViewMode = 'teaser' | 'main' | 'seat' | 'admin' | 'settlement';
 
 export const App: React.FC = () => {
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
@@ -16,7 +15,6 @@ export const App: React.FC = () => {
     const isAuth = sessionStorage.getItem('planet_admin_auth') === 'true';
     if (hash === '#seat') return isAuth ? 'seat' : 'admin';
     if (hash === '#settlement') return isAuth ? 'settlement' : 'admin';
-    if (hash === '#avatar-studio' || hash === '#idcard') return isAuth ? 'avatarStudio' : 'admin';
     if (hash === '#admin') return 'admin';
     return EVENT_CONFIG.isTeaserMode ? 'teaser' : 'main';
   });
@@ -28,7 +26,6 @@ export const App: React.FC = () => {
       const isAuth = sessionStorage.getItem('planet_admin_auth') === 'true';
       if (hash === '#seat') setViewMode(isAuth ? 'seat' : 'admin');
       else if (hash === '#settlement') setViewMode(isAuth ? 'settlement' : 'admin');
-      else if (hash === '#avatar-studio' || hash === '#idcard') setViewMode(isAuth ? 'avatarStudio' : 'admin');
       else if (hash === '#admin') setViewMode('admin');
       else if (hash === '#teaser') setViewMode('teaser');
       else if (hash === '#main') setViewMode('main');
@@ -40,7 +37,7 @@ export const App: React.FC = () => {
 
   const changeView = (mode: ViewMode) => {
     const isAuth = sessionStorage.getItem('planet_admin_auth') === 'true';
-    if ((mode === 'seat' || mode === 'settlement' || mode === 'avatarStudio') && !isAuth) {
+    if ((mode === 'seat' || mode === 'settlement') && !isAuth) {
       setViewMode('admin');
       window.location.hash = 'admin';
       return;
@@ -49,7 +46,7 @@ export const App: React.FC = () => {
     window.location.hash = mode;
   };
 
-  const isAdminSection = viewMode === 'admin' || viewMode === 'seat' || viewMode === 'settlement' || viewMode === 'avatarStudio';
+  const isAdminSection = viewMode === 'admin' || viewMode === 'seat' || viewMode === 'settlement';
 
   return (
     <div className="relative min-h-screen">
@@ -106,11 +103,7 @@ export const App: React.FC = () => {
           onBack={() => changeView('main')} 
           onGoToSeat={() => changeView('seat')} 
           onGoToSettlement={() => changeView('settlement')}
-          onGoToAvatarStudio={() => changeView('avatarStudio')}
         />
-      )}
-      {viewMode === 'avatarStudio' && (
-        <StudentCardStudio onBack={() => changeView('admin')} />
       )}
     </div>
   );
