@@ -343,7 +343,7 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                       <td className="border border-[#1f1b18] p-2.5 sm:p-3 font-bold text-[#2e5238]">
                         연말파티 뒷풀이<br />「플래닛의 수학여행」
                       </td>
-                      <td className="border border-[#1f1b18] p-2.5 sm:p-3">강남 프라이빗 파티룸<br /><span className="text-[10px] text-[#777]">(추후 지정)</span></td>
+                      <td className="border border-[#1f1b18] p-2.5 sm:p-3">강남 프라이빗 파티룸<br /><span className="text-[10px] text-[#777]">(미정)</span></td>
                       <td className="border border-[#1f1b18] p-2.5 sm:p-3">연말파티 참여자<br />中 희망자</td>
                     </tr>
                   </tbody>
@@ -490,7 +490,7 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                   </h3>
                   <div className="text-xs text-[#666] flex items-center space-x-1 mt-1">
                     <Clock className="w-3.5 h-3.5" />
-                    <span>18:00 ~ LATE (강남 프라이빗 파티룸)</span>
+                    <span>18:00 ~ LATE (강남 프라이빗 파티룸 - 미정)</span>
                   </div>
                 </div>
 

@@ -64,7 +64,7 @@ export const EVENT_CONFIG: EventConfig = {
     name: "연말모임 뒷풀이 「플래닛의 수학여행」",
     subName: "2부 애프터 모임",
     time: "18:00 ~ LATE",
-    location: "강남 프라이빗 파티룸 (추후 안내)",
+    location: "강남 프라이빗 파티룸 (미정)",
     description: "추억의 수학여행 밤, 파자마/프라이빗 야간 토크, 심야 책이야기 및 자유 네트워킹 (예약금 2만원)",
     capacity: 25,
     fee: 20000,
