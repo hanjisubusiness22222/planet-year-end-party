@@ -368,7 +368,7 @@ export const TeaserPage: React.FC<TeaserPageProps> = ({ onExploreFullPage }) => 
                       <td className="border border-[#1f1b18] p-2 font-bold text-[#2e5238]">
                         연말모임 뒷풀이<br />「플래닛의 수학여행」
                       </td>
-                      <td className="border border-[#1f1b18] p-2">강남 프라이빗 파티룸<br /><span className="text-[10px] text-[#777]">(미정)</span></td>
+                      <td className="border border-[#1f1b18] p-2">미정</td>
                       <td className="border border-[#1f1b18] p-2">연말모임 참여자<br />中 희망자</td>
                     </tr>
                   </tbody>

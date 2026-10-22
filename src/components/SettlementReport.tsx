@@ -134,8 +134,8 @@ const SETTLEMENT_DATA: SettlementItem[] = [
   {
     id: 'EXP-04',
     category: 'expense_session2',
-    title: '강남 프라이빗 파티룸 대관료 (2부 수학여행)',
-    detail: '2부 수학여행 야간 파티룸 18:00 ~ 익일 06:00 올나잇 대관',
+    title: '2부 모임 장소 대관료 (수학여행)',
+    detail: '2부 수학여행 야간 장소 18:00 ~ 익일 06:00 올나잇 대관 (장소 미정/추후 확정)',
     vendor: '살롱 드 강남 (Salon de Gangnam)',
     date: '2026-12-08',
     amount: 480000,
