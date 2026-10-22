@@ -19,15 +19,6 @@ interface RsvpRecord {
   submittedAt?: string;
 }
 
-// 초기 샘플 RSVP 명단
-const INITIAL_RECORDS: RsvpRecord[] = [
-  { studentNumber: '2026-PLANET-1001', name: '김하늘', phone: '010-1234-5678', session: '1차(새학기) + 2차(수학여행) 전체 참석', bookTitle: '어린 왕자 (생텍쥐페리)', fee: 60000, paymentStatus: '입금 완료', submittedAt: '2026-10-24 14:20' },
-  { studentNumber: '2026-PLANET-1002', name: '이준호', phone: '010-2345-6789', session: '1차(새학기)만 참석', bookTitle: '모순 (양귀자)', fee: 40000, paymentStatus: '입금 완료', submittedAt: '2026-10-24 15:10' },
-  { studentNumber: '2026-PLANET-1003', name: '박서연', phone: '010-3456-7890', session: '1차(새학기) + 2차(수학여행) 전체 참석', bookTitle: '데미안 (헤르만 헤세)', fee: 60000, paymentStatus: '입금 대기', submittedAt: '2026-10-24 16:05' },
-  { studentNumber: '2026-PLANET-1004', name: '정민우', phone: '010-4567-8901', session: '2차(수학여행)만 참석 (예약금)', bookTitle: '달과 6펜스 (서머싯 몸)', fee: 20000, paymentStatus: '입금 완료', submittedAt: '2026-10-24 16:40' },
-  { studentNumber: '2026-PLANET-1005', name: '최지우', phone: '010-5678-9012', session: '1차(새학기) + 2차(수학여행) 전체 참석', bookTitle: '물고기는 존재하지 않는다', fee: 60000, paymentStatus: '입금 대기', submittedAt: '2026-10-24 17:15' }
-];
-
 interface AdminDashboardProps {
   onBack: () => void;
   onGoToSeat: () => void;
@@ -47,31 +38,111 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [passwordInput, setPasswordInput] = useState('');
   const [passwordError, setPasswordError] = useState(false);
 
+  // 로컬 캐시에서 불러오기 (샘플 데이터 완전 제거, 기본값 빈 배열)
   const [records, setRecords] = useState<RsvpRecord[]>(() => {
     const saved = localStorage.getItem('planet_rsvps');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           return parsed.map((item: any) => ({
             studentNumber: item.studentNumber || `2026-PLANET-${Math.floor(1000 + Math.random() * 9000)}`,
             name: item.name || '',
             phone: item.phone || '',
             session: item.session || item.sessionLabel || '1차+2차 전체 참석',
             bookTitle: item.bookTitle || item.bookHint || '(선물 책 준비 중)',
-            fee: item.fee || item.totalFee || 60000,
+            fee: typeof item.fee === 'number' ? item.fee : (typeof item.totalFee === 'number' ? item.totalFee : 40000),
             paymentStatus: item.paymentStatus || '입금 대기',
-            submittedAt: item.submittedAt ? new Date(item.submittedAt).toLocaleDateString('ko-KR') : '2026-10-24'
+            submittedAt: item.submittedAt ? new Date(item.submittedAt).toLocaleDateString('ko-KR') : '-'
           }));
         }
       } catch {}
     }
-    return INITIAL_RECORDS;
+    return [];
   });
 
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'completed' | 'pending'>('all');
   const [sessionFilter, setSessionFilter] = useState<'all' | 'both' | 's1' | 's2'>('all');
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncStatusMsg, setSyncStatusMsg] = useState<string | null>(null);
+
+  // 구글 시트 실시간 데이터 조회 및 동기화 함수
+  const fetchGoogleSheetRecords = async (showToast = false) => {
+    const scriptUrl = EVENT_CONFIG.googleScriptUrl;
+    if (!scriptUrl || scriptUrl.includes('YOUR_SCRIPT_ID')) {
+      if (showToast) {
+        setSyncStatusMsg('구글 시트 URL이 설정되지 않아 로컬 저장소 데이터만 표시됩니다.');
+        setTimeout(() => setSyncStatusMsg(null), 3000);
+      }
+      return;
+    }
+
+    try {
+      setIsSyncing(true);
+      if (showToast) setSyncStatusMsg('구글 시트에서 최신 신청자 명단을 불러오는 중...');
+
+      // 관리자 토큰 포함 GET 요청
+      const url = scriptUrl.includes('?') 
+        ? `${scriptUrl}&action=admin_get_all&token=2099` 
+        : `${scriptUrl}?action=admin_get_all&token=2099`;
+
+      const response = await fetch(url, { method: 'GET' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      
+      const resJson = await response.json();
+      const rawData = Array.isArray(resJson) ? resJson : (resJson.data || []);
+
+      if (Array.isArray(rawData)) {
+        const mapped: RsvpRecord[] = rawData.map((item: any, idx: number) => {
+          // 컬럼명 한글/영문 매핑 지원
+          const name = item.이름 || item.name || item.cleanName || '';
+          const phone = item.연락처 || item.phone || '';
+          const session = item.참석세션 || item.session || item.sessionLabel || 
+            (item['1부참석'] === 'O' && item['2부참석'] === 'O' ? '1차+2차 전체 참석' :
+             item['1부참석'] === 'O' ? '1차만 참석' : '2차만 참석');
+          const bookTitle = item.도서제목 || item.선물도서힌트 || item.bookTitle || item.bookHint || '(선물 책 준비 중)';
+          const fee = Number(item.회비 || item.fee || item.totalFee || 0);
+          const paymentStatusStr = String(item.회비납부여부 || item.입금상태 || item.paymentStatus || '');
+          const paymentStatus: '입금 완료' | '입금 대기' = paymentStatusStr.includes('완료') ? '입금 완료' : '입금 대기';
+          const submittedAt = item.신청일시 || item.접수일시 || item.submittedAt || '-';
+          const studentNumber = item.학번 || item.studentNumber || `2026-PLANET-${1001 + idx}`;
+
+          const record: RsvpRecord = {
+            studentNumber,
+            name,
+            phone,
+            session,
+            bookTitle,
+            fee: fee > 0 ? fee : 40000,
+            paymentStatus,
+            submittedAt: submittedAt !== '-' ? new Date(submittedAt).toLocaleDateString('ko-KR') : '-'
+          };
+          return record;
+        }).filter(r => r.name.trim() !== ''); // 빈 행 필터링
+
+        setRecords(mapped);
+        localStorage.setItem('planet_rsvps', JSON.stringify(mapped));
+        setSyncStatusMsg(`구글 시트 연동 완료: 총 ${mapped.length}명`);
+        setTimeout(() => setSyncStatusMsg(null), 3000);
+      }
+    } catch (err) {
+      console.warn('구글 시트 동기화 실패 (오프라인 모드 유지):', err);
+      if (showToast) {
+        setSyncStatusMsg('구글 시트 연동 실패: 로컬 캐시 데이터를 유지합니다.');
+        setTimeout(() => setSyncStatusMsg(null), 3500);
+      }
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  // 관리자 인증 완료 시 구글 시트 자동 동기화 1회 실행
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchGoogleSheetRecords(false);
+    }
+  }, [isAuthenticated]);
 
   // 저장 함수
   const saveRecords = (updated: RsvpRecord[]) => {
@@ -278,6 +349,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </button>
 
             <button
+              onClick={() => fetchGoogleSheetRecords(true)}
+              disabled={isSyncing}
+              className="px-2.5 py-1 sm:px-3 sm:py-1.5 rounded text-[11px] sm:text-xs font-serif border border-[#d5cfc4] bg-white hover:bg-[#f5f1e8] text-[#1f1b18] flex items-center space-x-1 shadow-sm transition-all disabled:opacity-60"
+              title="구글 시트 최신 신청자 동기화"
+            >
+              <RefreshCw className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${isSyncing ? 'animate-spin text-[#b82828]' : ''}`} />
+              <span>{isSyncing ? '동기화 중...' : '구글 시트 동기화'}</span>
+            </button>
+
+            <button
               onClick={handleExportCsv}
               className="px-2.5 py-1 sm:px-3 sm:py-1.5 rounded text-[11px] sm:text-xs font-serif border border-[#2e5238] bg-[#2e5238] text-white hover:bg-[#23402c] flex items-center space-x-1 shadow-sm transition-all"
             >
@@ -287,6 +368,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </div>
 
         </div>
+
+        {/* 동기화 상태 안내 토스트 바 */}
+        {syncStatusMsg && (
+          <div className="bg-[#1f1b18] text-[#f7f5ed] text-xs font-serif px-4 py-2 text-center animate-fadeIn flex items-center justify-center space-x-2 border-t border-stone-700">
+            <span className="w-2 h-2 rounded-full bg-[#10b981] animate-pulse"></span>
+            <span>{syncStatusMsg}</span>
+          </div>
+        )}
       </header>
 
       {/* 메인 통계 & 리스트 */}
@@ -465,7 +554,31 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#e8e4dc]">
-                {filteredRecords.length > 0 ? (
+                {records.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} className="py-16 text-center text-[#666] font-serif bg-[#fdfcfb]">
+                      <div className="flex flex-col items-center justify-center space-y-3 max-w-sm mx-auto">
+                        <div className="w-12 h-12 rounded-full bg-[#f0ece1] flex items-center justify-center text-[#888] shadow-inner">
+                          <Users className="w-6 h-6 text-[#777]" />
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-base font-bold text-[#1f1b18]">신청자가 아직 없습니다</p>
+                          <p className="text-xs text-[#777] leading-relaxed">
+                            참가 신청서(RSVP)가 접수되면 구글 스프레드시트 및 이곳에 실시간으로 표시됩니다.
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => fetchGoogleSheetRecords(true)}
+                          disabled={isSyncing}
+                          className="mt-2 px-3.5 py-1.5 rounded-lg border border-[#d5cfc4] bg-white hover:bg-[#f5f1e8] text-xs font-serif text-[#333] flex items-center space-x-1.5 shadow-sm transition-all"
+                        >
+                          <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-[#b82828]' : ''}`} />
+                          <span>구글 시트 실시간 조회</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ) : filteredRecords.length > 0 ? (
                   filteredRecords.map((r, idx) => (
                     <tr key={idx} className="hover:bg-[#fbf9f4] transition-colors">
                       <td className="p-3 font-mono text-[11px] text-[#666]">{r.studentNumber}</td>

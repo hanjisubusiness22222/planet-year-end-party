@@ -87,7 +87,29 @@ function doPost(e) {
   }
 }
 
-// GET 요청 테스트용
+// GET 요청: 구글 시트 신청자 명단 조회 API
 function doGet(e) {
-  return ContentService.createTextOutput("2026 플래닛 독서학교 RSVP API 정상 작동 중");
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var rows = sheet.getDataRange().getValues();
+    if (rows.length <= 1) {
+      return ContentService.createTextOutput(JSON.stringify({ success: true, data: [] }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    var headers = rows[0];
+    var data = rows.slice(1).map(function(row, idx) {
+      var item = { id: idx + 1 };
+      headers.forEach(function(h, cIdx) {
+        item[h] = row[cIdx];
+      });
+      return item;
+    });
+
+    return ContentService.createTextOutput(JSON.stringify({ success: true, count: data.length, data: data }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ success: false, error: err.toString(), data: [] }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }
