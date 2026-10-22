@@ -82,9 +82,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   // 비밀번호 인증
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    const correctPassword = (import.meta.env.VITE_ADMIN_PASSWORD as string) || 'planet2026';
+    const correctPassword = (import.meta.env.VITE_ADMIN_PASSWORD as string) || '2099';
     const trimmed = passwordInput.trim();
-    if (trimmed === correctPassword || trimmed === 'planet2026' || trimmed.replace(/\s+/g, '') === '플래닛연말준비2026') {
+    if (trimmed === correctPassword || trimmed === '2099') {
       setIsAuthenticated(true);
       sessionStorage.setItem('planet_admin_auth', 'true');
       setPasswordError(false);
