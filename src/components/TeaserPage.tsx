@@ -390,7 +390,7 @@ export const TeaserPage: React.FC<TeaserPageProps> = ({ onExploreFullPage }) => 
 
               {/* 하단 서명 */}
               <div className="text-center pt-2 font-serif">
-                <div className="text-xs font-mono text-[#666]">2026. 10. 24.</div>
+                <div className="text-xs font-mono text-[#666]">2026. 10. 26.</div>
                 <div className="text-base font-bold text-[#111] mt-0.5">
                   연말모임준비위원회 일동
                 </div>

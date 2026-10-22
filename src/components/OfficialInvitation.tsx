@@ -365,7 +365,7 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
 
               {/* 하단 날짜 및 서명 */}
               <div className="text-center pt-3 font-serif space-y-1">
-                <div className="text-xs font-mono text-[#555]">2026. 10. 24.</div>
+                <div className="text-xs font-mono text-[#555]">2026. 10. 26.</div>
                 <div className="text-lg font-black text-[#111] tracking-wider">
                   연말파티준비위원회 일동
                 </div>
