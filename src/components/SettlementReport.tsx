@@ -327,58 +327,32 @@ export const SettlementReport: React.FC<SettlementReportProps> = ({
           
           {/* 총 수입 */}
           <div className="p-4 rounded-xl border border-[#d8d3c7] bg-[#faf8f5] shadow-sm">
-            <div className="flex items-center justify-between text-xs font-serif text-[#666] mb-1">
-              <span>총 수입 (Income)</span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] bg-[#eef5f0] text-[#2e5238] font-bold">
-                {items.filter(i => i.category === 'income').length}건 입금
-              </span>
+            <div className="text-xs font-serif text-[#666] mb-1 font-bold">
+              총 수입
             </div>
             <div className="text-xl sm:text-2xl font-mono font-black text-[#2e5238]">
               {formatWon(totalIncome)}
             </div>
-            <p className="text-[11px] font-serif text-[#777] mt-1">
-              {items.filter(i => i.category === 'income').length > 0
-                ? `총 ${items.filter(i => i.category === 'income').length}건 입금 내역 집계`
-                : '등록된 수입 내역이 없습니다.'}
-            </p>
           </div>
 
           {/* 총 지출 */}
           <div className="p-4 rounded-xl border border-[#d8d3c7] bg-[#faf8f5] shadow-sm">
-            <div className="flex items-center justify-between text-xs font-serif text-[#666] mb-1">
-              <span>총 지출 (Expenditure)</span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] bg-red-50 text-[#b82828] font-bold">
-                {items.filter(i => i.category !== 'income').length}건 집행
-              </span>
+            <div className="text-xs font-serif text-[#666] mb-1 font-bold">
+              총 지출
             </div>
             <div className="text-xl sm:text-2xl font-mono font-black text-[#b82828]">
               {formatWon(totalExpense)}
             </div>
-            <p className="text-[11px] font-serif text-[#777] mt-1">
-              {items.filter(i => i.category !== 'income').length > 0
-                ? `총 ${items.filter(i => i.category !== 'income').length}건 실비 집행 내역 집계`
-                : '등록된 지출 내역이 없습니다.'}
-            </p>
           </div>
 
           {/* 최종 잔액 */}
           <div className="p-4 rounded-xl border-2 border-[#1b3323] bg-[#f2f6f3] shadow-sm">
-            <div className="flex items-center justify-between text-xs font-serif text-[#1b3323] mb-1">
-              <span className="font-bold">최종 잔액 (Balance)</span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] bg-[#2e5238] text-white font-bold">
-                {balance === 0 ? '0원 정산 완료' : balance > 0 ? '잔여 회비' : '초과 지출'}
-              </span>
+            <div className="text-xs font-serif text-[#1b3323] mb-1 font-bold">
+              최종 잔액
             </div>
             <div className="text-xl sm:text-2xl font-mono font-black text-[#1b3323]">
               {formatWon(balance)}
             </div>
-            <p className="text-[11px] font-serif text-[#2e5238] mt-1 font-semibold">
-              {balance === 0 
-                ? '✓ 수입과 지출 잔액 0원 일치' 
-                : balance > 0 
-                  ? `현재 ${formatWon(balance)} 잔여` 
-                  : `현재 ${formatWon(Math.abs(balance))} 초과 지출`}
-            </p>
           </div>
 
         </div>
