@@ -207,11 +207,6 @@ export const SettlementReport: React.FC<SettlementReportProps> = ({
     document.body.removeChild(link);
   };
 
-  // 인쇄 기능
-  const handlePrint = () => {
-    window.print();
-  };
-
   return (
     <div className="min-h-screen bg-[#f4f1ea] text-[#1f1b18] py-4 sm:py-8 px-2.5 sm:px-6 pb-24 sm:pb-12 font-sans">
       
@@ -243,15 +238,6 @@ export const SettlementReport: React.FC<SettlementReportProps> = ({
             <Download className="w-3.5 h-3.5 text-[#2e5238]" />
             <span className="hidden sm:inline">CSV 다운로드</span>
             <span className="sm:hidden">CSV</span>
-          </button>
-
-          <button
-            onClick={handlePrint}
-            className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-[#1b3323] hover:bg-[#112217] text-white text-xs font-serif font-bold transition-all shadow-sm"
-            title="보고서 인쇄"
-          >
-            <Printer className="w-3.5 h-3.5" />
-            <span>인쇄</span>
           </button>
         </div>
       </div>
