@@ -1,84 +1,136 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   ArrowLeft, Shuffle, Users, Maximize2, Minimize2, 
-  Download, Plus, Trash2
+  Download, Plus, Trash2, RefreshCw, BookOpen, Coffee, Sparkles
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { toPng } from 'html-to-image';
 import planetLogo from '../assets/planet-logo.png';
+import { EVENT_CONFIG } from '../constants/eventConfig';
 
-interface Participant {
+export interface Participant {
   id: string;
   name: string;
-  gender: 'M' | 'F';
-  type: 'senior' | 'new';
-  seatIndex?: number;
+  session?: string;
+  memberType?: string;
+  bookTitle?: string;
+  phone?: string;
 }
 
-// 기본 샘플 참가자 명단 (24인 - 기존여6, 기존남6, 신규여6, 신규남6 황금비율 구성)
-const DEFAULT_PARTICIPANTS: Participant[] = [
-  // 1분단 배정 후보군
-  { id: 'p1', name: '김하늘', gender: 'F', type: 'senior' },
-  { id: 'p2', name: '박서연', gender: 'F', type: 'senior' },
-  { id: 'p3', name: '정민우', gender: 'M', type: 'senior' },
-  { id: 'p4', name: '강도현', gender: 'M', type: 'senior' },
-  { id: 'p5', name: '최지우', gender: 'F', type: 'new' },
-  { id: 'p6', name: '한소희', gender: 'F', type: 'new' },
-  { id: 'p7', name: '이준호', gender: 'M', type: 'new' },
-  { id: 'p8', name: '임태양', gender: 'M', type: 'new' },
-
-  // 2분단 배정 후보군
-  { id: 'p9', name: '윤채원', gender: 'F', type: 'senior' },
-  { id: 'p10', name: '송예진', gender: 'F', type: 'senior' },
-  { id: 'p11', name: '오승재', gender: 'M', type: 'senior' },
-  { id: 'p12', name: '배진우', gender: 'M', type: 'senior' },
-  { id: 'p13', name: '신유나', gender: 'F', type: 'new' },
-  { id: 'p14', name: '노다혜', gender: 'F', type: 'new' },
-  { id: 'p15', name: '권혁주', gender: 'M', type: 'new' },
-  { id: 'p16', name: '유시온', gender: 'M', type: 'new' },
-
-  // 3분단 배정 후보군
-  { id: 'p17', name: '백서린', gender: 'F', type: 'senior' },
-  { id: 'p18', name: '황가람', gender: 'F', type: 'senior' },
-  { id: 'p19', name: '문재원', gender: 'M', type: 'senior' },
-  { id: 'p20', name: '조현우', gender: 'M', type: 'senior' },
-  { id: 'p21', name: '전민서', gender: 'F', type: 'new' },
-  { id: 'p22', name: '양다은', gender: 'F', type: 'new' },
-  { id: 'p23', name: '서강진', gender: 'M', type: 'senior' },
-  { id: 'p24', name: '구동혁', gender: 'M', type: 'new' }
+// 분단 메타데이터 정의
+const DIVISIONS = [
+  { id: 1, name: '1 분단', sub: '창가 라인', accent: '#2e5238', badgeBg: 'bg-[#2e5238]' },
+  { id: 2, name: '2 분단', sub: '중앙 집중 라인', accent: '#b82828', badgeBg: 'bg-[#b82828]' },
+  { id: 3, name: '3 분단', sub: '복도 라인', accent: '#3b5998', badgeBg: 'bg-[#3b5998]' }
 ];
+
+// 실제 신청자 데이터 로드 (로컬스토리지 기반)
+const loadParticipantsFromStorage = (): Participant[] => {
+  const savedRsvps = localStorage.getItem('planet_rsvps');
+  if (savedRsvps) {
+    try {
+      const parsed = JSON.parse(savedRsvps);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed
+          .filter((item: any) => item && (item.name || item.cleanName))
+          .map((item: any, idx: number) => ({
+            id: item.studentNumber || item.id || `rsvp_${idx}_${Date.now()}`,
+            name: (item.name || item.cleanName || '').trim(),
+            session: item.session || item.sessionLabel || '',
+            memberType: item.memberType || item.fellowType || item.기존회원 || '',
+            bookTitle: item.bookTitle || item.bookHint || item.도서제목 || '',
+            phone: item.phone || item.연락처 || ''
+          }));
+      }
+    } catch (e) {
+      console.error('로컬 신청자 명단 파싱 오류:', e);
+    }
+  }
+  return [];
+};
 
 interface ClassroomSeatShuffleProps {
   onBack: () => void;
 }
 
 export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBack }) => {
-  const [participants, setParticipants] = useState<Participant[]>(() => {
-    const savedRsvps = localStorage.getItem('planet_rsvps');
-    if (savedRsvps) {
-      try {
-        const parsed = JSON.parse(savedRsvps);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed.map((item: { name: string }, idx: number) => ({
-            id: `rsvp_${idx}`,
-            name: item.name,
-            gender: (idx % 2 === 0 ? 'F' : 'M') as 'M' | 'F',
-            type: (Math.floor(idx / 2) % 2 === 0 ? 'senior' : 'new') as 'senior' | 'new'
-          }));
-        }
-      } catch {}
-    }
-    return DEFAULT_PARTICIPANTS;
-  });
-
-  const [seats, setSeats] = useState<(Participant | null)[]>(new Array(24).fill(null));
+  // 실제 신청자 명단 관리 (더미데이터 배제, 실제 등록된 신청자 기준)
+  const [participants, setParticipants] = useState<Participant[]>(() => loadParticipantsFromStorage());
+  const [seats, setSeats] = useState<(Participant | null)[]>([]);
   const [isShuffling, setIsShuffling] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showManageModal, setShowManageModal] = useState(false);
   const [newName, setNewName] = useState('');
+  const [newSession, setNewSession] = useState('1차+2차 전체 참석');
   const [isCapturing, setIsCapturing] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   const classroomRef = useRef<HTMLDivElement>(null);
+
+  // 분단당 좌석 수 및 총 좌석 수 계산 (3개 분단에 균등 배치, 좌우 2열 마주보기를 위해 짝수 보장)
+  const calcSeatsPerDivision = () => {
+    const count = participants.length;
+    const base = Math.max(Math.ceil(count / 3), 4);
+    return base % 2 === 0 ? base : base + 1; // 짝수로 보정 (기본 4, 6, 8...)
+  };
+
+  const seatsPerDivision = calcSeatsPerDivision();
+  const totalSeats = seatsPerDivision * 3;
+
+  // 구글 시트 실시간 신청자 연동
+  const syncWithGoogleSheet = async (showToast = true) => {
+    const scriptUrl = EVENT_CONFIG.googleScriptUrl;
+    if (!scriptUrl || scriptUrl.includes('YOUR_SCRIPT_ID')) {
+      if (showToast) alert('구글 시트 연동 URL이 설정되지 않아 로컬 저장소 신청자 명단만 유지됩니다.');
+      return;
+    }
+
+    setIsSyncing(true);
+    try {
+      const url = scriptUrl.includes('?') 
+        ? `${scriptUrl}&action=admin_get_all&token=2099` 
+        : `${scriptUrl}?action=admin_get_all&token=2099`;
+
+      const response = await fetch(url, { method: 'GET' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      
+      const resJson = await response.json();
+      const rawData = Array.isArray(resJson) ? resJson : (resJson.data || []);
+
+      if (Array.isArray(rawData)) {
+        const mapped: Participant[] = rawData
+          .filter((item: any) => item && (item.이름 || item.name || item.cleanName))
+          .map((item: any, idx: number) => ({
+            id: item.학번 || item.studentNumber || `sheet_${idx}`,
+            name: (item.이름 || item.name || item.cleanName || '').trim(),
+            session: item.참석세션 || item.session || item.sessionLabel || '',
+            memberType: item.기존회원 || item.memberType || item.학우구분 || '',
+            bookTitle: item.도서제목 || item.선물도서힌트 || item.bookTitle || item.bookHint || '',
+            phone: item.연락처 || item.phone || ''
+          }));
+
+        setParticipants(mapped);
+        localStorage.setItem('planet_rsvps', JSON.stringify(mapped));
+        if (showToast) {
+          alert(`구글 시트 연동 완료: 실제 신청자 총 ${mapped.length}명의 명단을 성공적으로 불러왔습니다.`);
+        }
+      }
+    } catch (err) {
+      console.warn('구글 시트 동기화 실패 (오프라인 모드 유지):', err);
+      if (showToast) {
+        alert('구글 시트 연동 중 오류가 발생했습니다. 로컬 신청자 데이터를 유지합니다.');
+      }
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  // 초기 마운트 시 구글 시트 자동 동기화 1회 시도 (URL이 설정되어 있는 경우)
+  useEffect(() => {
+    if (EVENT_CONFIG.googleScriptUrl && !EVENT_CONFIG.googleScriptUrl.includes('YOUR_SCRIPT_ID')) {
+      syncWithGoogleSheet(false);
+    }
+  }, []);
 
   // 드럼롤 사운드 (Web Audio API 가속 비트)
   const playDrumrollSound = () => {
@@ -121,48 +173,30 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
     } catch {}
   };
 
-  // 각 분단별 성비 균형(1:1) & 신·구 조화(1:1) 자동 배정 (짝꿍은 분단 내에서 자연스럽게 랜덤 믹스)
-  const calculateBalancedSeats = (list: Participant[]) => {
-    const finalSeats: (Participant | null)[] = new Array(24).fill(null);
+  // 실제 신청자 명단을 3개 분단의 통합 테이블 좌석에 골고루 분배 배치
+  const calculateSeatsForDivisions = (list: Participant[], perDiv: number) => {
+    const total = perDiv * 3;
+    const finalSeats: (Participant | null)[] = new Array(total).fill(null);
+    const shuffled = [...list].sort(() => Math.random() - 0.5);
 
-    // 각 4개 그룹별 무작위 셔플
-    const seniorF = list.filter(p => p.gender === 'F' && p.type === 'senior').sort(() => Math.random() - 0.5);
-    const seniorM = list.filter(p => p.gender === 'M' && p.type === 'senior').sort(() => Math.random() - 0.5);
-    const newF = list.filter(p => p.gender === 'F' && p.type === 'new').sort(() => Math.random() - 0.5);
-    const newM = list.filter(p => p.gender === 'M' && p.type === 'new').sort(() => Math.random() - 0.5);
-
-    // 잔여 인원 보충용 풀
-    const fallbackPool = [...list].sort(() => Math.random() - 0.5);
-
-    // 3개 분단(1분단, 2분단, 3분단) 각각에 성비 1:1, 신구 1:1 보장
-    for (let bunday = 0; bunday < 3; bunday++) {
-      const base = bunday * 8;
-
-      // 해당 분단에 배정될 8명 선출 (기존여2, 기존남2, 신규여2, 신규남2 = 성비 1:1, 신구 1:1)
-      const divisionMembers: (Participant | null)[] = [
-        seniorF.pop() || fallbackPool.pop() || null,
-        seniorF.pop() || fallbackPool.pop() || null,
-        seniorM.pop() || fallbackPool.pop() || null,
-        seniorM.pop() || fallbackPool.pop() || null,
-        newF.pop() || fallbackPool.pop() || null,
-        newF.pop() || fallbackPool.pop() || null,
-        newM.pop() || fallbackPool.pop() || null,
-        newM.pop() || fallbackPool.pop() || null,
-      ];
-
-      // 분단 내에서는 8명을 완전히 무작위로 섞어서 4개 책상(8개 좌석)에 자유롭게 배치
-      // (짝꿍끼리는 인위적인 제약 없이 자연스럽게 매칭)
-      const shuffledDivision = divisionMembers.sort(() => Math.random() - 0.5);
-
-      shuffledDivision.forEach((member, i) => {
-        finalSeats[base + i] = member;
-      });
-    }
+    // 3개 분단에 1명씩 번갈아가며 균등하게 분배
+    shuffled.forEach((participant, idx) => {
+      const divIdx = idx % 3;
+      const seatInDiv = Math.floor(idx / 3);
+      if (seatInDiv < perDiv) {
+        finalSeats[divIdx * perDiv + seatInDiv] = participant;
+      }
+    });
 
     return finalSeats;
   };
 
-  // 자리바꾸기 실행 (드럼롤 셔플 후 자동 밸런스 안착)
+  // 초기 1회 기본 배치
+  useEffect(() => {
+    setSeats(calculateSeatsForDivisions(participants, seatsPerDivision));
+  }, [participants, seatsPerDivision]);
+
+  // 자리바꾸기 실행 (드럼롤 셔플 후 안착)
   const runSmartShuffle = () => {
     if (participants.length === 0 || isShuffling) return;
 
@@ -176,9 +210,9 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
     const interval = setInterval(() => {
       // 셔플 애니메이션 동안 무작위 스핀 연출
       const randomTemp = [...participants].sort(() => Math.random() - 0.5);
-      const tempSeats: (Participant | null)[] = new Array(24).fill(null);
-      randomTemp.slice(0, 24).forEach((p, i) => {
-        tempSeats[i] = p;
+      const tempSeats: (Participant | null)[] = new Array(totalSeats).fill(null);
+      randomTemp.forEach((p, i) => {
+        if (i < totalSeats) tempSeats[i] = p;
       });
       setSeats(tempSeats);
       step++;
@@ -186,8 +220,8 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
       if (step >= maxSteps) {
         clearInterval(interval);
 
-        // 최종: 분단별 성비 균형 & 신구 조화가 자동 계산된 좌석에 안착
-        const balanced = calculateBalancedSeats(participants);
+        // 최종: 3개 분단별 통합 테이블에 고르게 셔플 배치 확정
+        const balanced = calculateSeatsForDivisions(participants, seatsPerDivision);
         setSeats(balanced);
         setIsShuffling(false);
 
@@ -201,12 +235,6 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
       }
     }, intervalTime);
   };
-
-  // 초기 1회 기본 밸런스 배치
-  useEffect(() => {
-    const initialBalanced = calculateBalancedSeats(participants);
-    setSeats(initialBalanced);
-  }, [participants]);
 
   // 전체화면 토글
   const toggleFullscreen = () => {
@@ -230,7 +258,7 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
         backgroundColor: '#fcfbf9'
       });
       const link = document.createElement('a');
-      link.download = `2026_플래닛_교실_자리배치표.png`;
+      link.download = `2026_플래닛_교실_분단별_자리배치도.png`;
       link.href = dataUrl;
       link.click();
     } catch (err) {
@@ -241,27 +269,28 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
     }
   };
 
-  // 참가자 추가 (자동 성비 및 신구 속성 부여)
+  // 참가자 직접 추가
   const handleAddParticipant = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newName.trim()) return;
-    const count = participants.length;
-    const autoGender: 'M' | 'F' = count % 2 === 0 ? 'F' : 'M';
-    const autoType: 'senior' | 'new' = Math.floor(count / 2) % 2 === 0 ? 'senior' : 'new';
 
     const newP: Participant = {
       id: `custom_${Date.now()}`,
       name: newName.trim(),
-      gender: autoGender,
-      type: autoType
+      session: newSession,
+      memberType: '신청자'
     };
-    setParticipants([...participants, newP]);
+    const updated = [...participants, newP];
+    setParticipants(updated);
+    localStorage.setItem('planet_rsvps', JSON.stringify(updated));
     setNewName('');
   };
 
   // 참가자 삭제
   const handleRemoveParticipant = (id: string) => {
-    setParticipants(participants.filter(p => p.id !== id));
+    const updated = participants.filter(p => p.id !== id);
+    setParticipants(updated);
+    localStorage.setItem('planet_rsvps', JSON.stringify(updated));
   };
 
   return (
@@ -276,7 +305,7 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
             <button
               onClick={onBack}
               className="p-1 sm:p-1.5 rounded-lg border border-[#d8d3c7] bg-[#f8f6f0] hover:bg-[#ede8dc] text-[#1f1b18] transition-colors flex items-center space-x-1 text-xs font-serif shadow-sm flex-shrink-0"
-              title="뒤로 가기"
+              title="관리자로 돌아가기"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>돌아가기</span>
@@ -286,10 +315,10 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
               <img src={planetLogo} alt="플래닛" className="w-7 h-7 sm:w-8 sm:h-8 object-contain rounded bg-white border border-[#e5e0d8] p-0.5 shadow-sm flex-shrink-0" />
               <div className="min-w-0">
                 <h1 className="text-xs sm:text-sm font-serif font-bold text-[#1f1b18] flex items-center space-x-1.5">
-                  <span className="truncate">자리 배치</span>
-                  <span className="text-[9px] sm:text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#b82828] text-white whitespace-nowrap">현장용</span>
+                  <span className="truncate">교실 자리 배치 (1·2·3분단)</span>
+                  <span className="text-[9px] sm:text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#2e5238] text-white whitespace-nowrap">실제 신청자 기준</span>
                 </h1>
-                <p className="text-[9px] sm:text-[10px] text-[#666] font-serif truncate">2026 플래닛 독서학교 1·2·3분단 짝꿍 좌석 배정</p>
+                <p className="text-[9px] sm:text-[10px] text-[#666] font-serif truncate">2026 플래닛 독서학교 1·2·3분단 통합 책상 배치도</p>
               </div>
             </div>
           </div>
@@ -297,14 +326,27 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
           {/* 우측: 셔플 및 컨트롤 버튼 */}
           <div className="flex items-center flex-wrap gap-1.5 sm:gap-2 justify-end">
             
+            {/* 구글 시트 동기화 버튼 */}
+            <button
+              onClick={() => syncWithGoogleSheet(true)}
+              disabled={isSyncing}
+              className="px-2 py-1 sm:px-3 sm:py-1.5 rounded text-[11px] sm:text-xs font-serif border border-[#d8d3c7] bg-white hover:bg-[#f8f6f0] text-[#1f1b18] flex items-center space-x-1 transition-all shadow-sm disabled:opacity-50"
+              title="구글 시트에서 최신 신청자 불러오기"
+            >
+              <RefreshCw className={`w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#3b5998] ${isSyncing ? 'animate-spin' : ''}`} />
+              <span className="hidden xs:inline">신청자 동기화</span>
+            </button>
+
+            {/* 명단 관리 모달 버튼 */}
             <button
               onClick={() => setShowManageModal(true)}
               className="px-2 py-1 sm:px-3 sm:py-1.5 rounded text-[11px] sm:text-xs font-serif border border-[#d8d3c7] bg-white hover:bg-[#f8f6f0] text-[#1f1b18] flex items-center space-x-1 transition-all shadow-sm"
             >
               <Users className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#2e5238]" />
-              <span>명단 ({participants.length}명)</span>
+              <span>신청자 ({participants.length}명)</span>
             </button>
 
+            {/* 배치표 다운로드 */}
             <button
               onClick={handleDownloadSeats}
               disabled={isCapturing}
@@ -312,9 +354,10 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
               title="배치표 이미지 저장"
             >
               <Download className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#555]" />
-              <span className="hidden xs:inline">배치표 저장</span>
+              <span className="hidden xs:inline">이미지 저장</span>
             </button>
 
+            {/* 전체화면 */}
             <button
               onClick={toggleFullscreen}
               className="p-1 sm:p-1.5 rounded text-xs font-serif border border-[#d8d3c7] bg-white hover:bg-[#f8f6f0] text-[#1f1b18] transition-all shadow-sm"
@@ -326,7 +369,7 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
             {/* 메인 셔플 액션 버튼 */}
             <button
               onClick={runSmartShuffle}
-              disabled={isShuffling}
+              disabled={isShuffling || participants.length === 0}
               className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg bg-[#b82828] hover:bg-[#961e1e] text-white font-serif font-bold text-xs sm:text-sm flex items-center space-x-1 sm:space-x-1.5 shadow-md transition-all disabled:opacity-50 active:scale-95 whitespace-nowrap"
             >
               <Shuffle className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isShuffling ? 'animate-spin' : ''}`} />
@@ -339,8 +382,14 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
       </header>
 
       {/* 상단 좌석 현황 바 */}
-      <div className="max-w-6xl mx-auto px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-end text-[10px] sm:text-[11px] text-[#777] font-mono border-b border-[#e8e4dc]">
-        <div>총 24석 (1·2·3분단 각 8석)</div>
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between text-[10px] sm:text-[11px] text-[#666] font-mono border-b border-[#e8e4dc]">
+        <div className="flex items-center space-x-2">
+          <span className="inline-block w-2 h-2 rounded-full bg-[#2e5238]"></span>
+          <span>실제 신청자: <strong>{participants.length}명</strong></span>
+          <span className="text-[#bbb]">|</span>
+          <span>1·2·3분단 (각 분단 {seatsPerDivision}석 • 총 {totalSeats}석)</span>
+        </div>
+        <div>* 분단별 하나의 일체형 통합 책상 구조</div>
       </div>
 
       {/* 메인 교실 배치도 영역 (캡처 대상) */}
@@ -348,19 +397,19 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
         
         <div 
           ref={classroomRef}
-          className="bg-white border-2 border-[#1f1b18] rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-10 shadow-xl space-y-5 sm:space-y-8 relative overflow-hidden"
+          className="bg-white border-2 border-[#1f1b18] rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 shadow-xl space-y-6 relative overflow-hidden"
         >
           
           {/* 상단: 칠판 및 교탁 (선생님 / 운영진) */}
           <div className="text-center space-y-2.5 sm:space-y-3">
             
-            {/* 레트로 우드 현판 헤더 (교탁과 일치하는 따뜻한 갈색) */}
-            <div className="bg-[#5c4033] text-[#f7f5ed] max-w-xl mx-auto py-2 sm:py-3 px-3 sm:px-6 rounded-lg border-2 sm:border-4 border-[#3e2723] shadow-lg relative">
+            {/* 레트로 우드 현판 헤더 */}
+            <div className="bg-[#5c4033] text-[#f7f5ed] max-w-xl mx-auto py-2 sm:py-2.5 px-3 sm:px-6 rounded-lg border-2 sm:border-4 border-[#3e2723] shadow-lg relative">
               <div className="text-[9px] sm:text-[10px] font-mono text-[#dfc27d] tracking-widest uppercase">
-                CLASSROOM SIGNBOARD
+                CLASSROOM SIGNBOARD • 1·2·3 DIVISION
               </div>
               <h2 className="text-sm sm:text-lg md:text-xl font-serif font-black tracking-normal sm:tracking-widest text-[#f7f5ed]">
-                2026 플래닛 독서학교 「새학기 교실」
+                2026 플래닛 독서학교 「새학기 교실 자리배치도」
               </h2>
               <div className="text-[10px] sm:text-[11px] text-[#dfc27d]/90 font-serif mt-0.5">
                 * 책을 사랑하는 플래닛 여러분의 다정한 첫 만남
@@ -369,102 +418,137 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
 
             {/* 교탁 그래픽 */}
             <div className="inline-block px-5 sm:px-8 py-1.5 sm:py-2 rounded-t-lg bg-[#5c4033] text-[#f7f5ed] font-serif font-bold text-[11px] sm:text-xs border-2 border-b-4 border-[#3e2723] shadow-md">
-              [ 교 탁 (선생님 / 운영진 교무석) ]
+              [ 칠 판 & 교 탁 (선생님 / 운영진 교무석) ]
             </div>
 
           </div>
 
-          {/* 중앙: 3개 분단 책상 레이아웃 (1분단 / 2분단 / 3분단) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 pt-4">
-            
-            {/* 분단 정의: 0~7 (1분단), 8~15 (2분단), 16~23 (3분단) */}
-            {[
-              { id: 1, name: '1 분단', sub: '창가 라인' },
-              { id: 2, name: '2 분단', sub: '중앙 집중 라인' },
-              { id: 3, name: '3 분단', sub: '복도 라인' }
-            ].map((blandan, bIdx) => (
-              <div 
-                key={blandan.id} 
-                className="bg-[#fcfbf9] border border-[#dcd6c8] rounded-xl p-4 space-y-4 shadow-sm"
-              >
-                
-                {/* 분단 헤더 */}
-                <div className="flex items-center justify-between pb-2 border-b border-[#e2ddd3]">
-                  <div className="flex items-center space-x-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#b82828] inline-block"></span>
-                    <h3 className="font-serif font-bold text-sm text-[#1f1b18]">{blandan.name}</h3>
-                  </div>
-                  <span className="text-[10px] font-serif text-[#777]">{blandan.sub}</span>
-                </div>
-
-                {/* 분단 내 4개 책상 (각 책상 2인 1조 짝꿍) */}
-                <div className="space-y-3">
-                  {[0, 1, 2, 3].map((rowIdx) => {
-                    const seatLeftIndex = bIdx * 8 + rowIdx * 2;
-                    const seatRightIndex = seatLeftIndex + 1;
-                    const pLeft = seats[seatLeftIndex];
-                    const pRight = seats[seatRightIndex];
-
-                    return (
-                      <div 
-                        key={rowIdx} 
-                        className="bg-white border-2 border-[#1f1b18]/30 rounded-lg p-2 shadow-sm hover:border-[#1f1b18] transition-colors"
-                      >
-                        <div className="text-[9px] font-mono text-[#888] mb-1 text-center">
-                          {rowIdx + 1}분임 책상 (짝꿍)
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-2">
-                          
-                          {/* 왼쪽 좌석 */}
-                          <div 
-                            className={`p-3 rounded border text-center transition-all min-h-[52px] flex items-center justify-center ${
-                              pLeft 
-                                ? 'bg-[#fdfcf9] border-[#1f1b18]/40 shadow-sm' 
-                                : 'bg-[#f7f5ed] border-dashed border-[#ccc]'
-                            }`}
-                          >
-                            {pLeft ? (
-                              <div className="font-serif font-bold text-sm sm:text-base text-[#111] tracking-wide">
-                                {pLeft.name}
-                              </div>
-                            ) : (
-                              <span className="text-[11px] text-[#aaa] font-serif">빈 자리</span>
-                            )}
-                          </div>
-
-                          {/* 오른쪽 좌석 */}
-                          <div 
-                            className={`p-3 rounded border text-center transition-all min-h-[52px] flex items-center justify-center ${
-                              pRight 
-                                ? 'bg-[#fdfcf9] border-[#1f1b18]/40 shadow-sm' 
-                                : 'bg-[#f7f5ed] border-dashed border-[#ccc]'
-                            }`}
-                          >
-                            {pRight ? (
-                              <div className="font-serif font-bold text-sm sm:text-base text-[#111] tracking-wide">
-                                {pRight.name}
-                              </div>
-                            ) : (
-                              <span className="text-[11px] text-[#aaa] font-serif">빈 자리</span>
-                            )}
-                          </div>
-
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
+          {/* 신청자가 전혀 없을 때의 안내 */}
+          {participants.length === 0 && (
+            <div className="p-6 text-center bg-[#faf8f4] border-2 border-dashed border-[#dcd6c8] rounded-xl my-4 space-y-3">
+              <BookOpen className="w-8 h-8 text-[#888] mx-auto" />
+              <div className="font-serif font-bold text-sm text-[#1f1b18]">
+                현재 등록된 실제 신청자가 없습니다.
               </div>
-            ))}
+              <p className="text-xs text-[#666] font-serif max-w-md mx-auto">
+                가정통신문 신청서를 통해 접수된 명단이 자동으로 반영됩니다. 상단의 [신청자 동기화]를 누르거나 [신청자 명단]에서 직접 참가자를 등록하실 수 있습니다.
+              </p>
+              <div className="pt-2">
+                <button
+                  onClick={() => setShowManageModal(true)}
+                  className="px-3.5 py-1.5 rounded bg-[#2e5238] text-white text-xs font-serif font-bold shadow hover:bg-[#23402c] transition-colors"
+                >
+                  참가자 등록하기
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* 중앙: 3개 분단 레이아웃 (각 분단마다 하나의 통합 책상) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 pt-2">
+            
+            {DIVISIONS.map((division, divIndex) => {
+              const divBase = divIndex * seatsPerDivision;
+              const divSeats = seats.slice(divBase, divBase + seatsPerDivision);
+
+              return (
+                <div 
+                  key={division.id}
+                  className="bg-[#fcfbf9] border-2 border-[#dcd6c8] rounded-2xl p-3.5 sm:p-4 space-y-3 shadow-md flex flex-col justify-between"
+                >
+                  {/* 분단 헤더 */}
+                  <div className="flex items-center justify-between pb-2.5 border-b border-[#e2ddd3]">
+                    <div className="flex items-center space-x-2">
+                      <span className={`w-3 h-3 rounded-full ${division.badgeBg} inline-block shadow-sm`}></span>
+                      <h3 className="font-serif font-bold text-base text-[#1f1b18]">{division.name}</h3>
+                    </div>
+                    <span className="text-[11px] font-serif px-2 py-0.5 rounded-full bg-[#f0ede4] text-[#666] border border-[#e2ddd3]">
+                      {division.sub}
+                    </span>
+                  </div>
+
+                  {/* 분단 내 하나의 통합 책상 (One Unified Desk) */}
+                  <div className="flex-1 bg-gradient-to-b from-[#f9f7f2] to-[#f2eee4] border-2 border-[#5c4033]/80 rounded-xl p-3 shadow-inner space-y-2.5 flex flex-col justify-between">
+                    
+                    {/* 통합 책상 상단 라벨 */}
+                    <div className="py-1 px-2.5 rounded bg-[#5c4033] text-[#f7f5ed] text-[10px] font-serif font-bold text-center flex items-center justify-center space-x-1 shadow-sm">
+                      <Coffee className="w-3 h-3 text-[#dfc27d]" />
+                      <span>{division.name} 일체형 통합 테이블 ({seatsPerDivision}석)</span>
+                      <BookOpen className="w-3 h-3 text-[#dfc27d]" />
+                    </div>
+
+                    {/* 책상 위 마주보는 2열 좌석 그리드 */}
+                    <div className="grid grid-cols-2 gap-2 sm:gap-2.5 flex-1">
+                      {divSeats.map((participant, sIdx) => {
+                        const seatNumber = divBase + sIdx + 1;
+                        return (
+                          <div
+                            key={`seat-${divIndex}-${sIdx}`}
+                            className={`p-2 sm:p-2.5 rounded-lg border-2 transition-all flex flex-col justify-between items-center text-center min-h-[72px] relative ${
+                              participant
+                                ? 'bg-white border-[#1f1b18] shadow-sm hover:border-[#b82828] hover:-translate-y-0.5'
+                                : 'bg-[#eae6db]/50 border-dashed border-[#ccc]'
+                            }`}
+                          >
+                            {/* 좌석 번호 뱃지 */}
+                            <div className="w-full flex items-center justify-between mb-1">
+                              <span className="text-[8.5px] font-mono px-1.5 py-0.2 rounded bg-[#5c4033] text-white">
+                                #{seatNumber < 10 ? `0${seatNumber}` : seatNumber}
+                              </span>
+                              {participant?.memberType && (
+                                <span className="text-[8px] font-serif text-[#888] truncate max-w-[45px]">
+                                  {participant.memberType}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* 참가자 이름 */}
+                            {participant ? (
+                              <div className="my-auto">
+                                <div className="font-serif font-bold text-sm text-[#111] tracking-wide">
+                                  {participant.name}
+                                </div>
+                                {participant.session && (
+                                  <div className="text-[8.5px] font-serif text-[#2e5238] mt-0.5 truncate max-w-[85px]">
+                                    {participant.session.includes('전체') ? '1차+2차' : participant.session}
+                                  </div>
+                                )}
+                              </div>
+                            ) : (
+                              <div className="my-auto text-[10.5px] text-[#aaa] font-serif">
+                                빈 자리
+                              </div>
+                            )}
+
+                            {/* 좌석 의자 발판 마크 */}
+                            <div className="w-3 h-0.5 rounded-full bg-[#8b6f4e]/30 mt-0.5"></div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* 책상 하단 데코 문구 */}
+                    <div className="text-[9px] text-center text-[#777] font-serif border-t border-[#dfd9cb] pt-1">
+                      * {division.name} 학우들이 한 책상에서 담소를 나눕니다.
+                    </div>
+
+                  </div>
+
+                  {/* 분단 푸터 요약 */}
+                  <div className="text-[10px] font-mono text-[#888] text-right pt-0.5">
+                    배정 인원: {divSeats.filter(Boolean).length} / {seatsPerDivision}명
+                  </div>
+
+                </div>
+              );
+            })}
 
           </div>
 
           {/* 하단 배치도 설명 및 플래닛 독서학교 인증마크 */}
-          <div className="pt-4 border-t border-[#e2ddd3] flex flex-wrap items-center justify-between text-xs font-serif text-[#666]">
+          <div className="pt-4 border-t border-[#e2ddd3] flex flex-wrap items-center justify-between gap-2 text-xs font-serif text-[#666]">
             <div>
-              * 자리 배치가 완료된 후 서로의 학생증과 선물할 책을 나누며 인사를 시작해 주세요.
+              * 자리 배치가 완료된 후 같은 분단 학우들과 눈인사를 나누며 서로의 책 선물을 교환해 주세요.
             </div>
             <div className="font-bold text-[#1f1b18]">
               플래닛 독서학교 운영위원회 자리배치도 제2026호
@@ -475,15 +559,20 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
 
       </main>
 
-      {/* 명단 관리 모달 (이름만 간편하게 등록) */}
+      {/* 실제 신청자 명단 관리 모달 */}
       {showManageModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fadeIn">
           <div className="bg-[#fcfbf9] border-2 border-[#1f1b18] rounded-xl max-w-md w-full p-6 space-y-4 shadow-2xl max-h-[90vh] flex flex-col">
             
             <div className="flex items-center justify-between pb-2 border-b border-[#e2ddd3]">
-              <h3 className="font-serif font-bold text-base text-[#1f1b18]">
-                참가자 명단 관리 ({participants.length}명)
-              </h3>
+              <div>
+                <h3 className="font-serif font-bold text-base text-[#1f1b18]">
+                  실제 참가자 명단 관리
+                </h3>
+                <p className="text-[11px] text-[#666] font-serif">
+                  현재 등록된 실제 신청자 {participants.length}명
+                </p>
+              </div>
               <button 
                 onClick={() => setShowManageModal(false)}
                 className="text-[#888] hover:text-[#111] text-sm"
@@ -492,59 +581,84 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
               </button>
             </div>
 
-            {/* 신규 참가자 추가 폼 (이름만 입력) */}
-            <form onSubmit={handleAddParticipant} className="flex gap-2 p-3 bg-white border border-[#e2ddd3] rounded-lg">
-              <input 
-                type="text" 
-                placeholder="추가할 참가자 성함 (예: 홍길동)" 
-                value={newName} 
-                onChange={e => setNewName(e.target.value)} 
-                className="flex-1 border border-[#ccc] rounded px-3 py-1.5 text-xs font-serif focus:outline-none focus:border-[#b82828]"
-              />
-              <button 
-                type="submit" 
-                className="px-4 py-1.5 rounded bg-[#2e5238] hover:bg-[#23402c] text-white text-xs font-serif font-bold flex items-center space-x-1"
-              >
-                <Plus className="w-3.5 h-3.5" />
-                <span>추가</span>
-              </button>
+            {/* 신규 참가자 직접 추가 폼 */}
+            <form onSubmit={handleAddParticipant} className="space-y-2 p-3 bg-white border border-[#e2ddd3] rounded-lg">
+              <div className="text-xs font-serif font-bold text-[#1f1b18]">참가자 수동 추가</div>
+              <div className="flex gap-2">
+                <input 
+                  type="text" 
+                  placeholder="참가자 성함 (예: 홍길동)" 
+                  value={newName} 
+                  onChange={e => setNewName(e.target.value)} 
+                  className="flex-1 border border-[#ccc] rounded px-3 py-1.5 text-xs font-serif focus:outline-none focus:border-[#b82828]"
+                />
+                <select
+                  value={newSession}
+                  onChange={e => setNewSession(e.target.value)}
+                  className="border border-[#ccc] rounded px-2 py-1.5 text-xs font-serif focus:outline-none focus:border-[#b82828] bg-white"
+                >
+                  <option value="1차+2차 전체 참석">1차+2차</option>
+                  <option value="1차만 참석">1차만</option>
+                  <option value="2차만 참석">2차만</option>
+                </select>
+                <button 
+                  type="submit" 
+                  className="px-3.5 py-1.5 rounded bg-[#2e5238] hover:bg-[#23402c] text-white text-xs font-serif font-bold flex items-center space-x-1"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>추가</span>
+                </button>
+              </div>
             </form>
 
             {/* 명단 리스트 스크롤 영역 */}
-            <div className="flex-1 overflow-y-auto space-y-1.5 pr-1">
-              {participants.map((p, idx) => (
-                <div 
-                  key={p.id} 
-                  className="flex items-center justify-between p-2.5 rounded bg-white border border-[#e8e4dc] text-xs font-serif hover:bg-[#faf8f4] transition-colors"
-                >
-                  <div className="flex items-center space-x-3">
-                    <span className="font-mono text-[11px] text-[#888] w-6 text-right">{idx + 1}.</span>
-                    <span className="font-bold text-[#111] text-sm">{p.name}</span>
-                  </div>
-
-                  <button 
-                    onClick={() => handleRemoveParticipant(p.id)}
-                    className="p-1 text-[#aaa] hover:text-[#b82828] transition-colors"
-                    title="삭제"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+            <div className="flex-1 overflow-y-auto space-y-1.5 pr-1 min-h-[160px]">
+              {participants.length === 0 ? (
+                <div className="text-center py-8 text-xs text-[#999] font-serif">
+                  등록된 신청자가 없습니다.
                 </div>
-              ))}
+              ) : (
+                participants.map((p, idx) => (
+                  <div 
+                    key={p.id} 
+                    className="flex items-center justify-between p-2.5 rounded bg-white border border-[#e8e4dc] text-xs font-serif hover:bg-[#faf8f4] transition-colors"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <span className="font-mono text-[11px] text-[#888] w-6 text-right">{idx + 1}.</span>
+                      <span className="font-bold text-[#111] text-sm">{p.name}</span>
+                      {p.session && (
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#f0eee6] text-[#666]">
+                          {p.session}
+                        </span>
+                      )}
+                    </div>
+
+                    <button 
+                      onClick={() => handleRemoveParticipant(p.id)}
+                      className="p-1 text-[#aaa] hover:text-[#b82828] transition-colors"
+                      title="삭제"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))
+              )}
             </div>
 
             <div className="pt-2 border-t border-[#e2ddd3] flex justify-between items-center text-xs font-serif">
               <button 
-                onClick={() => setParticipants(DEFAULT_PARTICIPANTS)}
-                className="text-[#777] hover:text-[#111] underline"
+                onClick={() => syncWithGoogleSheet(true)}
+                disabled={isSyncing}
+                className="text-[#3b5998] hover:underline flex items-center space-x-1"
               >
-                기본 24인 명단 복원
+                <RefreshCw className={`w-3 h-3 ${isSyncing ? 'animate-spin' : ''}`} />
+                <span>구글 시트에서 다시 불러오기</span>
               </button>
               <button 
                 onClick={() => setShowManageModal(false)}
                 className="px-4 py-2 rounded bg-[#1f1b18] text-white font-bold"
               >
-                적용 완료
+                완료
               </button>
             </div>
 
@@ -555,3 +669,4 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
     </div>
   );
 };
+
