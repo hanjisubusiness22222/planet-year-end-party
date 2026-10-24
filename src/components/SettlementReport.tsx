@@ -658,35 +658,6 @@ export const SettlementReport: React.FC<SettlementReportProps> = ({
           </table>
         </div>
 
-        {/* 회계감사 의견서 및 서명란 */}
-        <div className="border border-[#1f1b18] p-5 rounded-lg bg-[#faf8f5] space-y-4">
-          <div className="border-b border-[#e0dad0] pb-2 flex items-center justify-between">
-            <span className="font-serif font-bold text-sm text-[#1b3323]">
-              ■ 2026 플래닛 독서학교 회계감사위원 총평 ■
-            </span>
-            <span className="text-[11px] font-mono text-[#888]">
-              감사일자: 2026. 12. 20.
-            </span>
-          </div>
-
-          <p className="text-xs font-serif leading-relaxed text-[#444]">
-            본 회계감사위원단은 2026년 12월 19일 진행된 플래닛 독서학교 연말모임(1부 새학기 & 2부 수학여행)의 
-            모든 입출금 내역 및 금융거래 증빙을 면밀히 대조·검토하였습니다.
-            검토 결과, 모든 수입과 지출은 정관 및 행사 운영 계획에 따라 적법하게 집행되었으며,
-            잔여 회비 없이 <strong>총 수입 2,375,000원 대 총 지출 2,375,000원으로 잔액 0원 정산</strong>이
-            투명하고 정확하게 완료되었음을 엄숙히 확인합니다.
-          </p>
-
-          <div className="pt-3 border-t border-[#eee] flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs font-serif text-[#666] gap-2">
-            <div>
-              <strong>회계총무:</strong> 김플래닛 (인) &nbsp;|&nbsp; <strong>감사위원:</strong> 이책방, 박학우 (인)
-            </div>
-            <div className="font-bold text-[#111]">
-              플래닛 독서학교 연말모임준비위원회 일동
-            </div>
-          </div>
-        </div>
-
       </div>
 
       {/* 실물 영수증 증빙 팝업 모달 */}
