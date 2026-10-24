@@ -36,173 +36,6 @@ export interface SettlementItem {
   itemsBreakdown?: { name: string; qty: number; unitPrice: number }[];
 }
 
-const SETTLEMENT_DATA: SettlementItem[] = [
-  // 수입
-  {
-    id: 'INC-01',
-    category: 'income',
-    title: '1차 메인모임 「새학기」 회비 입금',
-    detail: '1차 참가비 40,000원 × 32명 완납',
-    vendor: '카카오뱅크 모임통장',
-    date: '2026-12-18',
-    amount: 1280000,
-    paymentMethod: '계좌입금',
-    receiptNumber: 'BANK-20261218-001',
-    receiptType: '계좌이체 영수증',
-    itemsBreakdown: [
-      { name: '1차 참가비 (32명)', qty: 32, unitPrice: 40000 }
-    ]
-  },
-  {
-    id: 'INC-02',
-    category: 'income',
-    title: '2차 애프터모임 「수학여행」 예약금 입금',
-    detail: '2차 예약금 20,000원 × 25명 완납',
-    vendor: '카카오뱅크 모임통장',
-    date: '2026-12-18',
-    amount: 500000,
-    paymentMethod: '계좌입금',
-    receiptNumber: 'BANK-20261218-002',
-    receiptType: '계좌이체 영수증',
-    itemsBreakdown: [
-      { name: '2차 예약금 (25명)', qty: 25, unitPrice: 20000 }
-    ]
-  },
-  {
-    id: 'INC-03',
-    category: 'income',
-    title: '플래닛 운영위원회 발전기금 지원금',
-    detail: '잔액 0원 정산 및 참가자 전원 웰컴키트 보조를 위한 운영위 자체 지원',
-    vendor: '플래닛 운영위원회',
-    date: '2026-12-18',
-    amount: 595000,
-    paymentMethod: '운영비 충당',
-    receiptNumber: 'COMM-20261218-001',
-    receiptType: '계좌이체 영수증',
-    itemsBreakdown: [
-      { name: '운영위 특별 지원금', qty: 1, unitPrice: 595000 }
-    ]
-  },
-
-  // 1부 지출
-  {
-    id: 'EXP-01',
-    category: 'expense_session1',
-    title: '공간나인 강남점 대관료 (1부)',
-    detail: '1부 행사장 10:00 ~ 17:00 (7시간) 단독 대관 및 빔프로젝터 사용료',
-    vendor: '공간나인 강남점 (주식회사 나인스페이스)',
-    date: '2026-12-05',
-    amount: 770000,
-    paymentMethod: '신용카드 (일시불)',
-    receiptNumber: 'CRD-20261205-8821',
-    receiptType: '신용카드 매출전표',
-    itemsBreakdown: [
-      { name: '메인 홀 대관 (7시간)', qty: 7, unitPrice: 100000 },
-      { name: '음향/빔프로젝터 패키지', qty: 1, unitPrice: 70000 }
-    ]
-  },
-  {
-    id: 'EXP-02',
-    category: 'expense_session1',
-    title: '1부 환영 다과 및 스페셜티 원두 커피 케이터링',
-    detail: '학우 35인 기준 핸드드립 커피 2종, 레트로 델리 쿠키 및 전통 다과 세트',
-    vendor: '학사당 베이커리 & 로스터리',
-    date: '2026-12-19',
-    amount: 385000,
-    paymentMethod: '신용카드 (일시불)',
-    receiptNumber: 'CRD-20261219-1049',
-    receiptType: '신용카드 매출전표',
-    itemsBreakdown: [
-      { name: '케이터링 커피 바스켓 (35인)', qty: 35, unitPrice: 6000 },
-      { name: '구움과자 & 클래식 다과 박스', qty: 35, unitPrice: 5000 }
-    ]
-  },
-  {
-    id: 'EXP-03',
-    category: 'expense_session1',
-    title: '2026 명예의 전당 어워즈 상패 & 기념 도서',
-    detail: '다독상, 토론상, 다정한 플래닛상 원목 감사패 및 플래닛 추천도서 3권',
-    vendor: '광화문 아날로그 공방 / 교보문고',
-    date: '2026-12-14',
-    amount: 210000,
-    paymentMethod: '신용카드 (일시불)',
-    receiptNumber: 'CRD-20261214-9912',
-    receiptType: '전자세금계산서',
-    itemsBreakdown: [
-      { name: '원목 레이저 각인 상패 (3개)', qty: 3, unitPrice: 50000 },
-      { name: '어워즈 특별 도서 (3권)', qty: 3, unitPrice: 20000 }
-    ]
-  },
-
-  // 2부 지출
-  {
-    id: 'EXP-04',
-    category: 'expense_session2',
-    title: '2부 모임 장소 대관료 (수학여행)',
-    detail: '2부 수학여행 야간 장소 18:00 ~ 익일 06:00 올나잇 대관 (장소 미정/추후 확정)',
-    vendor: '살롱 드 강남 (Salon de Gangnam)',
-    date: '2026-12-08',
-    amount: 480000,
-    paymentMethod: '계좌이체',
-    receiptNumber: 'TAX-20261208-4109',
-    receiptType: '현금영수증',
-    itemsBreakdown: [
-      { name: '파티룸 올나잇 패키지', qty: 1, unitPrice: 480000 }
-    ]
-  },
-  {
-    id: 'EXP-05',
-    category: 'expense_session2',
-    title: '2부 야간 살롱 토크 다이닝 & 핑거푸드',
-    detail: '야간 토크용 수제 샤퀴테리, 와인/무알콜 음료, 수학여행 테마 추억의 야식',
-    vendor: '델리 마켓 & 피자리아',
-    date: '2026-12-19',
-    amount: 325000,
-    paymentMethod: '신용카드 (일시불)',
-    receiptNumber: 'CRD-20261219-5501',
-    receiptType: '신용카드 매출전표',
-    itemsBreakdown: [
-      { name: '핑거푸드 & 치즈 플레이터 (25인)', qty: 25, unitPrice: 9000 },
-      { name: '야식 피자 및 음료 세트', qty: 1, unitPrice: 100000 }
-    ]
-  },
-
-  // 공통 지출
-  {
-    id: 'EXP-06',
-    category: 'expense_common',
-    title: '플래닛 모바일 학생증 & 웰컴 패키지 인쇄비',
-    detail: '참석자 전원 실물 명찰 케이스, 2026 금박 북마크, 학교 가정통신문 안내지 인쇄',
-    vendor: '을지로 프린트 팩토리',
-    date: '2026-12-12',
-    amount: 175000,
-    paymentMethod: '신용카드 (일시불)',
-    receiptNumber: 'CRD-20261212-3021',
-    receiptType: '신용카드 매출전표',
-    itemsBreakdown: [
-      { name: '아크릴 명찰 & 넥스트랩 (40세트)', qty: 40, unitPrice: 2500 },
-      { name: '2026 한정판 금박 웰컴 책갈피', qty: 50, unitPrice: 1000 },
-      { name: '가정통신문 컬러 출력 (고급 모조지)', qty: 50, unitPrice: 500 }
-    ]
-  },
-  {
-    id: 'EXP-07',
-    category: 'expense_common',
-    title: '진행 소품 및 블라인드 북 선물 포장재',
-    detail: '책 선물 교환용 크라프트 포장지, 빨간 실링 왁스, 분필 및 지우개 소모품',
-    vendor: '알파문구 본점',
-    date: '2026-12-15',
-    amount: 30000,
-    paymentMethod: '신용카드 (일시불)',
-    receiptNumber: 'CRD-20261215-0912',
-    receiptType: '현금영수증',
-    itemsBreakdown: [
-      { name: '크라프트 포장지 & 실링 왁스 세트', qty: 1, unitPrice: 20000 },
-      { name: '칠판 분필 & 진행용 문구류', qty: 1, unitPrice: 10000 }
-    ]
-  }
-];
-
 // 구글 드라이브 이미지 공유 링크를 직접 렌더링 가능한 썸네일 URL로 변환
 export const getDirectImageUrl = (url?: string): string => {
   if (!url) return '';
@@ -229,22 +62,24 @@ export const SettlementReport: React.FC<SettlementReportProps> = ({
   onGoToSeat,
   onGoToTeaser
 }) => {
-  // 로컬 캐시에서 불러오기 (캐시가 없으면 기본 샘플 표시)
+  // 로컬 캐시에서 불러오기 (구글 시트 연동 데이터만 인정, 캐시 없으면 빈 배열)
   const [items, setItems] = useState<SettlementItem[]>(() => {
     const saved = localStorage.getItem('planet_settlement_records');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0 && parsed.every((p: any) => p.id?.startsWith('sheet_settle_'))) {
+          return parsed;
+        }
       } catch {}
     }
-    return SETTLEMENT_DATA;
+    return [];
   });
 
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'income' | 'expense'>('all');
   const [activeReceipt, setActiveReceipt] = useState<SettlementItem | null>(null);
   const [isSyncing, setIsSyncing] = useState(false);
-  const [isFromSheet, setIsFromSheet] = useState(false);
+  const [isFromSheet, setIsFromSheet] = useState(() => items.length > 0);
 
   // 구글 시트2(정산내역) 실시간 데이터 조회 함수
   const fetchSettlementFromSheet = async (showToast = false) => {
@@ -494,13 +329,17 @@ export const SettlementReport: React.FC<SettlementReportProps> = ({
           <div className="p-4 rounded-xl border border-[#d8d3c7] bg-[#faf8f5] shadow-sm">
             <div className="flex items-center justify-between text-xs font-serif text-[#666] mb-1">
               <span>총 수입 (Income)</span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] bg-[#eef5f0] text-[#2e5238] font-bold">100% 입금</span>
+              <span className="px-1.5 py-0.5 rounded text-[10px] bg-[#eef5f0] text-[#2e5238] font-bold">
+                {items.filter(i => i.category === 'income').length}건 입금
+              </span>
             </div>
             <div className="text-xl sm:text-2xl font-mono font-black text-[#2e5238]">
               {formatWon(totalIncome)}
             </div>
             <p className="text-[11px] font-serif text-[#777] mt-1">
-              1부 32명 + 2부 25명 회비 및 운영 지원
+              {items.filter(i => i.category === 'income').length > 0
+                ? `총 ${items.filter(i => i.category === 'income').length}건 입금 내역 집계`
+                : '등록된 수입 내역이 없습니다.'}
             </p>
           </div>
 
@@ -508,13 +347,17 @@ export const SettlementReport: React.FC<SettlementReportProps> = ({
           <div className="p-4 rounded-xl border border-[#d8d3c7] bg-[#faf8f5] shadow-sm">
             <div className="flex items-center justify-between text-xs font-serif text-[#666] mb-1">
               <span>총 지출 (Expenditure)</span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] bg-red-50 text-[#b82828] font-bold">실비 집행</span>
+              <span className="px-1.5 py-0.5 rounded text-[10px] bg-red-50 text-[#b82828] font-bold">
+                {items.filter(i => i.category !== 'income').length}건 집행
+              </span>
             </div>
             <div className="text-xl sm:text-2xl font-mono font-black text-[#b82828]">
               {formatWon(totalExpense)}
             </div>
             <p className="text-[11px] font-serif text-[#777] mt-1">
-              대관료 2건, 다과 2건, 굿즈/상패 등 7건
+              {items.filter(i => i.category !== 'income').length > 0
+                ? `총 ${items.filter(i => i.category !== 'income').length}건 실비 집행 내역 집계`
+                : '등록된 지출 내역이 없습니다.'}
             </p>
           </div>
 
@@ -522,13 +365,19 @@ export const SettlementReport: React.FC<SettlementReportProps> = ({
           <div className="p-4 rounded-xl border-2 border-[#1b3323] bg-[#f2f6f3] shadow-sm">
             <div className="flex items-center justify-between text-xs font-serif text-[#1b3323] mb-1">
               <span className="font-bold">최종 잔액 (Balance)</span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] bg-[#2e5238] text-white font-bold">0원 정산 완료</span>
+              <span className="px-1.5 py-0.5 rounded text-[10px] bg-[#2e5238] text-white font-bold">
+                {balance === 0 ? '0원 정산 완료' : balance > 0 ? '잔여 회비' : '초과 지출'}
+              </span>
             </div>
             <div className="text-xl sm:text-2xl font-mono font-black text-[#1b3323]">
               {formatWon(balance)}
             </div>
             <p className="text-[11px] font-serif text-[#2e5238] mt-1 font-semibold">
-              ✓ 차액 0원 완전 일치 (수익금 0원)
+              {balance === 0 
+                ? '✓ 수입과 지출 잔액 0원 일치' 
+                : balance > 0 
+                  ? `현재 ${formatWon(balance)} 잔여` 
+                  : `현재 ${formatWon(Math.abs(balance))} 초과 지출`}
             </p>
           </div>
 
@@ -582,65 +431,85 @@ export const SettlementReport: React.FC<SettlementReportProps> = ({
               </tr>
             </thead>
             <tbody className="divide-y divide-[#e8e4dc]">
-              {filteredItems.map((item) => {
-                const isIncome = item.category === 'income';
-                return (
-                  <tr key={item.id} className="hover:bg-[#faf8f5] transition-colors">
-                    
-                    {/* 구분 뱃지 */}
-                    <td className="p-3 text-center">
-                      {isIncome ? (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#eef5f0] text-[#2e5238] border border-[#c4e0cb]">
-                          수입
-                        </span>
-                      ) : (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#fdf0f0] text-[#b82828] border border-[#f5c6c6]">
-                          지출
-                        </span>
-                      )}
-                    </td>
-
-                    {/* 항목 및 내용 */}
-                    <td className="p-3">
-                      <div className="font-bold text-[#1f1b18] text-xs sm:text-sm">
-                        {item.title}
+              {filteredItems.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="p-10 text-center text-stone-500 font-serif">
+                    {isSyncing ? (
+                      <div className="flex flex-col items-center justify-center space-y-2 py-4">
+                        <RefreshCw className="w-5 h-5 animate-spin text-[#1b3323]" />
+                        <span className="text-sm font-bold text-[#1b3323]">구글 시트(시트2)에서 정산 내역을 불러오는 중입니다...</span>
                       </div>
-                      <div className="text-[11px] text-[#666] mt-0.5">
-                        {item.detail}
+                    ) : (
+                      <div className="py-4">
+                        <p className="font-bold text-sm text-[#333] mb-1">등록된 정산 내역이 없습니다.</p>
+                        <p className="text-xs text-stone-500">
+                          구글 스프레드시트의 <span className="font-bold text-[#1b3323]">[시트2]</span>에 입력된 항목이 실시간으로 반영됩니다.
+                        </p>
                       </div>
-                    </td>
+                    )}
+                  </td>
+                </tr>
+              ) : (
+                filteredItems.map((item) => {
+                  const isIncome = item.category === 'income';
+                  return (
+                    <tr key={item.id} className="hover:bg-[#faf8f5] transition-colors">
+                      
+                      {/* 구분 뱃지 */}
+                      <td className="p-3 text-center">
+                        {isIncome ? (
+                          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#eef5f0] text-[#2e5238] border border-[#c4e0cb]">
+                            수입
+                          </span>
+                        ) : (
+                          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#fdf0f0] text-[#b82828] border border-[#f5c6c6]">
+                            지출
+                          </span>
+                        )}
+                      </td>
 
-                    {/* 거래처 */}
-                    <td className="p-3 text-[#555] hidden md:table-cell text-[11px]">
-                      {item.vendor}
-                    </td>
+                      {/* 항목 및 내용 */}
+                      <td className="p-3">
+                        <div className="font-bold text-[#1f1b18] text-xs sm:text-sm">
+                          {item.title}
+                        </div>
+                        <div className="text-[11px] text-[#666] mt-0.5">
+                          {item.detail}
+                        </div>
+                      </td>
 
-                    {/* 일자 */}
-                    <td className="p-3 text-center text-[#777] font-mono text-[11px] hidden sm:table-cell">
-                      {item.date}
-                    </td>
+                      {/* 거래처 */}
+                      <td className="p-3 text-[#555] hidden md:table-cell text-[11px]">
+                        {item.vendor}
+                      </td>
 
-                    {/* 금액 */}
-                    <td className="p-3 text-right font-mono font-bold text-xs sm:text-sm">
-                      <span className={isIncome ? 'text-[#2e5238]' : 'text-[#b82828]'}>
-                        {isIncome ? '+' : '-'}{formatWon(item.amount)}
-                      </span>
-                    </td>
+                      {/* 일자 */}
+                      <td className="p-3 text-center text-[#777] font-mono text-[11px] hidden sm:table-cell">
+                        {item.date}
+                      </td>
 
-                    {/* 증빙 영수증 버튼 */}
-                    <td className="p-3 text-center print:hidden">
-                      <button
-                        onClick={() => setActiveReceipt(item)}
-                        className="px-2 py-1 rounded border border-[#d8d3c7] bg-white hover:bg-[#ede8dc] text-[11px] font-serif text-[#1b3323] inline-flex items-center space-x-1 transition-all shadow-xs"
-                      >
-                        <Receipt className="w-3 h-3 text-[#b82828]" />
-                        <span>영수증</span>
-                      </button>
-                    </td>
+                      {/* 금액 */}
+                      <td className="p-3 text-right font-mono font-bold text-xs sm:text-sm">
+                        <span className={isIncome ? 'text-[#2e5238]' : 'text-[#b82828]'}>
+                          {isIncome ? '+' : '-'}{formatWon(item.amount)}
+                        </span>
+                      </td>
 
-                  </tr>
-                );
-              })}
+                      {/* 증빙 영수증 버튼 */}
+                      <td className="p-3 text-center print:hidden">
+                        <button
+                          onClick={() => setActiveReceipt(item)}
+                          className="px-2 py-1 rounded border border-[#d8d3c7] bg-white hover:bg-[#ede8dc] text-[11px] font-serif text-[#1b3323] inline-flex items-center space-x-1 transition-all shadow-xs"
+                        >
+                          <Receipt className="w-3 h-3 text-[#b82828]" />
+                          <span>영수증</span>
+                        </button>
+                      </td>
+
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
             <tfoot>
               <tr className="bg-[#f0ece1] border-t-2 border-[#1f1b18] font-bold">
