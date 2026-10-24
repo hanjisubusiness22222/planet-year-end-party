@@ -226,18 +226,6 @@ export const SettlementReport: React.FC<SettlementReportProps> = ({
         </button>
 
         <div className="flex items-center space-x-1.5 sm:space-x-2">
-          {/* 구글 시트2 실시간 동기화 버튼 */}
-          <button
-            onClick={() => fetchSettlementFromSheet(true)}
-            disabled={isSyncing}
-            className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg border border-[#c8c0b0] bg-white hover:bg-[#f0ece1] text-xs font-serif text-[#1b3323] transition-all shadow-sm disabled:opacity-50"
-            title="구글 시트2에서 최신 정산내역 불러오기"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 text-[#3b5998] ${isSyncing ? 'animate-spin' : ''}`} />
-            <span className="hidden sm:inline">{isSyncing ? '동기화 중...' : '시트2 동기화'}</span>
-            <span className="sm:hidden">동기화</span>
-          </button>
-
           {onGoToSeat && (
             <button
               onClick={onGoToSeat}
@@ -280,9 +268,6 @@ export const SettlementReport: React.FC<SettlementReportProps> = ({
               <div className="inline-flex items-center space-x-1.5 px-2 py-0.5 rounded bg-[#1b3323] text-white text-[10px] sm:text-[11px] font-mono mb-1.5">
                 <Receipt className="w-3 h-3 text-[#dfc27d]" />
                 <span>제 2026-결산1호</span>
-                {isFromSheet && (
-                  <span className="px-1.5 py-0.2 rounded bg-[#2e5238] text-[9px] text-[#dfc27d] font-bold">시트2 연동완료</span>
-                )}
               </div>
               <h1 className="text-base sm:text-2xl md:text-3xl font-serif font-black tracking-tight text-[#111]">
                 2026 플래닛 독서학교 연말모임 정산 보고서
