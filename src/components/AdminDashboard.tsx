@@ -462,7 +462,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </div>
               <div>
                 <div className="font-serif font-bold text-sm text-[#1f1b18] flex items-center space-x-1.5">
-                  <span>학생회비 투명 정산</span>
+                  <span>정산 보고서</span>
                   <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#c29b38] text-white">결산</span>
                 </div>
                 <p className="text-[11px] text-[#666] font-serif mt-0.5">

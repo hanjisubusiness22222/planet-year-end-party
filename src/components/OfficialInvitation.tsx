@@ -748,7 +748,7 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
               onClick={onGoToSettlement}
               className="inline-flex items-center space-x-1 px-3 py-1 rounded-full border border-[#d8d3c7] bg-white hover:bg-[#ede8dc] text-[11px] text-[#444] transition-all shadow-xs"
             >
-              <span>🧾 학생회비 투명 정산 보고서 열람</span>
+              <span>🧾 정산 보고서 열람</span>
             </button>
           </div>
         )}
