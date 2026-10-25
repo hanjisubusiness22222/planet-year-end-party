@@ -47,7 +47,13 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
     return () => window.removeEventListener('hashchange', handleHash);
   }, []);
 
+  // 탭 변경 및 마운트 시 최상단으로 스크롤
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [activeTab]);
+
   const handleTabClick = (tabId: TabType) => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     setActiveTab(tabId);
     window.location.hash = tabId;
   };

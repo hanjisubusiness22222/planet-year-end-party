@@ -37,7 +37,13 @@ export const App: React.FC = () => {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
+  // 뷰 전환 시 최상단으로 스크롤
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [viewMode]);
+
   const changeView = (mode: ViewMode) => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     const isAuth = sessionStorage.getItem('planet_admin_auth') === 'true';
     if ((mode === 'seat' || mode === 'settlement') && !isAuth) {
       setViewMode('admin');

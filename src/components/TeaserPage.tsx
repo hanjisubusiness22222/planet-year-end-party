@@ -400,7 +400,10 @@ export const TeaserPage: React.FC<TeaserPageProps> = ({ onExploreFullPage }) => 
               {onExploreFullPage && (
                 <div className="pt-2 flex flex-col sm:flex-row gap-2">
                   <button
-                    onClick={onExploreFullPage}
+                    onClick={() => {
+                      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                      onExploreFullPage();
+                    }}
                     className="flex-1 py-3 px-4 rounded bg-[#b82828] hover:bg-[#961e1e] text-white font-bold text-xs sm:text-sm font-serif transition-all shadow flex items-center justify-center space-x-2"
                   >
                     <BookOpen className="w-4 h-4 text-white" />
