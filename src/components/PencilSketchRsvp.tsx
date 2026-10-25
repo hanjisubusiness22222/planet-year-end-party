@@ -324,14 +324,14 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
         {/* 공책 상단 헤더 */}
         <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-stone-400 pb-2.5 mb-3">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="bg-stone-800 text-stone-100 px-2.5 py-0.5 rounded font-hand font-bold text-sm sm:text-base">
+            <span className="bg-stone-800 text-stone-100 px-2.5 py-0.5 rounded font-hand font-bold text-sm sm:text-base whitespace-nowrap">
               ✏️ 4B 연필 공책 게임
             </span>
-            <span className="font-hand text-base sm:text-lg font-bold text-stone-800">
+            <span className="font-hand text-base sm:text-lg font-bold text-stone-800 break-keep">
               연필이 왔다 갔다 할 때 <span className="underline decoration-wavy decoration-stone-800 font-black">&quot;멈춰!&quot;</span>를 외쳐 초상화 완성하기
             </span>
           </div>
-          <span className="text-xs font-bold bg-stone-200 border border-stone-600 text-stone-900 px-2.5 py-1 rounded-full">
+          <span className="text-xs font-bold bg-stone-200 border border-stone-600 text-stone-900 px-2.5 py-1 rounded-full whitespace-nowrap">
             {currentStage + 1}/6 단계: {STAGES[currentStage]?.title} 스케치 중
           </span>
         </div>
@@ -346,7 +346,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                 key={s.id}
                 type="button"
                 onClick={() => jumpToStage(idx)}
-                className={`py-1 px-1 rounded transition border-2 ${
+                className={`py-1.5 px-1 rounded transition border-2 whitespace-nowrap break-keep ${
                   isCur
                     ? 'border-stone-800 bg-stone-800 text-white shadow-xs'
                     : isDone
@@ -407,7 +407,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
             <button
               type="button"
               onClick={handleStop}
-              className="flex-1 sm:flex-initial bg-stone-900 hover:bg-black active:scale-95 text-white font-black px-4 py-2 sm:px-5 sm:py-2.5 rounded shadow-md border-2 border-black transition flex items-center justify-center gap-1.5 text-xs sm:text-sm"
+              className="flex-1 sm:flex-initial bg-stone-900 hover:bg-black active:scale-95 text-white font-black px-4 py-2 sm:px-5 sm:py-2.5 rounded shadow-md border-2 border-black transition flex items-center justify-center gap-1.5 text-xs sm:text-sm whitespace-nowrap"
             >
               <span>✋ 멈춰!</span>
               <span className="text-[10px] font-normal opacity-80">(Space)</span>
@@ -416,20 +416,20 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
             <button
               type="button"
               onClick={handleRandomize}
-              className="bg-amber-100 hover:bg-amber-200 text-stone-900 font-bold px-3 py-2 sm:py-2.5 rounded border-2 border-black text-xs transition flex items-center gap-1"
+              className="bg-amber-100 hover:bg-amber-200 text-stone-900 font-bold px-3 py-2 sm:py-2.5 rounded border-2 border-black text-xs transition flex items-center gap-1 whitespace-nowrap"
               title="한 번에 랜덤 조합 뽑기"
             >
-              <Shuffle className="w-3.5 h-3.5" />
+              <Shuffle className="w-3.5 h-3.5 flex-shrink-0" />
               <span>원클릭 랜덤</span>
             </button>
 
             <button
               type="button"
               onClick={handleReset}
-              className="bg-stone-200 hover:bg-stone-300 text-stone-800 font-bold px-3 py-2 sm:py-2.5 rounded border-2 border-black text-xs transition flex items-center gap-1"
+              className="bg-stone-200 hover:bg-stone-300 text-stone-800 font-bold px-3 py-2 sm:py-2.5 rounded border-2 border-black text-xs transition flex items-center gap-1 whitespace-nowrap"
               title="지우개로 지우고 처음부터"
             >
-              <Eraser className="w-3.5 h-3.5" />
+              <Eraser className="w-3.5 h-3.5 flex-shrink-0" />
               <span>지우개</span>
             </button>
           </div>
@@ -640,8 +640,8 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
 
             {/* 참석 세션 선택 */}
             <div>
-              <label className="block font-bold text-stone-800 mb-1">참석 세션 선택 <span className="text-red-600">*</span></label>
-              <div className="grid grid-cols-3 gap-2 font-sans">
+              <label className="block font-bold text-stone-800 mb-1 break-keep">참석 세션 선택 <span className="text-red-600">*</span></label>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 font-sans">
                 <label className="cursor-pointer">
                   <input
                     type="radio"
@@ -651,10 +651,12 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                     onChange={() => setSelectedSession('both')}
                     className="peer sr-only"
                   />
-                  <div className="border-2 border-stone-400 peer-checked:border-stone-900 peer-checked:bg-stone-200 p-2 text-center rounded transition">
-                    <div className="font-bold text-xs text-stone-900">1차 + 2차 전체</div>
-                    <div className="text-[10px] text-stone-600">새학기 &amp; 수학여행</div>
-                    <div className="font-black text-xs text-red-800 mt-1">{feeInfo.both}</div>
+                  <div className="border-2 border-stone-400 peer-checked:border-stone-900 peer-checked:bg-stone-200 p-2 text-center rounded transition flex sm:flex-col justify-between sm:justify-center items-center">
+                    <div>
+                      <div className="font-bold text-xs text-stone-900 whitespace-nowrap">1차 + 2차 전체</div>
+                      <div className="text-[10px] text-stone-600 whitespace-nowrap">새학기 &amp; 수학여행</div>
+                    </div>
+                    <div className="font-black text-xs text-red-800 sm:mt-1 whitespace-nowrap">{feeInfo.both}</div>
                   </div>
                 </label>
 
@@ -667,10 +669,12 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                     onChange={() => setSelectedSession('session1')}
                     className="peer sr-only"
                   />
-                  <div className="border-2 border-stone-400 peer-checked:border-stone-900 peer-checked:bg-stone-200 p-2 text-center rounded transition">
-                    <div className="font-bold text-xs text-stone-900">1차만 참석</div>
-                    <div className="text-[10px] text-stone-600">새학기 본파티(낮)</div>
-                    <div className="font-black text-xs text-red-800 mt-1">{feeInfo.session1}</div>
+                  <div className="border-2 border-stone-400 peer-checked:border-stone-900 peer-checked:bg-stone-200 p-2 text-center rounded transition flex sm:flex-col justify-between sm:justify-center items-center">
+                    <div>
+                      <div className="font-bold text-xs text-stone-900 whitespace-nowrap">1차만 참석</div>
+                      <div className="text-[10px] text-stone-600 whitespace-nowrap">새학기 본파티(낮)</div>
+                    </div>
+                    <div className="font-black text-xs text-red-800 sm:mt-1 whitespace-nowrap">{feeInfo.session1}</div>
                   </div>
                 </label>
 
@@ -683,10 +687,12 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                     onChange={() => setSelectedSession('session2')}
                     className="peer sr-only"
                   />
-                  <div className="border-2 border-stone-400 peer-checked:border-stone-900 peer-checked:bg-stone-200 p-2 text-center rounded transition">
-                    <div className="font-bold text-xs text-stone-900">2차만 참석</div>
-                    <div className="text-[10px] text-stone-600">수학여행 뒤풀이</div>
-                    <div className="font-black text-xs text-red-800 mt-1">{feeInfo.session2}</div>
+                  <div className="border-2 border-stone-400 peer-checked:border-stone-900 peer-checked:bg-stone-200 p-2 text-center rounded transition flex sm:flex-col justify-between sm:justify-center items-center">
+                    <div>
+                      <div className="font-bold text-xs text-stone-900 whitespace-nowrap">2차만 참석</div>
+                      <div className="text-[10px] text-stone-600 whitespace-nowrap">수학여행 뒤풀이</div>
+                    </div>
+                    <div className="font-black text-xs text-red-800 sm:mt-1 whitespace-nowrap">{feeInfo.session2}</div>
                   </div>
                 </label>
               </div>

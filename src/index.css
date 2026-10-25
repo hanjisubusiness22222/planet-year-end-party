@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html, body {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+}
+
 @layer utilities {
   /* 교실 칠판 표면 질감 (초록 칠판 + 분필 가루 감성) */
   .chalkboard-surface {
@@ -108,11 +115,13 @@
 
   .font-hwp-title {
     font-family: 'Noto Sans KR', sans-serif;
-    letter-spacing: 0.25em;
+    letter-spacing: 0.06em;
+    word-break: keep-all;
   }
 
   .font-hwp-body {
     font-family: 'Nanum Myeongjo', serif;
+    word-break: keep-all;
   }
 
   /* 스프링 링 */
