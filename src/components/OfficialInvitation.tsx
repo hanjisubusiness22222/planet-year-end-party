@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   BookOpen, Calendar, Clock, MapPin, Sparkles, Glasses, 
   CheckCircle2, ArrowLeft, Send, ShieldCheck, Award, 
@@ -20,14 +20,38 @@ interface OfficialInvitationProps {
 
 type TabType = 'letter' | 'timeline' | 'lookbook' | 'rsvp';
 
-// 신청 페이지(회신서), 일과표 안내, 드레스 코드 룩북 공개 여부 (현재 숨김 처리)
-const SHOW_EXTRA_TABS = false;
+// 신청 페이지(회신서), 일과표 안내, 드레스 코드 룩북 공개 여부
+const SHOW_EXTRA_TABS = true;
 
 export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({ 
   onBackToTeaser,
   onGoToSettlement
 }) => {
-  const [activeTab, setActiveTab] = useState<TabType>('letter');
+  const [activeTab, setActiveTab] = useState<TabType>(() => {
+    const hash = window.location.hash.toLowerCase();
+    if (hash === '#rsvp') return 'rsvp';
+    if (hash === '#timeline') return 'timeline';
+    if (hash === '#lookbook') return 'lookbook';
+    return 'letter';
+  });
+
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash.toLowerCase();
+      if (hash === '#rsvp') setActiveTab('rsvp');
+      else if (hash === '#timeline') setActiveTab('timeline');
+      else if (hash === '#lookbook') setActiveTab('lookbook');
+      else if (hash === '#letter' || hash === '#main') setActiveTab('letter');
+    };
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
+  const handleTabClick = (tabId: TabType) => {
+    setActiveTab(tabId);
+    window.location.hash = tabId;
+  };
+
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedAccount, setCopiedAccount] = useState(false);
   const [isDownloadingId, setIsDownloadingId] = useState(false);
@@ -225,7 +249,7 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                 ].map((tab) => (
                   <button
                     key={tab.id}
-                    onClick={() => setActiveTab(tab.id as TabType)}
+                    onClick={() => handleTabClick(tab.id as TabType)}
                     className={`px-2 py-1 sm:px-2.5 sm:py-1.5 rounded text-[11px] sm:text-xs font-serif whitespace-nowrap transition-all ${
                       activeTab === tab.id
                         ? 'bg-[#b82828] text-white font-bold shadow-sm'
@@ -394,14 +418,14 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-1">
                       <button
-                        onClick={() => setActiveTab('rsvp')}
+                        onClick={() => handleTabClick('rsvp')}
                         className="w-full sm:w-auto px-6 py-3 rounded-lg bg-[#b82828] hover:bg-[#961e1e] text-white font-serif font-bold text-sm sm:text-base shadow-md flex items-center justify-center space-x-2 transition-all active:scale-98"
                       >
                         <Send className="w-4 h-4" />
                         <span>참가 신청서 (회신서) 바로 작성하기</span>
                       </button>
                       <button
-                        onClick={() => setActiveTab('timeline')}
+                        onClick={() => handleTabClick('timeline')}
                         className="w-full sm:w-auto px-5 py-3 rounded-lg border border-[#1f1b18]/40 bg-white hover:bg-[#ede8dc] text-[#1f1b18] font-serif font-bold text-sm transition-all"
                       >
                         일과표 세부 일정 보기
@@ -595,7 +619,7 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
 
             <div className="text-center pt-2">
               <button
-                onClick={() => setActiveTab('rsvp')}
+                onClick={() => handleTabClick('rsvp')}
                 className="px-6 py-2.5 rounded bg-[#b82828] hover:bg-[#961e1e] text-white font-serif font-bold text-sm shadow inline-flex items-center space-x-2"
               >
                 <span>가정통신문 회신서 작성하기</span>

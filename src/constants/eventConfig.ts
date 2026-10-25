@@ -40,7 +40,7 @@ export interface EventConfig {
 }
 
 export const EVENT_CONFIG: EventConfig = {
-  isTeaserMode: true, // true: 칠판 티저 모드, false: 가정통신문 정식 오픈
+  isTeaserMode: false, // true: 칠판 티저 모드, false: 가정통신문 정식 오픈
   eventTitle: "2026 플래닛 독서학교 연말모임",
   subTitle: "플래닛의 새학기 & 수학여행",
   noticeNumber: "제2026-1호",
@@ -84,13 +84,13 @@ export const EVENT_CONFIG: EventConfig = {
   ],
   
   account: {
-    bank: "카카오뱅크",
-    number: "3333-01-20261219",
-    holder: "플래닛준비위원회",
+    bank: "하나은행",
+    number: "439-911050-56507",
+    holder: "한지수",
   },
   
   contact: {
-    accountInfo: "카카오뱅크 3333-01-20261219 (예금주: 플래닛준비위원회)",
+    accountInfo: "하나은행 439-911050-56507 (예금주: 한지수)",
     inquiryEmail: "contact@planet-school.org",
   },
   

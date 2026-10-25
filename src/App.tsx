@@ -16,6 +16,8 @@ export const App: React.FC = () => {
     if (hash === '#seat') return isAuth ? 'seat' : 'admin';
     if (hash === '#settlement') return isAuth ? 'settlement' : 'admin';
     if (hash === '#admin') return 'admin';
+    if (hash === '#teaser') return 'teaser';
+    if (['#main', '#rsvp', '#timeline', '#lookbook', '#letter'].includes(hash)) return 'main';
     return EVENT_CONFIG.isTeaserMode ? 'teaser' : 'main';
   });
 
@@ -28,7 +30,7 @@ export const App: React.FC = () => {
       else if (hash === '#settlement') setViewMode(isAuth ? 'settlement' : 'admin');
       else if (hash === '#admin') setViewMode('admin');
       else if (hash === '#teaser') setViewMode('teaser');
-      else if (hash === '#main') setViewMode('main');
+      else if (['#main', '#rsvp', '#timeline', '#lookbook', '#letter'].includes(hash)) setViewMode('main');
     };
 
     window.addEventListener('hashchange', handleHashChange);
