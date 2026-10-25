@@ -21,8 +21,6 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
   const [isPlaying, setIsPlaying] = useState(true);
   const [selectedIndices, setSelectedIndices] = useState<(number | null)[]>([0, 0, 0, 1, 0, 0]);
 
-  // 카드 탭 모드: 'id' (학생증) | 'library' (도서대출카드)
-  const [cardMode, setCardMode] = useState<'id' | 'library'>('id');
   const cardRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -149,8 +147,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
       });
       const link = document.createElement('a');
       const safeName = (name.trim() || '김플래닛').replace(/[^a-zA-Z0-9가-힣]/g, '');
-      const modeLabel = cardMode === 'id' ? '학생증' : '도서대출증';
-      link.download = `2026-플래닛-${modeLabel}-${safeName}.png`;
+      link.download = `2026-플래닛-학생증-${safeName}.png`;
       link.href = dataUrl;
       link.click();
     } catch (err) {
@@ -447,198 +444,107 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
         {/* 좌측: 실시간 학생증 & 대출증 프리뷰 (5칸) */}
         <div className="md:col-span-5 flex flex-col items-center w-full">
           
-          {/* 카드 모드 전환 탭 */}
-          <div className="flex w-full mb-2 border-2 border-black rounded overflow-hidden text-xs font-bold font-hwp-title">
-            <button
-              type="button"
-              onClick={() => setCardMode('id')}
-              className={`flex-1 py-2 transition ${
-                cardMode === 'id' ? 'bg-stone-800 text-white' : 'bg-stone-200 text-stone-700 hover:bg-stone-300'
-              }`}
-            >
-              🪪 공식 학생증 뷰
-            </button>
-            <button
-              type="button"
-              onClick={() => setCardMode('library')}
-              className={`flex-1 py-2 transition ${
-                cardMode === 'library' ? 'bg-stone-800 text-white' : 'bg-stone-200 text-stone-700 hover:bg-stone-300'
-              }`}
-            >
-              📚 도서대출카드 뷰
-            </button>
+          {/* 카드 상단 안내 라벨 */}
+          <div className="w-full mb-2 flex items-center justify-between text-xs font-bold font-hwp-title px-1 text-stone-700">
+            <span>🪪 플래닛 공식 학생증 (발급 미리보기)</span>
+            <span className="text-[10px] text-stone-500 font-sans tracking-wider">STUDENT ID CARD</span>
           </div>
 
-          {/* 캡처 대상 카드 영역 */}
+          {/* 캡처 대상 카드 영역 (플래닛독서학교 공식 학생증) */}
           <div ref={cardRef} className="w-full bg-[#faf8f2] border-2 border-black p-4 shadow-md relative text-[#292524]">
-            
-            {/* [모드 1] 플래닛독서학교 학생증 */}
-            {cardMode === 'id' && (
-              <div>
-                <div className="border-b-2 border-black pb-1.5 mb-3 flex justify-between items-end">
-                  <div>
-                    <div className="text-[10px] font-bold text-stone-500 tracking-widest font-sans">PLANET BOOK SCHOOL</div>
-                    <div className="font-hwp-title font-black text-lg text-black leading-none mt-0.5">학 생 증</div>
-                  </div>
-                  <span className="text-[10px] font-hwp-body border border-black px-1.5 py-0.5 bg-stone-100">제2026-1호</span>
+            <div>
+              <div className="border-b-2 border-black pb-1.5 mb-3 flex justify-between items-end">
+                <div>
+                  <div className="text-[10px] font-bold text-stone-500 tracking-widest font-sans">PLANET BOOK SCHOOL</div>
+                  <div className="font-hwp-title font-black text-lg text-black leading-none mt-0.5">학 생 증</div>
+                </div>
+                <span className="text-[10px] font-hwp-body border border-black px-1.5 py-0.5 bg-stone-100">제2026-1호</span>
+              </div>
+
+              {/* 증명사진(연필 일러스트 합체) + 학적 정보 */}
+              <div className="grid grid-cols-12 gap-3 items-center">
+                {/* 합체된 연필 일러스트 아바타 캔버스 */}
+                <div className="col-span-5 sketch-paper border-2 border-stone-800 aspect-[4/5] relative flex items-center justify-center overflow-hidden shadow-inner">
+                  <svg viewBox="0 0 200 220" className="w-full h-full" filter="url(#pencil-sketch)">
+                    {/* 1. 뒷머리 */}
+                    {selectedIndices[1] !== null && STAGES[1].items[selectedIndices[1]]?.backSvg && (
+                      <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[selectedIndices[1]].backSvg || '' }} />
+                    )}
+                    {/* 2. 얼굴 & 귀목선 */}
+                    {selectedIndices[0] !== null && STAGES[0].items[selectedIndices[0]]?.svg && (
+                      <g dangerouslySetInnerHTML={{ __html: STAGES[0].items[selectedIndices[0]].svg || '' }} />
+                    )}
+                    {/* 3. 눈매 */}
+                    {selectedIndices[2] !== null && STAGES[2].items[selectedIndices[2]]?.svg && (
+                      <g dangerouslySetInnerHTML={{ __html: STAGES[2].items[selectedIndices[2]].svg || '' }} />
+                    )}
+                    {/* 4. 코 & 안경 */}
+                    {selectedIndices[3] !== null && STAGES[3].items[selectedIndices[3]]?.svg && (
+                      <g dangerouslySetInnerHTML={{ __html: STAGES[3].items[selectedIndices[3]].svg || '' }} />
+                    )}
+                    {/* 5. 입모양 */}
+                    {selectedIndices[4] !== null && STAGES[4].items[selectedIndices[4]]?.svg && (
+                      <g dangerouslySetInnerHTML={{ __html: STAGES[4].items[selectedIndices[4]].svg || '' }} />
+                    )}
+                    {/* 6. 앞머리 */}
+                    {selectedIndices[1] !== null && STAGES[1].items[selectedIndices[1]]?.frontSvg && (
+                      <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[selectedIndices[1]].frontSvg || '' }} />
+                    )}
+                    {/* 7. 의상 & 소품 (제일 앞으로 배치) */}
+                    {selectedIndices[5] !== null && STAGES[5].items[selectedIndices[5]]?.svg && (
+                      <g dangerouslySetInnerHTML={{ __html: STAGES[5].items[selectedIndices[5]].svg || '' }} />
+                    )}
+                  </svg>
                 </div>
 
-                {/* 증명사진(연필 일러스트 합체) + 학적 정보 */}
-                <div className="grid grid-cols-12 gap-3 items-center">
-                  {/* 합체된 연필 일러스트 아바타 캔버스 */}
-                  <div className="col-span-5 sketch-paper border-2 border-stone-800 aspect-[4/5] relative flex items-center justify-center overflow-hidden shadow-inner">
-                    <svg viewBox="0 0 200 220" className="w-full h-full" filter="url(#pencil-sketch)">
-                      {/* 1. 뒷머리 */}
-                      {selectedIndices[1] !== null && STAGES[1].items[selectedIndices[1]]?.backSvg && (
-                        <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[selectedIndices[1]].backSvg || '' }} />
-                      )}
-                      {/* 2. 얼굴 & 귀목선 */}
-                      {selectedIndices[0] !== null && STAGES[0].items[selectedIndices[0]]?.svg && (
-                        <g dangerouslySetInnerHTML={{ __html: STAGES[0].items[selectedIndices[0]].svg || '' }} />
-                      )}
-                      {/* 3. 눈매 */}
-                      {selectedIndices[2] !== null && STAGES[2].items[selectedIndices[2]]?.svg && (
-                        <g dangerouslySetInnerHTML={{ __html: STAGES[2].items[selectedIndices[2]].svg || '' }} />
-                      )}
-                      {/* 4. 코 & 안경 */}
-                      {selectedIndices[3] !== null && STAGES[3].items[selectedIndices[3]]?.svg && (
-                        <g dangerouslySetInnerHTML={{ __html: STAGES[3].items[selectedIndices[3]].svg || '' }} />
-                      )}
-                      {/* 5. 입모양 */}
-                      {selectedIndices[4] !== null && STAGES[4].items[selectedIndices[4]]?.svg && (
-                        <g dangerouslySetInnerHTML={{ __html: STAGES[4].items[selectedIndices[4]].svg || '' }} />
-                      )}
-                      {/* 6. 앞머리 */}
-                      {selectedIndices[1] !== null && STAGES[1].items[selectedIndices[1]]?.frontSvg && (
-                        <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[selectedIndices[1]].frontSvg || '' }} />
-                      )}
-                      {/* 7. 의상 & 소품 (제일 앞으로 배치) */}
-                      {selectedIndices[5] !== null && STAGES[5].items[selectedIndices[5]]?.svg && (
-                        <g dangerouslySetInnerHTML={{ __html: STAGES[5].items[selectedIndices[5]].svg || '' }} />
-                      )}
-                    </svg>
+                {/* 우측 학생 정보 표 */}
+                <div className="col-span-7 text-xs font-hwp-body space-y-1.5">
+                  <div className="border-b border-stone-400 pb-0.5">
+                    <span className="text-stone-500 font-bold block text-[10px]">성 명 (학우명)</span>
+                    <span className="font-bold text-sm text-black">{name.trim() || '김플래닛'}</span>
                   </div>
-
-                  {/* 우측 학생 정보 표 */}
-                  <div className="col-span-7 text-xs font-hwp-body space-y-1.5">
-                    <div className="border-b border-stone-400 pb-0.5">
-                      <span className="text-stone-500 font-bold block text-[10px]">성 명 (학우명)</span>
-                      <span className="font-bold text-sm text-black">{name.trim() || '김플래닛'}</span>
+                  <div className="border-b border-stone-400 pb-0.5 flex justify-between">
+                    <div>
+                      <span className="text-stone-500 font-bold block text-[10px]">소 속 반</span>
+                      <span className="font-bold text-stone-900 text-xs">{team}</span>
                     </div>
-                    <div className="border-b border-stone-400 pb-0.5 flex justify-between">
-                      <div>
-                        <span className="text-stone-500 font-bold block text-[10px]">소 속 반</span>
-                        <span className="font-bold text-stone-900 text-xs">{team}</span>
-                      </div>
-                      <div>
-                        <span className="text-stone-500 font-bold block text-[10px]">학 년</span>
-                        <span className="font-bold text-stone-900 text-xs">{grade.split(' ')[0]}</span>
-                      </div>
-                    </div>
-                    <div className="border-b border-stone-400 pb-0.5">
-                      <span className="text-stone-500 font-bold block text-[10px]">수강 과정</span>
-                      <span className="font-bold text-stone-900 text-[11px]">
-                        {selectedSession === 'both' ? '1차 새학기 + 2차 수학여행' : selectedSession === 'session1' ? '1차 새학기' : '2차 수학여행 (예약금)'}
-                      </span>
-                    </div>
-                    <div className="border-b border-stone-400 pb-0.5">
-                      <span className="text-stone-500 font-bold block text-[10px]">기증 도서 힌트</span>
-                      <span className="text-stone-800 text-[11px] line-clamp-1">{bookHint.trim() || '삶의 쉼표가 되어준 소설 1권'}</span>
+                    <div>
+                      <span className="text-stone-500 font-bold block text-[10px]">학 년</span>
+                      <span className="font-bold text-stone-900 text-xs">{grade.split(' ')[0]}</span>
                     </div>
                   </div>
-                </div>
-
-                {/* 아바타 파츠 조합 요약 태그 */}
-                <div className="mt-2.5 bg-stone-200/70 border border-stone-400 px-2 py-1 text-[10px] font-hand text-stone-700 truncate">
-                  ✏️ 스케치 노트: {recipeNames.join(' / ')} (코드: {codeStr})
-                </div>
-
-                {/* 하단 직인 날인 & 바코드 */}
-                <div className="mt-3 pt-2 border-t border-black flex justify-between items-center">
-                  <div className="text-[10px] font-hwp-body text-stone-600 leading-tight">
-                    개학일: <b>2026. 12. 19. (토)</b><br />
-                    위 사람은 본교 어른이임을 증명함.
+                  <div className="border-b border-stone-400 pb-0.5">
+                    <span className="text-stone-500 font-bold block text-[10px]">수강 과정</span>
+                    <span className="font-bold text-stone-900 text-[11px]">
+                      {selectedSession === 'both' ? '1차 새학기 + 2차 수학여행' : selectedSession === 'session1' ? '1차 새학기' : '2차 수학여행 (예약금)'}
+                    </span>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-hwp-body font-bold text-xs text-black">플래닛독서학교장</span>
-                    <div className="stamp-seal w-9 h-9 text-[9px] flex items-center justify-center leading-tight text-center p-0.5">
-                      플래닛<br />학교장인
-                    </div>
+                  <div className="border-b border-stone-400 pb-0.5">
+                    <span className="text-stone-500 font-bold block text-[10px]">기증 도서 힌트</span>
+                    <span className="text-stone-800 text-[11px] line-clamp-1">{bookHint.trim() || '삶의 쉼표가 되어준 소설 1권'}</span>
                   </div>
                 </div>
               </div>
-            )}
 
-            {/* [모드 2] 도서대출증 (블라인드 북 교환 카드) */}
-            {cardMode === 'library' && (
-              <div>
-                <div className="text-center border-b-2 border-black pb-2 mb-2">
-                  <div className="text-[10px] tracking-widest text-stone-500 font-sans">PLANET LIBRARY BORROWER&apos;S CARD</div>
-                  <div className="font-hwp-title font-black text-base text-black">도 서 대 출 카 드</div>
+              {/* 아바타 파츠 조합 요약 태그 */}
+              <div className="mt-2.5 bg-stone-200/70 border border-stone-400 px-2 py-1 text-[10px] font-hand text-stone-700 truncate">
+                ✏️ 스케치 노트: {recipeNames.join(' / ')} (코드: {codeStr})
+              </div>
+
+              {/* 하단 직인 날인 & 바코드 */}
+              <div className="mt-3 pt-2 border-t border-black flex justify-between items-center">
+                <div className="text-[10px] font-hwp-body text-stone-600 leading-tight">
+                  개학일: <b>2026. 12. 19. (토)</b><br />
+                  위 사람은 본교 어른이임을 증명함.
                 </div>
-
-                <div className="border-2 border-black text-[11px] font-hwp-body mb-2">
-                  <div className="grid grid-cols-12 border-b border-black">
-                    <div className="col-span-4 bg-stone-200 font-bold p-1.5 border-r border-black">청구기호</div>
-                    <div className="col-span-8 p-1.5 font-mono text-[10px]">813.5-플2026-{codeStr}</div>
-                  </div>
-                  <div className="grid grid-cols-12 border-b border-black">
-                    <div className="col-span-4 bg-stone-200 font-bold p-1.5 border-r border-black">기증 학우</div>
-                    <div className="col-span-8 p-1.5 font-bold">{name.trim() || '김플래닛'}</div>
-                  </div>
-                  <div className="grid grid-cols-12">
-                    <div className="col-span-4 bg-stone-200 font-bold p-1.5 border-r border-black">블라인드 힌트</div>
-                    <div className="col-span-8 p-1.5 text-red-900 font-bold">{bookHint.trim() || '삶의 쉼표가 되어준 소설 1권'}</div>
-                  </div>
-                </div>
-
-                {/* 대출 날짜 도장 테이블 + 미니 크로키 스탬프 */}
-                <div className="grid grid-cols-12 border-2 border-black bg-white">
-                  <div className="col-span-7 border-r border-black p-2 text-[10px] font-hwp-body space-y-1">
-                    <div className="font-bold border-b border-stone-300 pb-0.5 text-center text-stone-800">대출일 / 반납예정일</div>
-                    <div className="text-red-700 font-mono font-bold tracking-tight">대출: 2026. 12. 19. 개학일</div>
-                    <div className="text-stone-500">반납: 2026. 12. 19. 수학여행 밤</div>
-                    <div className="text-stone-400 text-[9px]">※ 꺾이지 않는 텐션 확인필</div>
-                  </div>
-                  <div className="col-span-5 flex flex-col items-center justify-center p-1 sketch-paper">
-                    <div className="w-14 h-16">
-                      <svg viewBox="0 0 200 220" className="w-full h-full" filter="url(#pencil-sketch)">
-                        {/* 1. 뒷머리 */}
-                        {selectedIndices[1] !== null && STAGES[1].items[selectedIndices[1]]?.backSvg && (
-                          <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[selectedIndices[1]].backSvg || '' }} />
-                        )}
-                        {/* 2. 얼굴 & 귀목선 */}
-                        {selectedIndices[0] !== null && STAGES[0].items[selectedIndices[0]]?.svg && (
-                          <g dangerouslySetInnerHTML={{ __html: STAGES[0].items[selectedIndices[0]].svg || '' }} />
-                        )}
-                        {/* 3. 눈매 */}
-                        {selectedIndices[2] !== null && STAGES[2].items[selectedIndices[2]]?.svg && (
-                          <g dangerouslySetInnerHTML={{ __html: STAGES[2].items[selectedIndices[2]].svg || '' }} />
-                        )}
-                        {/* 4. 코 & 안경 */}
-                        {selectedIndices[3] !== null && STAGES[3].items[selectedIndices[3]]?.svg && (
-                          <g dangerouslySetInnerHTML={{ __html: STAGES[3].items[selectedIndices[3]].svg || '' }} />
-                        )}
-                        {/* 5. 입모양 */}
-                        {selectedIndices[4] !== null && STAGES[4].items[selectedIndices[4]]?.svg && (
-                          <g dangerouslySetInnerHTML={{ __html: STAGES[4].items[selectedIndices[4]].svg || '' }} />
-                        )}
-                        {/* 6. 앞머리 */}
-                        {selectedIndices[1] !== null && STAGES[1].items[selectedIndices[1]]?.frontSvg && (
-                          <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[selectedIndices[1]].frontSvg || '' }} />
-                        )}
-                        {/* 7. 의상 & 소품 (제일 앞) */}
-                        {selectedIndices[5] !== null && STAGES[5].items[selectedIndices[5]]?.svg && (
-                          <g dangerouslySetInnerHTML={{ __html: STAGES[5].items[selectedIndices[5]].svg || '' }} />
-                        )}
-                      </svg>
-                    </div>
-                    <span className="text-[9px] font-hand text-stone-500 mt-0.5">기증자 연필 크로키</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-hwp-body font-bold text-xs text-black">플래닛독서학교장</span>
+                  <div className="stamp-seal w-9 h-9 text-[9px] flex items-center justify-center leading-tight text-center p-0.5">
+                    플래닛<br />학교장인
                   </div>
                 </div>
               </div>
-            )}
-
+            </div>
           </div>
 
           {/* 이미지 저장 버튼 */}
@@ -649,7 +555,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
             className="w-full mt-3 bg-stone-800 hover:bg-black text-white font-bold py-2.5 px-4 rounded border-2 border-black shadow flex items-center justify-center gap-2 text-xs sm:text-sm transition disabled:opacity-50"
           >
             <Download className="w-4 h-4" />
-            <span>{isDownloading ? '고화질 이미지 생성 중...' : '📸 완성된 학생증/대출증 이미지 저장하기'}</span>
+            <span>{isDownloading ? '고화질 이미지 생성 중...' : '📸 완성된 공식 학생증 이미지 저장하기'}</span>
           </button>
         </div>
 
@@ -789,7 +695,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
             {/* 선물할 도서 제목 또는 힌트 */}
             <div>
               <label className="block font-bold text-stone-800 mb-1">
-                선물할 도서 제목 또는 한 줄 힌트 <span className="text-stone-500 font-normal">(대출카드 인쇄용)</span>
+                선물할 도서 제목 또는 한 줄 힌트 <span className="text-stone-500 font-normal">(선물 책 교환용)</span>
               </label>
               <input
                 type="text"
