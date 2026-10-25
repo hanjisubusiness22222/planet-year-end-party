@@ -45,18 +45,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
-          return parsed.map((item: any) => ({
-            studentNumber: item.studentNumber || `2026-PLANET-${Math.floor(1000 + Math.random() * 9000)}`,
-            name: item.name || '',
-            phone: item.phone || '',
-            session: item.session || item.sessionLabel || '1차+2차 전체 참석',
-            bookTitle: item.bookTitle || item.bookHint || '(선물 책 준비 중)',
-            fee: typeof item.fee === 'number' ? item.fee : (typeof item.totalFee === 'number' ? item.totalFee : 40000),
-            paymentStatus: item.paymentStatus || '입금 대기',
-            seatGroup: item.seatGroup || item.조배치 || '',
-            memberType: item.memberType || item.기존회원 || '',
-            submittedAt: item.submittedAt ? new Date(item.submittedAt).toLocaleDateString('ko-KR') : '-'
-          }));
+          return parsed.map((item: any, idx: number) => ({
+            studentNumber: String(item?.studentNumber || `2026-PLANET-${1000 + idx}`),
+            name: String(item?.name || item?.cleanName || ''),
+            phone: String(item?.phone || ''),
+            session: String(item?.session || item?.sessionLabel || '1차+2차 전체 참석'),
+            bookTitle: String(item?.bookTitle || item?.bookHint || '(선물 책 준비 중)'),
+            fee: typeof item?.fee === 'number' ? item.fee : (typeof item?.totalFee === 'number' ? item.totalFee : 40000),
+            paymentStatus: (String(item?.paymentStatus || '').includes('완료') ? '입금 완료' : '입금 대기') as '입금 완료' | '입금 대기',
+            seatGroup: String(item?.seatGroup || item?.조배치 || ''),
+            memberType: String(item?.memberType || item?.기존회원 || ''),
+            submittedAt: item?.submittedAt ? String(new Date(item.submittedAt).toLocaleDateString('ko-KR')) : '-'
+          })).filter(r => r.name.trim() !== '');
         }
       } catch {}
     }
@@ -97,20 +97,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
       if (Array.isArray(rawData)) {
         const mapped: RsvpRecord[] = rawData.map((item: any, idx: number) => {
-          // 컬럼명 한글/영문 매핑 지원
-          const name = item.이름 || item.name || item.cleanName || '';
-          const phone = item.연락처 || item.phone || '';
-          const session = item.참석세션 || item.session || item.sessionLabel || 
-            (item['1부참석'] === 'O' && item['2부참석'] === 'O' ? '1차+2차 전체 참석' :
-             item['1부참석'] === 'O' ? '1차만 참석' : '2차만 참석');
-          const bookTitle = item.도서제목 || item.선물도서힌트 || item.bookTitle || item.bookHint || '(선물 책 준비 중)';
-          const fee = Number(item.회비 || item.fee || item.totalFee || 0);
-          const paymentStatusStr = String(item.회비납부여부 || item.입금상태 || item.paymentStatus || '');
+          const name = String(item?.이름 || item?.name || item?.cleanName || '').trim();
+          const phone = String(item?.연락처 || item?.phone || '').trim();
+          const session = String(item?.참석세션 || item?.session || item?.sessionLabel || 
+            (item?.['1부참석'] === 'O' && item?.['2부참석'] === 'O' ? '1차+2차 전체 참석' :
+             item?.['1부참석'] === 'O' ? '1차만 참석' : '2차만 참석'));
+          const bookTitle = String(item?.도서제목 || item?.선물도서힌트 || item?.bookTitle || item?.bookHint || '(선물 책 준비 중)');
+          const fee = Number(item?.회비 || item?.fee || item?.totalFee || 0);
+          const paymentStatusStr = String(item?.회비납부여부 || item?.입금상태 || item?.paymentStatus || '');
           const paymentStatus: '입금 완료' | '입금 대기' = paymentStatusStr.includes('완료') ? '입금 완료' : '입금 대기';
-          const seatGroup = item.조배치 || item.seatGroup || item.group || item.하우스조 || '';
-          const memberType = item.기존회원 || item.memberType || item.학우구분 || item.fellowType || '';
-          const submittedAt = item.신청일시 || item.접수일시 || item.submittedAt || '-';
-          const studentNumber = item.학번 || item.studentNumber || `2026-PLANET-${1001 + idx}`;
+          const seatGroup = String(item?.조배치 || item?.seatGroup || item?.group || item?.하우스조 || '');
+          const memberType = String(item?.기존회원 || item?.memberType || item?.학우구분 || item?.fellowType || '');
+          const submittedAt = item?.신청일시 || item?.접수일시 || item?.submittedAt;
+          const studentNumber = String(item?.학번 || item?.studentNumber || `2026-PLANET-${1001 + idx}`);
 
           const record: RsvpRecord = {
             studentNumber,
@@ -122,7 +121,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             paymentStatus,
             seatGroup,
             memberType,
-            submittedAt: submittedAt !== '-' ? new Date(submittedAt).toLocaleDateString('ko-KR') : '-'
+            submittedAt: submittedAt ? new Date(submittedAt).toLocaleDateString('ko-KR') : '-'
           };
           return record;
         }).filter(r => r.name.trim() !== ''); // 빈 행 필터링
@@ -214,9 +213,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   // 필터링된 기록
   const filteredRecords = records.filter(r => {
-    const matchesSearch = r.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          r.phone.includes(searchTerm) ||
-                          (r.bookTitle && r.bookTitle.toLowerCase().includes(searchTerm.toLowerCase()));
+    const nameStr = (r.name || '').toLowerCase();
+    const phoneStr = r.phone || '';
+    const bookTitleStr = (r.bookTitle || '').toLowerCase();
+    const query = searchTerm.toLowerCase();
+
+    const matchesSearch = nameStr.includes(query) ||
+                          phoneStr.includes(query) ||
+                          bookTitleStr.includes(query);
     
     const matchesStatus = statusFilter === 'all' 
       ? true 
@@ -224,13 +228,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         ? r.paymentStatus === '입금 완료' 
         : r.paymentStatus === '입금 대기';
 
+    const sessionStr = r.session || '';
     const matchesSession = sessionFilter === 'all'
       ? true
       : sessionFilter === 'both'
-        ? r.session.includes('전체') || r.session.includes('+')
+        ? sessionStr.includes('전체') || sessionStr.includes('+')
         : sessionFilter === 's1'
-          ? r.session.includes('1부만')
-          : r.session.includes('2부만');
+          ? sessionStr.includes('1부만') || sessionStr.includes('1차만')
+          : sessionStr.includes('2부만') || sessionStr.includes('2차만');
 
     return matchesSearch && matchesStatus && matchesSession;
   });
@@ -563,11 +568,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <td className="p-3">
                         <div className="flex items-center space-x-1.5">
                           <span className="font-bold text-sm text-[#111]">{r.name}</span>
-                          {r.memberType && r.memberType !== '-' && (
+                          {r.memberType && String(r.memberType) !== '-' && (
                             <span className={`px-1.5 py-0.5 rounded text-[10px] font-sans font-bold whitespace-nowrap ${
-                              r.memberType.includes('기존') ? 'bg-[#ede8dc] text-[#5c3d2e] border border-[#d8d3c7]' : 'bg-[#e0f2fe] text-[#0369a1] border border-[#bae6fd]'
+                              String(r.memberType).includes('기존') ? 'bg-[#ede8dc] text-[#5c3d2e] border border-[#d8d3c7]' : 'bg-[#e0f2fe] text-[#0369a1] border border-[#bae6fd]'
                             }`}>
-                              {r.memberType}
+                              {String(r.memberType)}
                             </span>
                           )}
                         </div>

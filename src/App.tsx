@@ -31,6 +31,7 @@ export const App: React.FC = () => {
       else if (hash === '#admin') setViewMode('admin');
       else if (hash === '#teaser') setViewMode('teaser');
       else if (['#main', '#rsvp', '#timeline', '#lookbook', '#letter'].includes(hash)) setViewMode('main');
+      else setViewMode(EVENT_CONFIG.isTeaserMode ? 'teaser' : 'main');
     };
 
     window.addEventListener('hashchange', handleHashChange);
