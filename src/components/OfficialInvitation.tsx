@@ -16,6 +16,7 @@ import { PencilSketchRsvp } from './PencilSketchRsvp';
 interface OfficialInvitationProps {
   onBackToTeaser: () => void;
   onGoToSettlement?: () => void;
+  onGoToAdmin?: () => void;
 }
 
 type TabType = 'letter' | 'timeline' | 'lookbook' | 'rsvp';
@@ -25,7 +26,8 @@ const SHOW_EXTRA_TABS = true;
 
 export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({ 
   onBackToTeaser,
-  onGoToSettlement
+  onGoToSettlement,
+  onGoToAdmin
 }) => {
   const [activeTab, setActiveTab] = useState<TabType>(() => {
     const hash = window.location.hash.toLowerCase();
@@ -759,16 +761,25 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
         <p className="text-[10px] text-[#999]">
           가정통신문 제2026-1호 • 플래닛 여러분을 위한 설레는 새학기와 추억의 수학여행
         </p>
-        {onGoToSettlement && (
-          <div className="pt-2">
+        <div className="pt-2 flex flex-wrap items-center justify-center gap-2">
+          {onGoToAdmin && (
+            <button
+              onClick={onGoToAdmin}
+              className="inline-flex items-center space-x-1 px-3 py-1 rounded-full border border-[#d8d3c7] bg-white hover:bg-[#ede8dc] text-[11px] text-[#444] transition-all shadow-xs"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-[#3b5998]" />
+              <span>운영위원회 관리자</span>
+            </button>
+          )}
+          {onGoToSettlement && (
             <button
               onClick={onGoToSettlement}
               className="inline-flex items-center space-x-1 px-3 py-1 rounded-full border border-[#d8d3c7] bg-white hover:bg-[#ede8dc] text-[11px] text-[#444] transition-all shadow-xs"
             >
-              <span>🧾 정산 보고서 열람</span>
+              <span>🧾 결산 보고서</span>
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </footer>
 
     </div>

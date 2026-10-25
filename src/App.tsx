@@ -89,11 +89,16 @@ export const App: React.FC = () => {
 
       {/* 뷰 렌더링 */}
       {viewMode === 'teaser' && (
-        <TeaserPage onExploreFullPage={() => changeView('main')} />
+        <TeaserPage 
+          onExploreFullPage={() => changeView('main')} 
+          onGoToAdmin={() => changeView('admin')}
+        />
       )}
       {viewMode === 'main' && (
         <OfficialInvitation 
           onBackToTeaser={() => changeView('teaser')} 
+          onGoToAdmin={() => changeView('admin')}
+          onGoToSettlement={() => changeView('settlement')}
         />
       )}
       {viewMode === 'seat' && (
