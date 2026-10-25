@@ -276,12 +276,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               placeholder="관리자 비밀번호 입력"
               className="w-full border border-[#d5cfc4] rounded-lg p-2.5 text-center text-sm font-serif tracking-widest focus:outline-none focus:border-[#b82828]"
             />
-            <div className="text-[11px] text-[#777] font-serif">
-              기본 비밀번호: <strong className="text-[#1f1b18] font-mono font-bold bg-[#ede8dc] px-1.5 py-0.5 rounded">2099</strong>
-            </div>
             {passwordError && (
               <p className="text-xs text-[#b82828] font-serif">
-                비밀번호가 일치하지 않습니다. (기본 비밀번호: 2099)
+                비밀번호가 일치하지 않습니다. 다시 입력해 주세요.
               </p>
             )}
 
