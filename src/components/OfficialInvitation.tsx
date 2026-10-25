@@ -30,8 +30,6 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
   const [activeTab, setActiveTab] = useState<TabType>(() => {
     const hash = window.location.hash.toLowerCase();
     if (hash === '#rsvp') return 'rsvp';
-    if (hash === '#timeline') return 'timeline';
-    if (hash === '#lookbook') return 'lookbook';
     return 'letter';
   });
 
@@ -39,9 +37,7 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
     const handleHash = () => {
       const hash = window.location.hash.toLowerCase();
       if (hash === '#rsvp') setActiveTab('rsvp');
-      else if (hash === '#timeline') setActiveTab('timeline');
-      else if (hash === '#lookbook') setActiveTab('lookbook');
-      else if (hash === '#letter' || hash === '#main') setActiveTab('letter');
+      else setActiveTab('letter');
     };
     window.addEventListener('hashchange', handleHash);
     return () => window.removeEventListener('hashchange', handleHash);
@@ -249,14 +245,12 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
               <nav className="flex items-center space-x-1 sm:space-x-2">
                 {[
                   { id: 'letter', label: '가정통신문' },
-                  { id: 'timeline', label: '일과표 안내' },
-                  { id: 'lookbook', label: '드레스 코드 룩북' },
                   { id: 'rsvp', label: '참가 신청(회신서)' }
                 ].map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => handleTabClick(tab.id as TabType)}
-                    className={`px-2 py-1 sm:px-2.5 sm:py-1.5 rounded text-[11px] sm:text-xs font-serif whitespace-nowrap transition-all ${
+                    className={`px-3 py-1 sm:px-3.5 sm:py-1.5 rounded text-[11px] sm:text-xs font-serif whitespace-nowrap transition-all ${
                       activeTab === tab.id
                         ? 'bg-[#b82828] text-white font-bold shadow-sm'
                         : 'text-[#555] hover:text-[#111] hover:bg-[#f0ece1]'
@@ -388,7 +382,6 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                 <ol className="list-decimal list-inside space-y-1.5 text-[#2c2621] leading-relaxed">
                   <li><strong>신청 오픈:</strong> 2026. 10. 26. (월)</li>
                   <li><strong>참여 비용:</strong> 1차 40,000원 / 2차 예약금 20,000원 (※ 추가비 발생 가능, 2부는 추가 금액 정산 예정)</li>
-                  <li><strong>드레스 코드:</strong> 학생다운 프레피룩 복장 (※ 드레스 코드는 선택 참여)</li>
                   <li><strong>준비물:</strong> 학우에게 선물할 도서 1권 이상, 필기구, 꺾이지 않는 텐션과 열린 마음</li>
                 </ol>
               </div>
@@ -422,19 +415,13 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                       </p>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-1">
+                    <div className="flex items-center justify-center pt-1">
                       <button
                         onClick={() => handleTabClick('rsvp')}
-                        className="w-full sm:w-auto px-6 py-3 rounded-lg bg-[#b82828] hover:bg-[#961e1e] text-white font-serif font-bold text-sm sm:text-base shadow-md flex items-center justify-center space-x-2 transition-all active:scale-98"
+                        className="w-full sm:w-auto px-8 py-3.5 rounded-lg bg-[#b82828] hover:bg-[#961e1e] text-white font-serif font-bold text-sm sm:text-base shadow-md flex items-center justify-center space-x-2 transition-all active:scale-98"
                       >
                         <Send className="w-4 h-4" />
                         <span>참가 신청서 (회신서) 바로 작성하기</span>
-                      </button>
-                      <button
-                        onClick={() => handleTabClick('timeline')}
-                        className="w-full sm:w-auto px-5 py-3 rounded-lg border border-[#1f1b18]/40 bg-white hover:bg-[#ede8dc] text-[#1f1b18] font-serif font-bold text-sm transition-all"
-                      >
-                        일과표 세부 일정 보기
                       </button>
                     </div>
                   </div>
@@ -447,9 +434,9 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
         )}
 
         {/* ========================================================= */}
-        {/* TAB 2: 일과표 안내 (1부 새학기 & 2부 수학여행 상세)        */}
+        {/* TAB 2: 일과표 안내 (숨김 처리)                           */}
         {/* ========================================================= */}
-        {SHOW_EXTRA_TABS && activeTab === 'timeline' && (
+        {false && activeTab === 'timeline' && (
           <div className="space-y-6 animate-fadeIn">
             
             <div className="text-center space-y-1 mb-4">
@@ -571,9 +558,9 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
         )}
 
         {/* ========================================================= */}
-        {/* TAB 3: 드레스 코드 룩북 (컨셉제안3 프레피 룩에 긱 시크 한 방울) */}
+        {/* TAB 3: 드레스 코드 룩북 (숨김 처리)                       */}
         {/* ========================================================= */}
-        {SHOW_EXTRA_TABS && activeTab === 'lookbook' && (
+        {false && activeTab === 'lookbook' && (
           <div className="space-y-6 animate-fadeIn">
             
             <div className="text-center space-y-1 mb-4">
