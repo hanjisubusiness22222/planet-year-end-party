@@ -82,9 +82,10 @@ export const STAGES: Stage[] = [
         items: [
           {
             name: '단정한 태슬 보브단발',
-            backSvg: `<path d="M 44 75 C 36 28, 164 28, 156 75 C 166 105, 164 138, 158 152 L 42 152 C 36 138, 34 105, 44 75 Z" fill="#3a3633" stroke="${P_DARK}" stroke-width="2.6"/>`,
-            frontSvg: `<path d="M 44 88 C 38 28, 162 28, 156 88 C 150 65, 135 58, 120 72 C 112 56, 92 56, 82 72 C 70 58, 50 65, 44 88 Z" fill="#3a3633" stroke="${P_DARK}" stroke-width="2.6" stroke-linejoin="round"/>
-                       <path d="M 72 32 Q 80 52 82 72 M 100 28 Q 106 50 112 68 M 128 32 Q 122 52 120 72" stroke="#78716c" stroke-width="1.4" fill="none"/>`
+            backSvg: `<path d="M 42 70 C 32 18, 168 18, 158 70 C 168 100, 168 135, 160 148 L 40 148 C 32 135, 32 100, 42 70 Z" fill="#3a3633" stroke="${P_DARK}" stroke-width="2.6"/>`,
+            frontSvg: `<path d="M 40 85 C 34 20, 72 16, 100 18 C 128 16, 166 20, 160 85 C 152 64, 136 56, 120 70 C 112 55, 92 55, 82 70 C 68 56, 52 64, 40 85 Z" fill="#3a3633" stroke="${P_DARK}" stroke-width="2.6" stroke-linejoin="round"/>
+                       <path d="M 68 28 Q 78 48 82 70 M 100 22 Q 104 46 112 66 M 132 28 Q 124 48 120 70" stroke="#78716c" stroke-width="1.4" fill="none"/>
+                       <path d="M 42 84 Q 38 108 42 128 M 158 84 Q 162 108 158 128" stroke="${P_DARK}" stroke-width="2" fill="none" stroke-linecap="round"/>`
           },
           {
             name: '댄디 가름마 숏컷',
@@ -95,7 +96,7 @@ export const STAGES: Stage[] = [
           {
             name: '내추럴 장발 웨이브',
             backSvg: `<path d="M 40 70 C 34 22, 166 22, 160 70 C 172 105, 172 145, 172 182 C 155 188, 135 185, 125 175 C 120 155, 80 155, 75 175 C 65 185, 45 188, 28 182 C 28 145, 28 105, 40 70 Z" fill="#3f3b37" stroke="${P_DARK}" stroke-width="2.6"/>
-                      <path d="M 36 115 Q 46 140 34 165 M 164 115 Q 154 140 166 165" stroke="#78716c" stroke-width="1.4" fill="none"/>`,
+                       <path d="M 36 115 Q 46 140 34 165 M 164 115 Q 154 140 166 165" stroke="#78716c" stroke-width="1.4" fill="none"/>`,
             frontSvg: `<path d="M 44 94 C 36 24, 76 22, 100 26 C 124 22, 164 24, 156 94 C 146 66, 126 50, 100 52 C 74 50, 54 66, 44 94 Z" fill="#3f3b37" stroke="${P_DARK}" stroke-width="2.6"/>
                        <path d="M 72 30 Q 82 52 78 76 M 100 26 Q 102 52 103 75 M 128 30 Q 118 52 122 76" stroke="${P_DARK}" stroke-width="2" fill="none" stroke-linecap="round"/>
                        <path d="M 48 40 Q 64 48 70 66 M 152 40 Q 136 48 130 66" stroke="#78716c" stroke-width="1.4" fill="none"/>`
@@ -103,8 +104,8 @@ export const STAGES: Stage[] = [
           {
             name: '동글동글 로우번(똥머리)',
             backSvg: `<circle cx="100" cy="18" r="21" fill="#3a3633" stroke="${P_DARK}" stroke-width="2.6"/>
-                      <path d="M 85 20 Q 100 8 115 20 M 86 14 Q 100 26 114 14" fill="none" stroke="#78716c" stroke-width="1.6"/>
-                      <ellipse cx="100" cy="32" rx="14" ry="4" fill="#2b2927" stroke="${P_DARK}" stroke-width="2"/>`,
+                       <path d="M 85 20 Q 100 8 115 20 M 86 14 Q 100 26 114 14" fill="none" stroke="#78716c" stroke-width="1.6"/>
+                       <ellipse cx="100" cy="32" rx="14" ry="4" fill="#2b2927" stroke="${P_DARK}" stroke-width="2"/>`,
             frontSvg: `<path d="M 46 88 C 40 26, 160 26, 154 88 C 144 62, 122 50, 100 52 C 78 50, 56 62, 46 88 Z" fill="#3a3633" stroke="${P_DARK}" stroke-width="2.6"/>
                        <path d="M 68 50 Q 84 32 94 28 M 132 50 Q 116 32 106 28 M 100 48 L 100 30" stroke="#78716c" stroke-width="1.4" fill="none"/>
                        <path d="M 48 86 Q 42 110 48 126 M 152 86 Q 158 110 152 126" fill="none" stroke="${P_DARK}" stroke-width="2.4" stroke-linecap="round"/>
@@ -118,11 +119,13 @@ export const STAGES: Stage[] = [
           },
           {
             name: '차분한 풀뱅 스트레이트',
-            backSvg: `<path d="M 44 75 L 38 178 L 162 178 L 156 75 Z" fill="#292524" stroke="${P_DARK}" stroke-width="2.6"/>`,
-            frontSvg: `<path d="M 46 84 C 46 40, 154 40, 154 84 L 146 76 L 142 135 L 135 76 L 65 76 L 58 135 L 54 76 Z" fill="#292524" stroke="${P_DARK}" stroke-width="2.4" stroke-linejoin="round"/>
-                       <line x1="78" y1="60" x2="76" y2="76" stroke="#78716c" stroke-width="1.2"/>
-                       <line x1="100" y1="58" x2="100" y2="76" stroke="#78716c" stroke-width="1.2"/>
-                       <line x1="122" y1="60" x2="124" y2="76" stroke="#78716c" stroke-width="1.2"/>`
+            backSvg: `<path d="M 40 70 C 32 18, 168 18, 160 70 L 164 180 L 36 180 L 40 70 Z" fill="#292524" stroke="${P_DARK}" stroke-width="2.6"/>
+                       <path d="M 46 110 L 44 165 M 154 110 L 156 165" stroke="#57534e" stroke-width="1.2" fill="none"/>`,
+            frontSvg: `<path d="M 40 85 C 34 20, 68 18, 100 19 C 132 18, 166 20, 160 85 L 148 76 L 144 135 L 136 75 L 64 75 L 56 135 L 52 76 Z" fill="#292524" stroke="${P_DARK}" stroke-width="2.4" stroke-linejoin="round"/>
+                       <line x1="78" y1="48" x2="76" y2="74" stroke="#78716c" stroke-width="1.3"/>
+                       <line x1="100" y1="46" x2="100" y2="74" stroke="#78716c" stroke-width="1.3"/>
+                       <line x1="122" y1="48" x2="124" y2="74" stroke="#78716c" stroke-width="1.3"/>
+                       <path d="M 60 26 Q 80 34 100 32 Q 120 34 140 26" stroke="#57534e" stroke-width="1.3" fill="none"/>`
           }
         ]
       },
