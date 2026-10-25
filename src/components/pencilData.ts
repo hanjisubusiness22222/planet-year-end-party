@@ -89,9 +89,10 @@ export const STAGES: Stage[] = [
           },
           {
             name: '댄디 가름마 숏컷',
-            backSvg: `<path d="M 47 72 C 44 50, 156 50, 153 72 Z" fill="#33302e"/>`,
-            frontSvg: `<path d="M 46 92 C 40 52, 75 34, 106 38 C 135 34, 160 52, 154 92 C 148 72, 130 58, 108 54 C 102 68, 92 76, 84 78 C 90 66, 96 58, 98 52 C 76 58, 56 72, 46 92 Z" fill="#3a3633" stroke="${P_DARK}" stroke-width="2.6" stroke-linejoin="round"/>
-                       <path d="M 62 52 Q 78 60 86 74 M 128 48 Q 118 58 112 66" stroke="#78716c" stroke-width="1.3" fill="none"/>`
+            backSvg: `<path d="M 44 76 C 36 16, 164 16, 156 76 C 158 98, 154 116, 148 122 L 52 122 C 46 116, 42 98, 44 76 Z" fill="#33302e" stroke="${P_DARK}" stroke-width="2.4"/>`,
+            frontSvg: `<path d="M 42 92 C 36 40, 68 18, 96 22 C 102 23, 104 32, 106 38 C 132 20, 166 38, 158 92 C 150 72, 134 56, 110 50 C 104 66, 94 76, 84 80 C 90 66, 96 56, 98 48 C 74 54, 52 70, 42 92 Z" fill="#3a3633" stroke="${P_DARK}" stroke-width="2.6" stroke-linejoin="round"/>
+                       <path d="M 58 44 Q 74 52 84 72 M 100 24 Q 104 38 108 50 M 134 40 Q 124 54 116 66" stroke="#78716c" stroke-width="1.4" fill="none"/>
+                       <path d="M 44 86 Q 40 102 46 114 M 156 86 Q 160 102 154 114" stroke="${P_DARK}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`
           },
           {
             name: '내추럴 장발 웨이브',
@@ -103,19 +104,21 @@ export const STAGES: Stage[] = [
           },
           {
             name: '동글동글 로우번(똥머리)',
-            backSvg: `<circle cx="100" cy="18" r="21" fill="#3a3633" stroke="${P_DARK}" stroke-width="2.6"/>
-                       <path d="M 85 20 Q 100 8 115 20 M 86 14 Q 100 26 114 14" fill="none" stroke="#78716c" stroke-width="1.6"/>
-                       <ellipse cx="100" cy="32" rx="14" ry="4" fill="#2b2927" stroke="${P_DARK}" stroke-width="2"/>`,
-            frontSvg: `<path d="M 46 88 C 40 26, 160 26, 154 88 C 144 62, 122 50, 100 52 C 78 50, 56 62, 46 88 Z" fill="#3a3633" stroke="${P_DARK}" stroke-width="2.6"/>
-                       <path d="M 68 50 Q 84 32 94 28 M 132 50 Q 116 32 106 28 M 100 48 L 100 30" stroke="#78716c" stroke-width="1.4" fill="none"/>
-                       <path d="M 48 86 Q 42 110 48 126 M 152 86 Q 158 110 152 126" fill="none" stroke="${P_DARK}" stroke-width="2.4" stroke-linecap="round"/>
-                       <path d="M 86 52 Q 92 68 88 76 M 112 52 Q 108 68 114 76" fill="none" stroke="${P_DARK}" stroke-width="1.8" stroke-linecap="round"/>`
+            backSvg: `<circle cx="100" cy="12" r="22" fill="#3a3633" stroke="${P_DARK}" stroke-width="2.6"/>
+                       <path d="M 85 14 Q 100 2 115 14 M 86 8 Q 100 20 114 8" fill="none" stroke="#78716c" stroke-width="1.6"/>
+                       <ellipse cx="100" cy="24" rx="15" ry="4" fill="#2b2927" stroke="${P_DARK}" stroke-width="2"/>
+                       <path d="M 42 72 C 34 16, 166 16, 158 72 Z" fill="#33302e" stroke="${P_DARK}" stroke-width="2.4"/>`,
+            frontSvg: `<path d="M 42 86 C 36 18, 70 16, 100 17 C 130 16, 164 18, 158 86 C 146 62, 124 48, 100 50 C 76 48, 54 62, 42 86 Z" fill="#3a3633" stroke="${P_DARK}" stroke-width="2.6"/>
+                       <path d="M 64 48 Q 82 28 94 22 M 136 48 Q 118 28 106 22 M 100 46 L 100 24" stroke="#78716c" stroke-width="1.4" fill="none"/>
+                       <path d="M 44 84 Q 38 108 44 126 M 156 84 Q 162 108 156 126" fill="none" stroke="${P_DARK}" stroke-width="2.4" stroke-linecap="round"/>
+                       <path d="M 86 50 Q 92 68 88 76 M 114 50 Q 108 68 112 76" fill="none" stroke="${P_DARK}" stroke-width="1.8" stroke-linecap="round"/>`
           },
           {
             name: '포근한 복슬 히피펌',
-            backSvg: `<path d="M 38 80 Q 24 95 34 115 Q 22 135 34 155 Q 28 172 48 176 L 152 176 Q 172 172 166 155 Q 178 135 166 115 Q 176 95 162 80 Z" fill="#44403c" stroke="${P_DARK}" stroke-width="2.6"/>`,
-            frontSvg: `<path d="M 42 86 Q 38 60 58 46 Q 80 32 100 40 Q 120 32 142 46 Q 162 60 158 86 Q 142 68 128 74 Q 114 62 100 74 Q 86 62 72 74 Q 58 68 42 86 Z" fill="#44403c" stroke="${P_DARK}" stroke-width="2.6"/>
-                       <path d="M 65 52 Q 72 62 66 70 M 100 45 Q 106 56 98 66 M 135 52 Q 128 62 134 70" stroke="#a8a29e" stroke-width="1.4" fill="none"/>`
+            backSvg: `<path d="M 44 72 Q 28 42 54 24 Q 76 12 100 14 Q 124 12 146 24 Q 172 42 156 72 Q 178 95 166 118 Q 180 138 166 158 Q 172 176 150 180 L 50 180 Q 28 176 34 158 Q 20 138 34 118 Q 22 95 44 72 Z" fill="#44403c" stroke="${P_DARK}" stroke-width="2.6"/>`,
+            frontSvg: `<path d="M 38 88 Q 32 58 52 40 Q 76 16 100 20 Q 124 16 148 40 Q 168 58 162 88 Q 146 68 130 74 Q 116 60 100 72 Q 84 60 70 74 Q 54 68 38 88 Z" fill="#44403c" stroke="${P_DARK}" stroke-width="2.6"/>
+                       <path d="M 60 38 Q 72 48 66 62 M 98 28 Q 106 44 98 60 M 138 38 Q 128 48 134 62" stroke="#a8a29e" stroke-width="1.5" fill="none"/>
+                       <path d="M 46 84 Q 38 106 46 126 M 154 84 Q 162 106 154 126" stroke="${P_DARK}" stroke-width="2.2" fill="none" stroke-linecap="round"/>`
           },
           {
             name: '차분한 풀뱅 스트레이트',
