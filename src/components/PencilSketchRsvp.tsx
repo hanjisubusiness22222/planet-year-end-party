@@ -713,41 +713,41 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                       className="col-span-5 sketch-paper border-2 border-stone-800 rounded-xl aspect-[4/5] relative flex items-center justify-center overflow-hidden shadow-inner"
                     >
                       <svg viewBox="0 0 200 220" className="w-full h-full" filter="url(#pencil-sketch)">
-                        {/* 1. 배경 소품 데코 */}
-                        {selectedIndices[7] !== null && STAGES[7] && (
-                          <g dangerouslySetInnerHTML={{ __html: STAGES[7].items[selectedIndices[7]]?.svg || '' }} />
-                        )}
-                        {/* 2. 뒷머리 */}
+                        {/* 1. 뒷머리 */}
                         {selectedIndices[1] !== null && STAGES[1] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[selectedIndices[1]]?.backSvg || '' }} />
                         )}
-                        {/* 3. 의상 */}
+                        {/* 2. 의상 */}
                         {selectedIndices[6] !== null && STAGES[6] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[6].items[selectedIndices[6]]?.svg || '' }} />
                         )}
-                        {/* 4. 얼굴형 */}
+                        {/* 3. 얼굴형 */}
                         {selectedIndices[0] !== null && STAGES[0] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[0].items[selectedIndices[0]]?.svg || '' }} />
                         )}
-                        {/* 5. 볼터치 */}
+                        {/* 4. 볼터치 */}
                         {selectedIndices[3] !== null && STAGES[3] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[3].items[selectedIndices[3]]?.svg || '' }} />
                         )}
-                        {/* 6. 눈 */}
+                        {/* 5. 눈 */}
                         {selectedIndices[2] !== null && STAGES[2] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[2].items[selectedIndices[2]]?.svg || '' }} />
                         )}
-                        {/* 7. 입 */}
+                        {/* 6. 입 */}
                         {selectedIndices[4] !== null && STAGES[4] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[4].items[selectedIndices[4]]?.svg || '' }} />
                         )}
-                        {/* 8. 앞머리 */}
+                        {/* 7. 앞머리 */}
                         {selectedIndices[1] !== null && STAGES[1] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[selectedIndices[1]]?.frontSvg || '' }} />
                         )}
-                        {/* 9. 안경/헤어악세사리 */}
+                        {/* 8. 안경/헤어악세사리 */}
                         {selectedIndices[5] !== null && STAGES[5] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[5].items[selectedIndices[5]]?.svg || '' }} />
+                        )}
+                        {/* 9. 소품 (맨 앞으로 표시) */}
+                        {selectedIndices[7] !== null && STAGES[7] && (
+                          <g dangerouslySetInnerHTML={{ __html: STAGES[7].items[selectedIndices[7]]?.svg || '' }} />
                         )}
                       </svg>
                     </div>
@@ -829,32 +829,41 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                       className="col-span-5 flex flex-col items-center justify-center p-1 sketch-paper"
                     >
                       <svg viewBox="0 0 200 220" className="w-16 h-20" filter="url(#pencil-sketch)">
-                        {selectedIndices[7] !== null && STAGES[7] && (
-                          <g dangerouslySetInnerHTML={{ __html: STAGES[7].items[selectedIndices[7]]?.svg || '' }} />
-                        )}
+                        {/* 1. 뒷머리 */}
                         {selectedIndices[1] !== null && STAGES[1] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[selectedIndices[1]]?.backSvg || '' }} />
                         )}
+                        {/* 2. 의상 */}
                         {selectedIndices[6] !== null && STAGES[6] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[6].items[selectedIndices[6]]?.svg || '' }} />
                         )}
+                        {/* 3. 얼굴형 */}
                         {selectedIndices[0] !== null && STAGES[0] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[0].items[selectedIndices[0]]?.svg || '' }} />
                         )}
+                        {/* 4. 볼터치 */}
                         {selectedIndices[3] !== null && STAGES[3] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[3].items[selectedIndices[3]]?.svg || '' }} />
                         )}
+                        {/* 5. 눈 */}
                         {selectedIndices[2] !== null && STAGES[2] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[2].items[selectedIndices[2]]?.svg || '' }} />
                         )}
+                        {/* 6. 입 */}
                         {selectedIndices[4] !== null && STAGES[4] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[4].items[selectedIndices[4]]?.svg || '' }} />
                         )}
+                        {/* 7. 앞머리 */}
                         {selectedIndices[1] !== null && STAGES[1] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[selectedIndices[1]]?.frontSvg || '' }} />
                         )}
+                        {/* 8. 안경/헤어악세사리 */}
                         {selectedIndices[5] !== null && STAGES[5] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[5].items[selectedIndices[5]]?.svg || '' }} />
+                        )}
+                        {/* 9. 소품 (맨 앞으로 표시) */}
+                        {selectedIndices[7] !== null && STAGES[7] && (
+                          <g dangerouslySetInnerHTML={{ __html: STAGES[7].items[selectedIndices[7]]?.svg || '' }} />
                         )}
                       </svg>
                       <span className="text-[9px] font-hand text-stone-500">기증자 크로키</span>

@@ -106,32 +106,41 @@ const MiniStudentIdBadge: React.FC<{ participant: Participant; seatNumber: numbe
         {/* 아바타 증명사진 */}
         <div className="col-span-4 aspect-[4/5] sketch-paper border border-[#2b2520] rounded-lg overflow-hidden flex items-center justify-center shadow-inner bg-[#fffdfa]">
           <svg viewBox="0 0 200 220" className="w-full h-full" filter="url(#pencil-sketch)">
-            {indices[7] !== null && STAGES[7] && (
-              <g dangerouslySetInnerHTML={{ __html: STAGES[7].items[indices[7]]?.svg || '' }} />
-            )}
+            {/* 1. 뒷머리 */}
             {indices[1] !== null && STAGES[1] && (
               <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[indices[1]]?.backSvg || '' }} />
             )}
+            {/* 2. 의상 */}
             {indices[6] !== null && STAGES[6] && (
               <g dangerouslySetInnerHTML={{ __html: STAGES[6].items[indices[6]]?.svg || '' }} />
             )}
+            {/* 3. 얼굴형 */}
             {indices[0] !== null && STAGES[0] && (
               <g dangerouslySetInnerHTML={{ __html: STAGES[0].items[indices[0]]?.svg || '' }} />
             )}
+            {/* 4. 볼터치 */}
             {indices[3] !== null && STAGES[3] && (
               <g dangerouslySetInnerHTML={{ __html: STAGES[3].items[indices[3]]?.svg || '' }} />
             )}
+            {/* 5. 눈 */}
             {indices[2] !== null && STAGES[2] && (
               <g dangerouslySetInnerHTML={{ __html: STAGES[2].items[indices[2]]?.svg || '' }} />
             )}
+            {/* 6. 입 */}
             {indices[4] !== null && STAGES[4] && (
               <g dangerouslySetInnerHTML={{ __html: STAGES[4].items[indices[4]]?.svg || '' }} />
             )}
+            {/* 7. 앞머리 */}
             {indices[1] !== null && STAGES[1] && (
               <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[indices[1]]?.frontSvg || '' }} />
             )}
+            {/* 8. 안경/헤어악세사리 */}
             {indices[5] !== null && STAGES[5] && (
               <g dangerouslySetInnerHTML={{ __html: STAGES[5].items[indices[5]]?.svg || '' }} />
+            )}
+            {/* 9. 소품 (맨 앞으로 표시) */}
+            {indices[7] !== null && STAGES[7] && (
+              <g dangerouslySetInnerHTML={{ __html: STAGES[7].items[indices[7]]?.svg || '' }} />
             )}
           </svg>
         </div>

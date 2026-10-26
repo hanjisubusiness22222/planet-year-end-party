@@ -535,41 +535,41 @@ export const StudentCardBatchPrint: React.FC<StudentCardBatchPrintProps> = ({ on
                     {/* 좌측: 동글동글 색연필 크로키 아바타 증명사진 (4:5 비율) */}
                     <div className="col-span-4 sm:col-span-4 aspect-[4/5] bg-[#fffaf3] border-2 border-stone-800 rounded-lg overflow-hidden relative shadow-inner flex items-center justify-center">
                       <svg viewBox="0 0 200 220" className="w-full h-full" filter="url(#pencil-sketch)">
-                        {/* 1. 배경 소품 (Stage 7) */}
-                        {indices[7] !== null && STAGES[7] && (
-                          <g dangerouslySetInnerHTML={{ __html: STAGES[7].items[indices[7]]?.svg || '' }} />
-                        )}
-                        {/* 2. 뒷머리 (Stage 1) */}
+                        {/* 1. 뒷머리 (Stage 1) */}
                         {indices[1] !== null && STAGES[1] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[indices[1]]?.backSvg || '' }} />
                         )}
-                        {/* 3. 의상 (Stage 6) */}
+                        {/* 2. 의상 (Stage 6) */}
                         {indices[6] !== null && STAGES[6] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[6].items[indices[6]]?.svg || '' }} />
                         )}
-                        {/* 4. 얼굴 (Stage 0) */}
+                        {/* 3. 얼굴 (Stage 0) */}
                         {indices[0] !== null && STAGES[0] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[0].items[indices[0]]?.svg || '' }} />
                         )}
-                        {/* 5. 볼터치 (Stage 3) */}
+                        {/* 4. 볼터치 (Stage 3) */}
                         {indices[3] !== null && STAGES[3] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[3].items[indices[3]]?.svg || '' }} />
                         )}
-                        {/* 6. 눈 (Stage 2) */}
+                        {/* 5. 눈 (Stage 2) */}
                         {indices[2] !== null && STAGES[2] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[2].items[indices[2]]?.svg || '' }} />
                         )}
-                        {/* 7. 입 (Stage 4) */}
+                        {/* 6. 입 (Stage 4) */}
                         {indices[4] !== null && STAGES[4] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[4].items[indices[4]]?.svg || '' }} />
                         )}
-                        {/* 8. 앞머리 (Stage 1) */}
+                        {/* 7. 앞머리 (Stage 1) */}
                         {indices[1] !== null && STAGES[1] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[indices[1]]?.frontSvg || '' }} />
                         )}
-                        {/* 9. 안경 (Stage 5) */}
+                        {/* 8. 안경 (Stage 5) */}
                         {indices[5] !== null && STAGES[5] && (
                           <g dangerouslySetInnerHTML={{ __html: STAGES[5].items[indices[5]]?.svg || '' }} />
+                        )}
+                        {/* 9. 소품 (Stage 7 - 맨 앞으로 표시) */}
+                        {indices[7] !== null && STAGES[7] && (
+                          <g dangerouslySetInnerHTML={{ __html: STAGES[7].items[indices[7]]?.svg || '' }} />
                         )}
                       </svg>
 
