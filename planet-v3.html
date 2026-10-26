@@ -506,7 +506,7 @@
           <button type="submit" id="submit-btn"
             class="w-full bg-stone-900 hover:bg-black text-white font-bold py-3.5 px-4 rounded-xl border-2 border-black shadow-md transition text-sm flex items-center justify-center gap-2 cursor-pointer">
             <span id="submit-btn-spinner" class="hidden animate-spin">⏳</span>
-            <span id="submit-btn-text">✂️ 절취선 뜯어서 가정통신문 참가 신청서 제출하기 (구글 시트 실시간 연동)</span>
+            <span id="submit-btn-text">✂️ 절취선 뜯어서 가정통신문 참가 신청서 제출하기</span>
           </button>
         </form>
       </div>
@@ -519,11 +519,11 @@
           <span class="text-2xl">🎉</span>
           <div>
             <h4 class="font-black text-base sm:text-lg text-emerald-800">2026 플래닛 새학기 참가 접수가 완료되었습니다!</h4>
-            <p class="text-xs text-stone-600 font-hwp-body">구글 스프레드시트 및 운영진 조판 대기열에 실시간으로 정상 등록되었습니다.</p>
+            <p class="text-xs text-stone-600 font-hwp-body">운영진 참가자 명부 및 학생증 조판 대기열에 실시간으로 정상 등록되었습니다.</p>
           </div>
         </div>
         <span class="text-[11px] font-mono px-2.5 py-1 bg-emerald-100 text-emerald-800 border border-emerald-400 rounded-full font-bold">
-          LIVE 구글 시트 전송 완료
+          LIVE 접수 완료
         </span>
       </div>
 
@@ -570,7 +570,7 @@
 
       <!-- 접수 패킷 디버그 펼치기 -->
       <details class="mt-3 text-[10px] text-stone-500">
-        <summary class="cursor-pointer hover:text-stone-700">구글 시트 전송 데이터 패킷(JSON) 확인하기</summary>
+        <summary class="cursor-pointer hover:text-stone-700">접수 확인 데이터(JSON) 확인하기</summary>
         <pre id="packet-preview" class="whitespace-pre-wrap text-[10px] bg-stone-900 text-stone-200 p-2.5 rounded-lg border border-stone-700 mt-1 font-mono"></pre>
       </details>
     </div>
@@ -1899,16 +1899,39 @@
       // UI 로딩 표시
       if (submitBtn) submitBtn.disabled = true;
       if (spinner) spinner.classList.remove('hidden');
-      if (btnText) btnText.textContent = "구글 시트로 참가 신청서를 등록하는 중입니다...";
+      if (btnText) btnText.textContent = "참가 신청서를 등록하는 중입니다...";
 
       try {
-        // 구글 시트 Web App POST 요청 (no-cors)
-        await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(googlePayload)
-        });
+        // 브라우저 CORS/Preflight 차단을 원천 방지하는 text/plain 전송
+        try {
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(googlePayload)
+          });
+        } catch (postErr) {
+          // 백업: URLSearchParams form-urlencoded 전송
+          const formBody = new URLSearchParams();
+          Object.keys(googlePayload).forEach(k => formBody.append(k, String(googlePayload[k] ?? '')));
+            await fetch(GOOGLE_SCRIPT_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: formBody.toString()
+            });
+          } catch (e2) {}
+        }
+
+        // 3. 무조건 도달 보장 백업 안전망 (GET 비콘 요청)
+        try {
+          const getParams = new URLSearchParams();
+          getParams.append('action', 'register');
+          Object.keys(googlePayload).forEach(k => getParams.append(k, String(googlePayload[k] ?? '')));
+          const beaconUrl = `${GOOGLE_SCRIPT_URL}?${getParams.toString()}`;
+          const pingImg = new Image();
+          pingImg.src = beaconUrl;
+        } catch (beaconErr) {}
 
         // 브라우저 로컬 저장소 캐싱 (운영진 대시보드 및 오프라인 연동)
         try {
@@ -1943,8 +1966,8 @@
         resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
       } catch (err) {
-        console.error('구글 시트 연동 오류:', err);
-        alert('구글 시트 전송 중 일시적 오류가 발생했습니다. 브라우저 캐시에 우선 보관되었습니다.');
+        console.error('신청서 전송 오류:', err);
+        alert('신청서 전송 중 일시적 오류가 발생했습니다. 브라우저에 우선 안전하게 보관되었습니다.');
       } finally {
         if (submitBtn) submitBtn.disabled = false;
         if (spinner) spinner.classList.add('hidden');

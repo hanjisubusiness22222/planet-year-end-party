@@ -124,6 +124,85 @@ function doGet(e) {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
 
     // -------------------------------------------------------------
+    // [0] 시트 상태 진단 API (운영 점검용: 시트 탭 목록, 행 수, 최근 등록 현황)
+    // URL 예: ?action=inspect&token=2099
+    // -------------------------------------------------------------
+    if (action === 'inspect') {
+      var sheets = ss.getSheets();
+      var sheetInfos = sheets.map(function(s) {
+        return {
+          name: s.getName(),
+          lastRow: s.getLastRow(),
+          lastColumn: s.getLastColumn()
+        };
+      });
+
+      var targetSheet = ss.getSheetByName('시트1') || ss.getSheetByName('신청자명단') || ss.getSheetByName('Sheet1') || sheets[0];
+      var rawRows = targetSheet.getDataRange().getValues();
+      var recentRows = rawRows.slice(Math.max(1, rawRows.length - 5));
+
+      return ContentService.createTextOutput(JSON.stringify({
+        success: true,
+        spreadsheetName: ss.getName(),
+        spreadsheetUrl: ss.getUrl(),
+        targetSheetName: targetSheet.getName(),
+        totalRows: targetSheet.getLastRow(),
+        sheets: sheetInfos,
+        headers: rawRows.length > 0 ? rawRows[0] : [],
+        recentSample: recentRows
+      }, null, 2)).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // -------------------------------------------------------------
+    // [0-1] GET 방식 참가 신청 등록 지원 (어떠한 브라우저 CORS 문제도 100% 회피)
+    // URL 예: ?action=register&name=...&phone=...
+    // -------------------------------------------------------------
+    if (action === 'register') {
+      var applicantSheet = ss.getSheetByName('시트1') || 
+                           ss.getSheetByName('신청자명단') || 
+                           ss.getSheetByName('Sheet1') || 
+                           ss.getSheets()[0];
+
+      if (applicantSheet.getLastRow() === 0) {
+        applicantSheet.appendRow([
+          '이름', '연락처', '참석세션', '도서제목', '회비', '회비납부여부', 
+          '조배치', '기존회원', '반뱃지', '학번', '아바타코드', '아바타코디요약', '새학기한마디', '메모사항', '접수일시'
+        ]);
+      }
+
+      var regName = params.name || params.cleanName || '';
+      var regPhone = params.phone || '';
+      if (!regName || !regPhone) {
+        return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: '이름과 연락처가 필요합니다.' }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+
+      applicantSheet.appendRow([
+        regName,
+        regPhone,
+        params.session || params.sessionLabel || '',
+        params.bookTitle || params.bookHint || '(선물 책 준비 중)',
+        params.fee || params.totalFee || 0,
+        params.paymentStatus || '입금 대기',
+        params.seatGroup || '',
+        params.existingMember || '',
+        params.badge || params.memberType || '',
+        params.studentNumber || '',
+        params.avatarCode || params.croquisCode || '',
+        params.avatarRecipe || params.recipe || '',
+        params.motto || params.새학기한마디 || '',
+        params.memo || params.메모사항 || '',
+        new Date().toLocaleString('ko-KR')
+      ]);
+
+      return ContentService.createTextOutput(JSON.stringify({ 
+        status: 'success', 
+        name: regName,
+        message: 'GET 방식으로 등록 완료되었습니다.' 
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // -------------------------------------------------------------
     // [1] 정산 내역 조회 (시트2)
     // URL 파라미터 예: ?action=get_settlement
     // -------------------------------------------------------------

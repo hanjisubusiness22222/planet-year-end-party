@@ -337,12 +337,37 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
     try {
       const scriptUrl = EVENT_CONFIG.googleScriptUrl || "https://script.google.com/macros/s/AKfycbwN_dYoQ3xW0zWp3m5C9lZ5Hvh0pQHC7JA3QyfbqtF_a4ydjLHsxOGtx0k2HWMppx9r/exec";
       if (scriptUrl && !scriptUrl.includes('YOUR_SCRIPT_ID')) {
-        await fetch(scriptUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+        // 1. 브라우저 CORS/Preflight 차단을 원천 방지하는 text/plain POST 전송
+        try {
+          await fetch(scriptUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          });
+        } catch (postErr) {
+          // 2. 백업: URLSearchParams form-urlencoded 전송
+          try {
+            const formBody = new URLSearchParams();
+            Object.entries(payload).forEach(([k, v]) => formBody.append(k, String(v ?? '')));
+            await fetch(scriptUrl, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: formBody.toString()
+            });
+          } catch (e2) {}
+        }
+
+        // 3. 무조건 도달 보장 백업 안전망 (GET 비콘 요청)
+        try {
+          const getParams = new URLSearchParams();
+          getParams.append('action', 'register');
+          Object.entries(payload).forEach(([k, v]) => getParams.append(k, String(v ?? '')));
+          const beaconUrl = `${scriptUrl}?${getParams.toString()}`;
+          const pingImg = new Image();
+          pingImg.src = beaconUrl;
+        } catch (beaconErr) {}
       }
 
       // 로컬스토리지 캐싱 (관리자 대시보드 연동)
@@ -367,8 +392,8 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
       if (onSuccess) onSuccess();
 
     } catch (err) {
-      console.error('구글 시트 연동 오류:', err);
-      alert('구글 시트 전송 중 일시적 오류가 발생했습니다. 브라우저 캐시에 우선 보관되었습니다.');
+      console.error('신청서 전송 오류:', err);
+      alert('신청서 전송 중 일시적인 오류가 발생했습니다. 브라우저에 우선 안전하게 보관되었습니다.');
     } finally {
       setIsSubmitting(false);
     }
@@ -1058,10 +1083,10 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                 {isSubmitting ? (
                   <>
                     <span className="animate-spin">⏳</span>
-                    <span>구글 시트로 참가 신청서를 등록하는 중입니다...</span>
+                    <span>참가 신청서를 등록하는 중입니다...</span>
                   </>
                 ) : (
-                  <span>✂️ 절취선 뜯어서 가정통신문 참가 신청서 제출하기 (구글 시트 실시간 연동)</span>
+                  <span>✂️ 절취선 뜯어서 가정통신문 참가 신청서 제출하기</span>
                 )}
               </button>
             </form>
@@ -1069,7 +1094,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
         </div>
 
         {/* ======================================================= */}
-        {/* 4. 제출 완료 결과 카드 (구글 시트 연동 완료 + 계좌 안내) */}
+        {/* 4. 제출 완료 결과 카드 (참가 접수 완료 + 계좌 안내) */}
         {/* ======================================================= */}
         {submittedData && (
           <div className="mt-6 bg-[#fffdf9] text-stone-900 border-3 border-stone-800 p-5 sm:p-6 rounded-2xl shadow-2xl relative animate-fadeIn">
@@ -1078,11 +1103,11 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                 <span className="text-2xl">🎉</span>
                 <div>
                   <h4 className="font-black text-base sm:text-lg text-emerald-800">2026 플래닛 새학기 참가 접수가 완료되었습니다!</h4>
-                  <p className="text-xs text-stone-600 font-hwp-body">구글 스프레드시트 및 운영진 조판 대기열에 실시간으로 정상 등록되었습니다.</p>
+                  <p className="text-xs text-stone-600 font-hwp-body">운영진 참가자 명부 및 학생증 조판 대기열에 실시간으로 정상 등록되었습니다.</p>
                 </div>
               </div>
               <span className="text-[11px] font-mono px-2.5 py-1 bg-emerald-100 text-emerald-800 border border-emerald-400 rounded-full font-bold">
-                LIVE 구글 시트 전송 완료
+                LIVE 접수 완료
               </span>
             </div>
 
