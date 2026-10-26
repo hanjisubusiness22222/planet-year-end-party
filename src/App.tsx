@@ -4,15 +4,17 @@ import { OfficialInvitation } from './components/OfficialInvitation';
 import { ClassroomSeatShuffle } from './components/ClassroomSeatShuffle';
 import { AdminDashboard } from './components/AdminDashboard';
 import { SettlementReport } from './components/SettlementReport';
+import { StudentCardBatchPrint } from './components/StudentCardBatchPrint';
 import { EVENT_CONFIG } from './constants/eventConfig';
 import { Compass, ShieldCheck, BookOpen } from 'lucide-react';
 
-type ViewMode = 'teaser' | 'main' | 'seat' | 'admin' | 'settlement';
+type ViewMode = 'teaser' | 'main' | 'seat' | 'admin' | 'settlement' | 'print';
 
 export const App: React.FC = () => {
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     const hash = window.location.hash.toLowerCase();
     const isAuth = sessionStorage.getItem('planet_admin_auth') === 'true';
+    if (hash === '#print') return isAuth ? 'print' : 'admin';
     if (hash === '#seat') return isAuth ? 'seat' : 'admin';
     if (hash === '#settlement') return isAuth ? 'settlement' : 'admin';
     if (hash === '#admin') return 'admin';
@@ -26,7 +28,8 @@ export const App: React.FC = () => {
     const handleHashChange = () => {
       const hash = window.location.hash.toLowerCase();
       const isAuth = sessionStorage.getItem('planet_admin_auth') === 'true';
-      if (hash === '#seat') setViewMode(isAuth ? 'seat' : 'admin');
+      if (hash === '#print') setViewMode(isAuth ? 'print' : 'admin');
+      else if (hash === '#seat') setViewMode(isAuth ? 'seat' : 'admin');
       else if (hash === '#settlement') setViewMode(isAuth ? 'settlement' : 'admin');
       else if (hash === '#admin') setViewMode('admin');
       else if (hash === '#teaser') setViewMode('teaser');
@@ -46,7 +49,7 @@ export const App: React.FC = () => {
   const changeView = (mode: ViewMode) => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     const isAuth = sessionStorage.getItem('planet_admin_auth') === 'true';
-    if ((mode === 'seat' || mode === 'settlement') && !isAuth) {
+    if ((mode === 'seat' || mode === 'settlement' || mode === 'print') && !isAuth) {
       setViewMode('admin');
       window.location.hash = 'admin';
       return;
@@ -55,7 +58,7 @@ export const App: React.FC = () => {
     window.location.hash = mode;
   };
 
-  const isAdminSection = viewMode === 'admin' || viewMode === 'seat' || viewMode === 'settlement';
+  const isAdminSection = viewMode === 'admin' || viewMode === 'seat' || viewMode === 'settlement' || viewMode === 'print';
 
   return (
     <div className="relative min-h-screen">
@@ -117,6 +120,13 @@ export const App: React.FC = () => {
           onBack={() => changeView('main')} 
           onGoToSeat={() => changeView('seat')} 
           onGoToSettlement={() => changeView('settlement')}
+          onGoToPrint={() => changeView('print')}
+        />
+      )}
+      {viewMode === 'print' && (
+        <StudentCardBatchPrint 
+          onBack={() => changeView('admin')} 
+          onGoToSeat={() => changeView('seat')}
         />
       )}
     </div>

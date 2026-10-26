@@ -335,7 +335,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
     };
 
     try {
-      const scriptUrl = EVENT_CONFIG.googleScriptUrl || "https://script.google.com/macros/s/AKfycbwN_dYoQ3xW0zWp3m5C9lZ5Hvh0pQHC7JA3QyfbqtF_a4ydjLHsxOGtx0k2HWMppx9r/exec";
+      const scriptUrl = EVENT_CONFIG.googleScriptUrl || "https://script.google.com/macros/s/AKfycbwXzDlUsRy3fFI6gGW0fCoAYaEuQEoJwHu1a2-I4ULhpl3wUj_5vq_yi22xG85WGBXV/exec";
       if (scriptUrl && !scriptUrl.includes('YOUR_SCRIPT_ID')) {
         // 1. 브라우저 CORS/Preflight 차단을 원천 방지하는 text/plain POST 전송
         try {
@@ -1161,119 +1161,6 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
             </div>
           </div>
         )}
-
-        {/* ======================================================= */}
-        {/* 5. 교무실 등사기: 운영진용 A4 일괄 명찰 조판 미리보기     */}
-        {/* ======================================================= */}
-        <div className="mt-8 border-t-2 border-dashed border-stone-600 pt-5">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <span className="bg-stone-800 text-amber-200 text-xs font-bold px-2.5 py-1 rounded-full">🖨️ 운영진 전용 도구</span>
-              <span className="font-bold text-sm sm:text-base text-stone-900 ml-1">교무실 A4 학생증 일괄 인쇄 조판기</span>
-            </div>
-            <button
-              type="button"
-              onClick={() => setShowAdminPrint(!showAdminPrint)}
-              className="text-xs font-bold bg-white hover:bg-stone-100 border-2 border-stone-800 px-3 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1 cursor-pointer"
-            >
-              <span>{showAdminPrint ? '접기' : '펼치기'}</span>
-              {showAdminPrint ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-            </button>
-          </div>
-
-          {showAdminPrint && (
-            <div className="mt-4 bg-white/90 border-2 border-stone-800 rounded-xl p-4 animate-fadeIn">
-              <div className="flex flex-wrap justify-between items-center gap-2 mb-3 pb-2 border-b border-stone-300 text-xs">
-                <p className="text-stone-600">
-                  💡 신청서를 제출할 때마다 아래 그리드에 카드로 차곡차곡 수합됩니다. (현재 <b className="text-amber-800">{submittedRoster.length}</b>명 수합됨)
-                </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    const sampleNames = ['박문학', '최책맥', '정다독', '윤새학', '강종각', '조프레피'];
-                    const sampleBooks = ['밤에 읽는 에세이', '우주를 건너는 SF 소설', '밑줄 가득한 인문학', '마음이 따뜻해지는 동화'];
-                    const randIndices = STAGES.map(st => Math.floor(Math.random() * st.items.length));
-                    setSubmittedRoster(prev => [
-                      {
-                        name: sampleNames[Math.floor(Math.random() * sampleNames.length)],
-                        session: '1부 새학기 + 2부 수학여행',
-                        book: sampleBooks[Math.floor(Math.random() * sampleBooks.length)],
-                        motto: '새학기 친구들 반가워요!',
-                        badge: '🍀 2026 행운의 다독러',
-                        indices: randIndices,
-                        hair: [currentHairMain, currentHairSub]
-                      },
-                      ...prev
-                    ]);
-                  }}
-                  className="bg-amber-100 hover:bg-amber-200 border border-amber-800 text-amber-950 font-bold px-2.5 py-1 rounded-lg cursor-pointer text-xs"
-                >
-                  ➕ 랜덤 샘플 학우 1명 추가해보기
-                </button>
-              </div>
-
-              {/* 수합된 학생증 조판 그리드 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {submittedRoster.map((st, i) => (
-                  <div key={i} className="border-2 border-dashed border-stone-400 p-2 bg-[#fffdf9] rounded-lg relative">
-                    <div className="flex justify-between items-center border-b border-stone-800 pb-1 mb-1.5">
-                      <span className="font-black text-xs text-stone-900">🪪 플래닛 학생증 #{String(i + 1).padStart(2, '0')}</span>
-                      <span className="text-[9px] bg-amber-100 border border-amber-700 px-1.5 py-0.5 rounded-full font-round">{st.badge}</span>
-                    </div>
-                    <div className="grid grid-cols-12 gap-2 items-center">
-                      <div className="col-span-5 sketch-paper border border-stone-800 rounded-lg aspect-[4/5] overflow-hidden">
-                        <svg viewBox="0 0 200 220" className="w-full h-full" filter="url(#pencil-sketch)">
-                          {/* 1. 배경 소품 */}
-                          {st.indices[7] !== null && STAGES[7] && (
-                            <g dangerouslySetInnerHTML={{ __html: STAGES[7].items[st.indices[7]]?.svg || '' }} />
-                          )}
-                          {/* 2. 뒷머리 */}
-                          {st.indices[1] !== null && STAGES[1] && (
-                            <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[st.indices[1]]?.backSvg || '' }} />
-                          )}
-                          {/* 3. 의상 */}
-                          {st.indices[6] !== null && STAGES[6] && (
-                            <g dangerouslySetInnerHTML={{ __html: STAGES[6].items[st.indices[6]]?.svg || '' }} />
-                          )}
-                          {/* 4. 얼굴 */}
-                          {st.indices[0] !== null && STAGES[0] && (
-                            <g dangerouslySetInnerHTML={{ __html: STAGES[0].items[st.indices[0]]?.svg || '' }} />
-                          )}
-                          {/* 5. 볼터치 */}
-                          {st.indices[3] !== null && STAGES[3] && (
-                            <g dangerouslySetInnerHTML={{ __html: STAGES[3].items[st.indices[3]]?.svg || '' }} />
-                          )}
-                          {/* 6. 눈 */}
-                          {st.indices[2] !== null && STAGES[2] && (
-                            <g dangerouslySetInnerHTML={{ __html: STAGES[2].items[st.indices[2]]?.svg || '' }} />
-                          )}
-                          {/* 7. 입 */}
-                          {st.indices[4] !== null && STAGES[4] && (
-                            <g dangerouslySetInnerHTML={{ __html: STAGES[4].items[st.indices[4]]?.svg || '' }} />
-                          )}
-                          {/* 8. 앞머리 */}
-                          {st.indices[1] !== null && STAGES[1] && (
-                            <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[st.indices[1]]?.frontSvg || '' }} />
-                          )}
-                          {/* 9. 안경 */}
-                          {st.indices[5] !== null && STAGES[5] && (
-                            <g dangerouslySetInnerHTML={{ __html: STAGES[5].items[st.indices[5]]?.svg || '' }} />
-                          )}
-                        </svg>
-                      </div>
-                      <div className="col-span-7 text-[10px] font-hwp-body space-y-1">
-                        <div><b className="text-stone-500">학우명:</b> <span className="font-bold text-xs text-black">{st.name}</span></div>
-                        <div><b className="text-stone-500">세션:</b> <span className="text-amber-900 font-bold">{st.session}</span></div>
-                        <div className="truncate"><b className="text-stone-500">도서:</b> {st.book}</div>
-                        <div className="font-hand text-stone-600 truncate">"{st.motto}"</div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
 
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   ArrowLeft, ShieldCheck, Download, Search, CheckCircle2, 
   Clock, Users, DollarSign, BookOpen, Lock, Unlock, 
-  RefreshCw, Plus, Trash2, Check, X, Receipt
+  RefreshCw, Plus, Trash2, Check, X, Receipt, Printer
 } from 'lucide-react';
 import { EVENT_CONFIG } from '../constants/eventConfig';
 import planetLogo from '../assets/planet-logo.png';
@@ -29,12 +29,14 @@ interface AdminDashboardProps {
   onBack: () => void;
   onGoToSeat: () => void;
   onGoToSettlement?: () => void;
+  onGoToPrint?: () => void;
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ 
   onBack, 
   onGoToSeat, 
-  onGoToSettlement
+  onGoToSettlement,
+  onGoToPrint
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return sessionStorage.getItem('planet_admin_auth') === 'true';
@@ -354,6 +356,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 className="px-2.5 py-1 sm:px-3 sm:py-1.5 rounded text-[11px] sm:text-xs font-serif border border-[#c29b38] bg-[#fbf7ee] text-[#8c6b1b] hover:bg-[#f3ecdb] flex items-center space-x-1 shadow-sm transition-all"
               >
                 <span>🧾 결산 보고서</span>
+              </button>
+            )}
+
+            {onGoToPrint && (
+              <button
+                onClick={onGoToPrint}
+                className="px-2.5 py-1 sm:px-3 sm:py-1.5 rounded text-[11px] sm:text-xs font-serif border border-[#854d0e] bg-[#fefce8] text-[#854d0e] hover:bg-[#fef9c3] flex items-center space-x-1 shadow-sm transition-all"
+                title="교무실 A4 학생증 일괄 인쇄 조판기 열기"
+              >
+                <Printer className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                <span>학생증 인쇄</span>
               </button>
             )}
 

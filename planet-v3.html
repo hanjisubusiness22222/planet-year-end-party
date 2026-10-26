@@ -575,37 +575,6 @@
       </details>
     </div>
 
-    <!-- ====================================================================== -->
-    <!-- 4. [신규 콤포넌트] 교무실 등사기: 운영진용 A4 일괄 명찰 조판 미리보기 -->
-    <!-- ====================================================================== -->
-    <div class="mt-8 border-t-2 border-dashed border-stone-600 pt-5">
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <div>
-          <span class="bg-stone-800 text-amber-200 text-xs font-bold px-2.5 py-1 rounded-full">🖨️ 운영진 전용 도구</span>
-          <span class="font-bold text-sm sm:text-base text-stone-900 ml-1">교무실 A4 학생증 일괄 인쇄 조판기</span>
-        </div>
-        <button type="button" onclick="toggleAdminPrintSection()" class="text-xs font-bold bg-white hover:bg-stone-100 border-2 border-stone-800 px-3 py-1.5 rounded-lg shadow-sm transition">
-          🔎 수합된 명찰 그리드 펼치기 / 접기
-        </button>
-      </div>
-
-      <div id="admin-print-section" class="hidden mt-4 bg-white/90 border-2 border-stone-800 rounded-xl p-4">
-        <div class="flex flex-wrap justify-between items-center gap-2 mb-3 pb-2 border-b border-stone-300 text-xs">
-          <p class="text-stone-600">
-            💡 신청서를 제출할 때마다 아래 그리드에 카드로 차곡차곡 수합됩니다. (현재 <b id="roster-count" class="text-amber-800">3</b>명 수합됨)
-          </p>
-          <button type="button" onclick="addSampleStudentToRoster()" class="bg-amber-100 hover:bg-amber-200 border border-amber-800 text-amber-950 font-bold px-2.5 py-1 rounded-lg">
-            ➕ 랜덤 샘플 학우 1명 추가해보기
-          </button>
-        </div>
-
-        <!-- 2열 그리드 (인쇄용 칼선 포함) -->
-        <div id="admin-roster-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          <!-- JS로 수합된 학생증 카드들이 렌더링됨 -->
-        </div>
-      </div>
-    </div>
-
   </div>
 
   <!-- ================================================================= -->
@@ -1793,7 +1762,7 @@
       renderAdminRosterGrid();
     }
 
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwN_dYoQ3xW0zWp3m5C9lZ5Hvh0pQHC7JA3QyfbqtF_a4ydjLHsxOGtx0k2HWMppx9r/exec";
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwXzDlUsRy3fFI6gGW0fCoAYaEuQEoJwHu1a2-I4ULhpl3wUj_5vq_yi22xG85WGBXV/exec";
 
     function copyAccountInfo() {
       const accountText = "하나은행 439-911050-56507 한지수";
