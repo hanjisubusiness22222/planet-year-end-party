@@ -45,11 +45,16 @@ export const parseAvatarIndices = (code?: string, name?: string): number[] => {
   ];
 };
 
-// 분단 메타데이터 정의
-const DIVISIONS = [
+// 분단 메타데이터 정의 (최대 50인 이상 지원을 위해 8분단까지 확장)
+export const ALL_DIVISIONS = [
   { id: 1, name: '1 분단', sub: '창가 라인', accent: '#2e5238', badgeBg: 'bg-[#2e5238]' },
   { id: 2, name: '2 분단', sub: '중앙 집중 라인', accent: '#b82828', badgeBg: 'bg-[#b82828]' },
-  { id: 3, name: '3 분단', sub: '복도 라인', accent: '#3b5998', badgeBg: 'bg-[#3b5998]' }
+  { id: 3, name: '3 분단', sub: '복도 라인', accent: '#3b5998', badgeBg: 'bg-[#3b5998]' },
+  { id: 4, name: '4 분단', sub: '앞자리 열정 라인', accent: '#d97706', badgeBg: 'bg-[#d97706]' },
+  { id: 5, name: '5 분단', sub: '자유 토론 라인', accent: '#7c3aed', badgeBg: 'bg-[#7c3aed]' },
+  { id: 6, name: '6 분단', sub: '책방 아늑 라인', accent: '#be185d', badgeBg: 'bg-[#be185d]' },
+  { id: 7, name: '7 분단', sub: '별빛 라인', accent: '#0f766e', badgeBg: 'bg-[#0f766e]' },
+  { id: 8, name: '8 분단', sub: '달빛 라인', accent: '#374151', badgeBg: 'bg-[#374151]' }
 ];
 
 // 실제 신청자 데이터 로드 (로컬스토리지 기반)
@@ -168,17 +173,43 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
   const [isCapturing, setIsCapturing] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
 
+  const [divisionMode, setDivisionMode] = useState<number | 'auto'>('auto');
   const classroomRef = useRef<HTMLDivElement>(null);
 
-  // 분단당 좌석 수 및 총 좌석 수 계산 (3개 분단에 균등 배치, 좌우 2열 마주보기를 위해 짝수 보장)
+  // 최대 50인 이상 지원: 인원 수에 따른 최적 분단 수 자동 추천
+  const getRecommendedDivisions = (count: number): number => {
+    if (count <= 18) return 3; // ~18명: 3분단 (테이블당 4~6명)
+    if (count <= 28) return 4; // 19~28명: 4분단 (테이블당 5~7명)
+    if (count <= 38) return 5; // 29~38명: 5분단 (테이블당 6~8명)
+    if (count <= 48) return 6; // 39~48명: 6분단 (테이블당 6~8명)
+    return 8;                  // 49~50인 이상: 8분단 (테이블당 6~8명)
+  };
+
+  const activeDivisionCount = divisionMode === 'auto' 
+    ? getRecommendedDivisions(participants.length) 
+    : divisionMode;
+
+  const currentDivisions = useMemo(() => {
+    return ALL_DIVISIONS.slice(0, activeDivisionCount);
+  }, [activeDivisionCount]);
+
+  // 분단당 좌석 수 및 총 좌석 수 계산 (각 분단 테이블에서 마주보도록 짝수 보장)
   const calcSeatsPerDivision = () => {
     const count = participants.length;
-    const base = Math.max(Math.ceil(count / 3), 4);
-    return base % 2 === 0 ? base : base + 1; // 짝수로 보정 (기본 4, 6, 8...)
+    const base = Math.max(Math.ceil(count / activeDivisionCount), 4);
+    return base % 2 === 0 ? base : base + 1; // 짝수로 보정 (기본 4, 6, 8, 10...)
   };
 
   const seatsPerDivision = calcSeatsPerDivision();
-  const totalSeats = seatsPerDivision * 3;
+  const totalSeats = seatsPerDivision * activeDivisionCount;
+
+  // 분단 개수에 맞춘 유연한 반응형 그리드 클래스
+  const gridLayoutClass = useMemo(() => {
+    if (activeDivisionCount === 3) return 'grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 pt-2';
+    if (activeDivisionCount === 4) return 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 pt-2';
+    if (activeDivisionCount <= 6) return 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 pt-2';
+    return 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 pt-2';
+  }, [activeDivisionCount]);
 
   // 구글 시트 실시간 신청자 연동
   const syncWithGoogleSheet = async (showToast = true) => {
@@ -278,16 +309,16 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
     } catch {}
   };
 
-  // 실제 신청자 명단을 3개 분단의 통합 테이블 좌석에 골고루 분배 배치
-  const calculateSeatsForDivisions = (list: Participant[], perDiv: number) => {
-    const total = perDiv * 3;
+  // 실제 신청자 명단을 N개 분단의 통합 테이블 좌석에 골고루 분배 배치
+  const calculateSeatsForDivisions = (list: Participant[], perDiv: number, divCount: number) => {
+    const total = perDiv * divCount;
     const finalSeats: (Participant | null)[] = new Array(total).fill(null);
     const shuffled = [...list].sort(() => Math.random() - 0.5);
 
-    // 3개 분단에 1명씩 번갈아가며 균등하게 분배
+    // N개 분단에 1명씩 번갈아가며 균등하게 분배
     shuffled.forEach((participant, idx) => {
-      const divIdx = idx % 3;
-      const seatInDiv = Math.floor(idx / 3);
+      const divIdx = idx % divCount;
+      const seatInDiv = Math.floor(idx / divCount);
       if (seatInDiv < perDiv) {
         finalSeats[divIdx * perDiv + seatInDiv] = participant;
       }
@@ -296,10 +327,10 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
     return finalSeats;
   };
 
-  // 초기 1회 기본 배치
+  // 초기 1회 및 분단/신청자 변경 시 자동 재배치
   useEffect(() => {
-    setSeats(calculateSeatsForDivisions(participants, seatsPerDivision));
-  }, [participants, seatsPerDivision]);
+    setSeats(calculateSeatsForDivisions(participants, seatsPerDivision, activeDivisionCount));
+  }, [participants, seatsPerDivision, activeDivisionCount]);
 
   // 자리바꾸기 실행 (드럼롤 셔플 후 안착)
   const runSmartShuffle = () => {
@@ -325,8 +356,8 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
       if (step >= maxSteps) {
         clearInterval(interval);
 
-        // 최종: 3개 분단별 통합 테이블에 고르게 셔플 배치 확정
-        const balanced = calculateSeatsForDivisions(participants, seatsPerDivision);
+        // 최종: N개 분단별 통합 테이블에 고르게 셔플 배치 확정
+        const balanced = calculateSeatsForDivisions(participants, seatsPerDivision, activeDivisionCount);
         setSeats(balanced);
         setIsShuffling(false);
 
@@ -430,16 +461,41 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
               <img src={planetLogo} alt="플래닛" className="w-7 h-7 sm:w-8 sm:h-8 object-contain rounded bg-white border border-[#e5e0d8] p-0.5 shadow-sm flex-shrink-0" />
               <div className="min-w-0">
                 <h1 className="text-xs sm:text-sm font-serif font-bold text-[#1f1b18] flex items-center space-x-1.5">
-                  <span className="truncate">교실 자리 배치 (1·2·3분단)</span>
-                  <span className="text-[9px] sm:text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#2e5238] text-white whitespace-nowrap">실제 신청자 기준</span>
+                  <span className="truncate">교실 자리 배치 (1~{activeDivisionCount}분단)</span>
+                  <span className="text-[9px] sm:text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#2e5238] text-white whitespace-nowrap">
+                    신청 {participants.length}명 • 최대 50인+
+                  </span>
                 </h1>
-                <p className="text-[9px] sm:text-[10px] text-[#666] font-serif truncate">2026 플래닛 독서학교 1·2·3분단 통합 책상 배치도</p>
+                <p className="text-[9px] sm:text-[10px] text-[#666] font-serif truncate">
+                  2026 플래닛 독서학교 1~{activeDivisionCount}분단 통합 테이블 배치도 (분단당 {seatsPerDivision}석)
+                </p>
               </div>
             </div>
           </div>
 
           {/* 우측: 셔플 및 컨트롤 버튼 */}
           <div className="flex items-center flex-wrap gap-1.5 sm:gap-2 justify-end">
+            
+            {/* 분단 수 조절 드롭다운 */}
+            <div className="flex items-center space-x-1 bg-[#f8f6f0] border border-[#d8d3c7] rounded px-2 py-1 text-[11px] sm:text-xs font-serif shadow-sm">
+              <span className="text-[#666] font-bold">분단:</span>
+              <select
+                value={divisionMode}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setDivisionMode(val === 'auto' ? 'auto' : parseInt(val, 10));
+                }}
+                className="bg-transparent font-bold text-[#1f1b18] outline-none cursor-pointer"
+              >
+                <option value="auto">자동 추천 ({activeDivisionCount}분단)</option>
+                <option value="3">3 분단 (기본)</option>
+                <option value="4">4 분단</option>
+                <option value="5">5 분단</option>
+                <option value="6">6 분단 (30~45인)</option>
+                <option value="7">7 분단</option>
+                <option value="8">8 분단 (50인 안팎)</option>
+              </select>
+            </div>
             
             {/* 구글 시트 동기화 버튼 */}
             <button
@@ -502,13 +558,13 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
           <span className="inline-block w-2 h-2 rounded-full bg-[#2e5238]"></span>
           <span>실제 신청자: <strong>{participants.length}명</strong></span>
           <span className="text-[#bbb]">|</span>
-          <span>1·2·3분단 (각 분단 {seatsPerDivision}석 • 총 {totalSeats}석)</span>
+          <span>1~{activeDivisionCount}분단 (각 분단 {seatsPerDivision}석 • 총 {totalSeats}석)</span>
         </div>
-        <div>* 분단별 하나의 일체형 통합 책상 구조</div>
+        <div>* 분단별 하나의 일체형 통합 책상 구조 (최대 50인+)</div>
       </div>
 
       {/* 메인 교실 배치도 영역 (캡처 대상) */}
-      <main className="max-w-6xl mx-auto px-2 sm:px-4 py-4 sm:py-8 pb-24 sm:pb-12">
+      <main className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-8 pb-24 sm:pb-12">
         
         <div 
           ref={classroomRef}
@@ -521,13 +577,13 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
             {/* 레트로 우드 현판 헤더 */}
             <div className="bg-[#5c4033] text-[#f7f5ed] max-w-xl mx-auto py-2 sm:py-2.5 px-3 sm:px-6 rounded-lg border-2 sm:border-4 border-[#3e2723] shadow-lg relative">
               <div className="text-[9px] sm:text-[10px] font-mono text-[#dfc27d] tracking-widest uppercase">
-                CLASSROOM SIGNBOARD • 1·2·3 DIVISION
+                CLASSROOM SIGNBOARD • 1 ~ {activeDivisionCount} DIVISION
               </div>
               <h2 className="text-sm sm:text-lg md:text-xl font-serif font-black tracking-normal sm:tracking-widest text-[#f7f5ed]">
                 2026 플래닛 독서학교 「새학기 교실 자리배치도」
               </h2>
               <div className="text-[10px] sm:text-[11px] text-[#dfc27d]/90 font-serif mt-0.5">
-                * 책을 사랑하는 플래닛 여러분의 다정한 첫 만남
+                * 책을 사랑하는 플래닛 여러분의 다정한 첫 만남 (총 {participants.length}명)
               </div>
             </div>
 
@@ -559,10 +615,10 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
             </div>
           )}
 
-          {/* 중앙: 3개 분단 레이아웃 (각 분단마다 하나의 통합 책상) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 pt-2">
+          {/* 중앙: N개 분단 레이아웃 (각 분단마다 하나의 통합 책상) */}
+          <div className={gridLayoutClass}>
             
-            {DIVISIONS.map((division, divIndex) => {
+            {currentDivisions.map((division, divIndex) => {
               const divBase = divIndex * seatsPerDivision;
               const divSeats = seats.slice(divBase, divBase + seatsPerDivision);
 
