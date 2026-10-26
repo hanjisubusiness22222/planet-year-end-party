@@ -406,9 +406,6 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                   {/* 참가 신청서 바로가기 안내 박스 */}
                   <div className="bg-[#f8f6f0] border-2 border-[#1f1b18] rounded-xl p-4 sm:p-6 shadow-sm space-y-3 max-w-xl mx-auto">
                     <div className="space-y-1">
-                      <span className="inline-block px-2 py-0.5 rounded bg-[#b82828] text-white font-mono text-[10px] font-bold">
-                        RSVP NOTICE
-                      </span>
                       <h3 className="font-serif text-base sm:text-lg font-bold text-[#1f1b18]">
                         2026 플래닛 연말모임 가정통신문 회신서
                       </h3>
