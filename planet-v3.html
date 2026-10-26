@@ -229,7 +229,7 @@
           <select id="badge-select" onchange="syncCardText()" class="w-full border border-stone-400 rounded-lg px-2 py-1 bg-white text-xs font-round focus:outline-none">
             <option value="🌸 스프링토">🌸 스프링토 (봄)</option>
             <option value="☀️ 썸머데이">☀️ 썸머데이 (여름)</option>
-            <option value="🍁 어텀">🍁 어텀 (가을)</option>
+            <option value="🍂 어텀">🍂 어텀 (가을)</option>
             <option value="❄️ 윈터블">❄️ 윈터블 (겨울)</option>
           </select>
         </div>
@@ -1654,7 +1654,7 @@
       chip.className = "text-[10px] font-round font-bold border px-2 py-0.5 rounded-full shadow-2xs " + 
         (badgeVal.includes('스프링') ? "bg-rose-50 text-rose-800 border-rose-300" :
          badgeVal.includes('썸머') ? "bg-sky-50 text-sky-800 border-sky-300" :
-         badgeVal.includes('어텀') ? "bg-amber-50 text-amber-900 border-amber-600" :
+         badgeVal.includes('어텀') ? "bg-[#f7f0e8] text-[#5c3016] border-[#a0522d]" :
          badgeVal.includes('윈터') ? "bg-indigo-50 text-indigo-900 border-indigo-300" : "bg-amber-50 text-amber-900 border-amber-700");
       document.getElementById('card-session').textContent = sessionVal;
     }

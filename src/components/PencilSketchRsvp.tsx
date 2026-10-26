@@ -61,7 +61,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
   const [submittedRoster, setSubmittedRoster] = useState<any[]>([
     { name: '김동효', session: '1부 새학기 + 2부 수학여행', book: '우리가 사랑한 소설 1권', motto: '새학기처럼 신선하게!', badge: '🌸 스프링토', indices: [0, 2, 0, 0, 0, 0, 0, 0], hair: ['#3b332b', '#5e5044'] },
     { name: '한지수', session: '1부 새학기 + 2부 수학여행', book: '원고는 불타지 않는다', motto: '자율주행 정상화 완료!', badge: '☀️ 썸머데이', indices: [4, 6, 1, 1, 2, 1, 5, 1], hair: ['#3b332b', '#5e5044'] },
-    { name: '이플래닛', session: '1부 플래닛의 새학기 (낮)', book: '겨울밤에 읽기 좋은 시집', motto: '꺾이지 않는 텐션!', badge: '🍁 어텀', indices: [1, 3, 3, 4, 1, 2, 1, 2], hair: ['#6f4e37', '#8a6449'] }
+    { name: '이플래닛', session: '1부 플래닛의 새학기 (낮)', book: '겨울밤에 읽기 좋은 시집', motto: '꺾이지 않는 텐션!', badge: '🍂 어텀', indices: [1, 3, 3, 4, 1, 2, 1, 2], hair: ['#6f4e37', '#8a6449'] }
   ]);
 
   // 허용된 파츠 인덱스 목록 (헤어 성별 필터 고려)

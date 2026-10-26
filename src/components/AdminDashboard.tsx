@@ -597,7 +597,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             <span className={`px-1.5 py-0.5 rounded text-[10px] font-sans font-bold whitespace-nowrap border ${
                               String(r.memberType).includes('스프링') ? 'bg-rose-50 text-rose-800 border-rose-300' :
                               String(r.memberType).includes('썸머') ? 'bg-sky-50 text-sky-800 border-sky-300' :
-                              String(r.memberType).includes('어텀') ? 'bg-amber-50 text-amber-900 border-amber-600' :
+                              String(r.memberType).includes('어텀') ? 'bg-[#f7f0e8] text-[#5c3016] border-[#a0522d]' :
                               String(r.memberType).includes('윈터') ? 'bg-indigo-50 text-indigo-900 border-indigo-300' :
                               String(r.memberType).includes('기존') ? 'bg-[#ede8dc] text-[#5c3d2e] border-[#d8d3c7]' : 'bg-[#e0f2fe] text-[#0369a1] border-[#bae6fd]'
                             }`}>

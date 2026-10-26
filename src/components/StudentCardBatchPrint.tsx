@@ -86,7 +86,7 @@ export const StudentCardBatchPrint: React.FC<StudentCardBatchPrintProps> = ({ on
         name: '이플래닛',
         session: '1부 플래닛의 새학기 (낮)',
         bookTitle: '겨울밤에 읽기 좋은 시집',
-        badge: '🍁 어텀',
+        badge: '🍂 어텀',
         avatarCode: '2-4-4-5-2-3-2-3',
         motto: '모두와 함께 나누는 따뜻한 책 한 권',
         memo: ''
@@ -222,7 +222,7 @@ export const StudentCardBatchPrint: React.FC<StudentCardBatchPrintProps> = ({ on
     const sampleNames = ['강도서', '정문학', '윤완독', '최새벽', '박종각', '조프레피'];
     const sampleBooks = ['밤에 읽는 에세이', '우주를 건너는 SF', '밑줄 가득한 고전', '시와 함께 걷는 겨울'];
     const sampleMottos = ['완독의 기쁨을 함께!', '다정함이 이기는 밤', '책과 함께하는 새학기'];
-    const sampleBadges = ['🌸 스프링토', '☀️ 썸머데이', '🍁 어텀', '❄️ 윈터블'];
+    const sampleBadges = ['🌸 스프링토', '☀️ 썸머데이', '🍂 어텀', '❄️ 윈터블'];
     const randCode = Array.from({ length: 8 }, () => Math.floor(1 + Math.random() * 8)).join('-');
 
     const newStudent: StudentCardRecord = {

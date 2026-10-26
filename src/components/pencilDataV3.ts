@@ -33,7 +33,7 @@ export const PHOTO_BG_COLORS = [
 export const BADGE_OPTIONS = [
   '🌸 스프링토',
   '☀️ 썸머데이',
-  '🍁 어텀',
+  '🍂 어텀',
   '❄️ 윈터블'
 ];
 
@@ -41,7 +41,7 @@ export function getBadgeSeasonStyle(badge?: string): string {
   const b = String(badge || '');
   if (b.includes('스프링')) return 'bg-rose-50 text-rose-800 border-rose-300';
   if (b.includes('썸머')) return 'bg-sky-50 text-sky-800 border-sky-300';
-  if (b.includes('어텀')) return 'bg-amber-50 text-amber-900 border-amber-600';
+  if (b.includes('어텀')) return 'bg-[#f7f0e8] text-[#5c3016] border-[#a0522d]';
   if (b.includes('윈터')) return 'bg-indigo-50 text-indigo-900 border-indigo-300';
   return 'bg-amber-50 text-amber-900 border-amber-700';
 }
