@@ -326,18 +326,18 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
       existingMember: '',
       badge: badge,
       memberType: badge,
-      motto: safeMotto,
-      memo: safeMemo,
       studentNumber: studentNumber,
       avatarCode: avatarCode,
       avatarRecipe: avatarRecipeText,
-      submittedAt: new Date().toISOString()
+      motto: safeMotto,
+      memo: safeMemo,
+      submittedAt: new Date().toLocaleString('ko-KR')
     };
 
     try {
       const scriptUrl = EVENT_CONFIG.googleScriptUrl || "https://script.google.com/macros/s/AKfycbwXzDlUsRy3fFI6gGW0fCoAYaEuQEoJwHu1a2-I4ULhpl3wUj_5vq_yi22xG85WGBXV/exec";
       if (scriptUrl && !scriptUrl.includes('YOUR_SCRIPT_ID')) {
-        // 1. 브라우저 CORS/Preflight 차단을 원천 방지하는 text/plain POST 전송
+        // 1. 브라우저 CORS/Preflight 차단을 원천 방지하는 text/plain POST 전송 (15개 컬럼 JSON)
         try {
           await fetch(scriptUrl, {
             method: 'POST',
@@ -346,7 +346,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
             body: JSON.stringify(payload)
           });
         } catch (postErr) {
-          // 2. 백업: URLSearchParams form-urlencoded 전송
+          // 2. POST 실패 시에만 백업: URLSearchParams form-urlencoded 전송 후 GET 비콘 안전망 실행
           try {
             const formBody = new URLSearchParams();
             Object.entries(payload).forEach(([k, v]) => formBody.append(k, String(v ?? '')));
@@ -356,18 +356,16 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
               body: formBody.toString()
             });
-          } catch (e2) {}
+          } catch (e2) {
+            try {
+              const getParams = new URLSearchParams();
+              Object.entries(payload).forEach(([k, v]) => getParams.append(k, String(v ?? '')));
+              const beaconUrl = `${scriptUrl}?${getParams.toString()}`;
+              const pingImg = new Image();
+              pingImg.src = beaconUrl;
+            } catch (beaconErr) {}
+          }
         }
-
-        // 3. 무조건 도달 보장 백업 안전망 (GET 비콘 요청)
-        try {
-          const getParams = new URLSearchParams();
-          getParams.append('action', 'register');
-          Object.entries(payload).forEach(([k, v]) => getParams.append(k, String(v ?? '')));
-          const beaconUrl = `${scriptUrl}?${getParams.toString()}`;
-          const pingImg = new Image();
-          pingImg.src = beaconUrl;
-        } catch (beaconErr) {}
       }
 
       // 로컬스토리지 캐싱 (관리자 대시보드 연동)

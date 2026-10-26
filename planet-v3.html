@@ -1862,7 +1862,7 @@
         studentNumber: studentNo,
         avatarCode: avatarCode,
         avatarRecipe: recipeSummary,
-        submittedAt: new Date().toISOString()
+        submittedAt: new Date().toLocaleString('ko-KR')
       };
 
       // UI 로딩 표시
@@ -1880,7 +1880,7 @@
             body: JSON.stringify(googlePayload)
           });
         } catch (postErr) {
-          // 백업: URLSearchParams form-urlencoded 전송
+          // 백업: URLSearchParams form-urlencoded 전송 후 GET 비콘
           try {
             const formBody = new URLSearchParams();
             Object.keys(googlePayload).forEach(k => formBody.append(k, String(googlePayload[k] ?? '')));
@@ -1890,18 +1890,16 @@
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
               body: formBody.toString()
             });
-          } catch (e2) {}
+          } catch (e2) {
+            try {
+              const getParams = new URLSearchParams();
+              Object.keys(googlePayload).forEach(k => getParams.append(k, String(googlePayload[k] ?? '')));
+              const beaconUrl = `${GOOGLE_SCRIPT_URL}?${getParams.toString()}`;
+              const pingImg = new Image();
+              pingImg.src = beaconUrl;
+            } catch (beaconErr) {}
+          }
         }
-
-        // 3. 무조건 도달 보장 백업 안전망 (GET 비콘 요청)
-        try {
-          const getParams = new URLSearchParams();
-          getParams.append('action', 'register');
-          Object.keys(googlePayload).forEach(k => getParams.append(k, String(googlePayload[k] ?? '')));
-          const beaconUrl = `${GOOGLE_SCRIPT_URL}?${getParams.toString()}`;
-          const pingImg = new Image();
-          pingImg.src = beaconUrl;
-        } catch (beaconErr) {}
 
         // 브라우저 로컬 저장소 캐싱 (운영진 대시보드 및 오프라인 연동)
         try {
