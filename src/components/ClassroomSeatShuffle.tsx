@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { 
   ArrowLeft, Shuffle, Users, Maximize2, Minimize2, 
   Download, Plus, Trash2, RefreshCw, BookOpen, Coffee, Sparkles
@@ -7,6 +7,7 @@ import confetti from 'canvas-confetti';
 import { toPng } from 'html-to-image';
 import planetLogo from '../assets/planet-logo.png';
 import { EVENT_CONFIG } from '../constants/eventConfig';
+import { getStagesV3 } from './pencilDataV3';
 
 export interface Participant {
   id: string;
@@ -15,7 +16,34 @@ export interface Participant {
   memberType?: string;
   bookTitle?: string;
   phone?: string;
+  avatarCode?: string;
+  badge?: string;
+  indices?: number[];
 }
+
+// 아바타 코드를 8자리 파츠 인덱스 배열로 변환하는 헬퍼 함수
+export const parseAvatarIndices = (code?: string, name?: string): number[] => {
+  if (code && typeof code === 'string' && code.trim() !== '') {
+    const parts = code.includes('-')
+      ? code.split('-').map(v => Math.max(0, parseInt(v, 10) - 1))
+      : code.split('').map(v => Math.max(0, parseInt(v, 10) - 1));
+    if (parts.length >= 8 && parts.every(v => !isNaN(v))) {
+      return parts.slice(0, 8);
+    }
+  }
+  // 코드가 없는 경우 이름을 시드로 일관된 귀여운 크로키 아바타 생성
+  const seed = (name || '플래닛').split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return [
+    seed % 8,
+    (seed * 3) % 12,
+    (seed * 7) % 8,
+    (seed * 11) % 8,
+    (seed * 13) % 8,
+    (seed * 17) % 8,
+    (seed * 19) % 8,
+    (seed * 23) % 8
+  ];
+};
 
 // 분단 메타데이터 정의
 const DIVISIONS = [
@@ -37,7 +65,9 @@ const loadParticipantsFromStorage = (): Participant[] => {
             id: item.studentNumber || item.id || `rsvp_${idx}_${Date.now()}`,
             name: (item.name || item.cleanName || '').trim(),
             session: item.session || item.sessionLabel || '',
-            memberType: item.memberType || item.fellowType || item.기존회원 || '',
+            memberType: item.기존회원 || item.memberType || item.fellowType || '',
+            badge: item.badge || item.반뱃지 || item.memberType || '',
+            avatarCode: item.avatarCode || item.아바타코드 || item.croquisCode || '',
             bookTitle: item.bookTitle || item.bookHint || item.도서제목 || '',
             phone: item.phone || item.연락처 || ''
           }));
@@ -47,6 +77,79 @@ const loadParticipantsFromStorage = (): Participant[] => {
     }
   }
   return [];
+};
+
+// 책상 위 미니 학생증 명찰 컴포넌트 (동글동글 색연필 크로키 아바타 포함)
+const MiniStudentIdBadge: React.FC<{ participant: Participant; seatNumber: number }> = ({ participant, seatNumber }) => {
+  const STAGES = useMemo(() => getStagesV3('#3b332b', '#5e5044'), []);
+  const indices = useMemo(() => participant.indices || parseAvatarIndices(participant.avatarCode, participant.name), [participant]);
+
+  return (
+    <div className="w-full bg-[#fffdf9] border-2 border-[#1f1b18] rounded-xl p-1.5 sm:p-2 shadow-sm hover:shadow-md hover:border-[#b82828] hover:-translate-y-0.5 transition-all text-left relative overflow-hidden flex flex-col justify-between min-h-[82px] sm:min-h-[92px] group">
+      {/* 상단 미니 바: 좌석 번호 & 반 뱃지 */}
+      <div className="flex items-center justify-between border-b border-[#e5dfd3] pb-1 mb-1 w-full">
+        <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-[#5c4033] text-white">
+          #{seatNumber < 10 ? `0${seatNumber}` : seatNumber}
+        </span>
+        <span className="text-[8px] font-serif bg-amber-50 text-amber-900 border border-amber-300 px-1.5 py-0.2 rounded-full truncate max-w-[85px]">
+          {participant.badge || participant.memberType || '플래닛 학우'}
+        </span>
+      </div>
+
+      {/* 실물 학생증 레이아웃: 좌측 크로키 얼굴 + 우측 인적사항 */}
+      <div className="grid grid-cols-12 gap-1.5 items-center flex-1">
+        {/* 아바타 증명사진 */}
+        <div className="col-span-4 aspect-[4/5] sketch-paper border border-[#2b2520] rounded-lg overflow-hidden flex items-center justify-center shadow-inner bg-[#fffdfa]">
+          <svg viewBox="0 0 200 220" className="w-full h-full" filter="url(#pencil-sketch)">
+            {indices[7] !== null && STAGES[7] && (
+              <g dangerouslySetInnerHTML={{ __html: STAGES[7].items[indices[7]]?.svg || '' }} />
+            )}
+            {indices[1] !== null && STAGES[1] && (
+              <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[indices[1]]?.backSvg || '' }} />
+            )}
+            {indices[6] !== null && STAGES[6] && (
+              <g dangerouslySetInnerHTML={{ __html: STAGES[6].items[indices[6]]?.svg || '' }} />
+            )}
+            {indices[0] !== null && STAGES[0] && (
+              <g dangerouslySetInnerHTML={{ __html: STAGES[0].items[indices[0]]?.svg || '' }} />
+            )}
+            {indices[3] !== null && STAGES[3] && (
+              <g dangerouslySetInnerHTML={{ __html: STAGES[3].items[indices[3]]?.svg || '' }} />
+            )}
+            {indices[2] !== null && STAGES[2] && (
+              <g dangerouslySetInnerHTML={{ __html: STAGES[2].items[indices[2]]?.svg || '' }} />
+            )}
+            {indices[4] !== null && STAGES[4] && (
+              <g dangerouslySetInnerHTML={{ __html: STAGES[4].items[indices[4]]?.svg || '' }} />
+            )}
+            {indices[1] !== null && STAGES[1] && (
+              <g dangerouslySetInnerHTML={{ __html: STAGES[1].items[indices[1]]?.frontSvg || '' }} />
+            )}
+            {indices[5] !== null && STAGES[5] && (
+              <g dangerouslySetInnerHTML={{ __html: STAGES[5].items[indices[5]]?.svg || '' }} />
+            )}
+          </svg>
+        </div>
+
+        {/* 인적사항 */}
+        <div className="col-span-8 space-y-0.5 font-serif min-w-0 pl-0.5">
+          <div className="font-bold text-xs sm:text-sm text-[#111] truncate tracking-tight">
+            {participant.name}
+          </div>
+          {participant.session && (
+            <div className="text-[8.5px] text-[#b82828] font-bold truncate">
+              {participant.session.includes('전체') ? '1부+2부 전체' : participant.session.includes('1부') ? '1차 새학기' : '2차 수학여행'}
+            </div>
+          )}
+          {participant.bookTitle && (
+            <div className="text-[7.5px] text-[#666] truncate italic font-hwp-body">
+              📖 {participant.bookTitle}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 interface ClassroomSeatShuffleProps {
@@ -105,6 +208,8 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
             name: (item.이름 || item.name || item.cleanName || '').trim(),
             session: item.참석세션 || item.session || item.sessionLabel || '',
             memberType: item.기존회원 || item.memberType || item.학우구분 || '',
+            badge: item.반뱃지 || item.badge || item.memberType || '',
+            avatarCode: item.아바타코드 || item.avatarCode || item.croquisCode || '',
             bookTitle: item.도서제목 || item.선물도서힌트 || item.bookTitle || item.bookHint || '',
             phone: item.연락처 || item.phone || ''
           }));
@@ -296,6 +401,16 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
   return (
     <div className="min-h-screen bg-[#fcfbf9] text-[#1f1b18] font-sans selection:bg-[#b82828]/20 selection:text-[#b82828] pb-16">
       
+      {/* 전역 SVG 부드러운 색연필 텍스처 필터 */}
+      <svg width="0" height="0" className="absolute">
+        <defs>
+          <filter id="pencil-sketch" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.75" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+        </defs>
+      </svg>
+
       {/* 상단 헤더 & 컨트롤 바 */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#e8e4dc] px-3 sm:px-6 py-2.5 sm:py-3 shadow-sm">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
@@ -481,48 +596,27 @@ export const ClassroomSeatShuffle: React.FC<ClassroomSeatShuffleProps> = ({ onBa
                     <div className="grid grid-cols-2 gap-2 sm:gap-2.5 flex-1">
                       {divSeats.map((participant, sIdx) => {
                         const seatNumber = divBase + sIdx + 1;
-                        return (
-                          <div
-                            key={`seat-${divIndex}-${sIdx}`}
-                            className={`p-2 sm:p-2.5 rounded-lg border-2 transition-all flex flex-col justify-between items-center text-center min-h-[72px] relative ${
-                              participant
-                                ? 'bg-white border-[#1f1b18] shadow-sm hover:border-[#b82828] hover:-translate-y-0.5'
-                                : 'bg-[#eae6db]/50 border-dashed border-[#ccc]'
-                            }`}
-                          >
-                            {/* 좌석 번호 뱃지 */}
-                            <div className="w-full flex items-center justify-between mb-1">
-                              <span className="text-[8.5px] font-mono px-1.5 py-0.2 rounded bg-[#5c4033] text-white">
+                        if (!participant) {
+                          return (
+                            <div
+                              key={`seat-${divIndex}-${sIdx}`}
+                              className="p-2 sm:p-2.5 rounded-xl border-2 border-dashed border-[#ccc] bg-[#eae6db]/30 flex flex-col items-center justify-center text-center min-h-[82px] sm:min-h-[92px]"
+                            >
+                              <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-stone-300 text-stone-600 mb-1">
                                 #{seatNumber < 10 ? `0${seatNumber}` : seatNumber}
                               </span>
-                              {participant?.memberType && (
-                                <span className="text-[8px] font-serif text-[#888] truncate max-w-[45px]">
-                                  {participant.memberType}
-                                </span>
-                              )}
+                              <div className="text-[11px] text-[#aaa] font-serif">빈 자리</div>
+                              <div className="w-3 h-0.5 rounded-full bg-[#8b6f4e]/20 mt-1"></div>
                             </div>
+                          );
+                        }
 
-                            {/* 참가자 이름 */}
-                            {participant ? (
-                              <div className="my-auto">
-                                <div className="font-serif font-bold text-sm text-[#111] tracking-wide">
-                                  {participant.name}
-                                </div>
-                                {participant.session && (
-                                  <div className="text-[8.5px] font-serif text-[#2e5238] mt-0.5 truncate max-w-[85px]">
-                                    {participant.session.includes('전체') ? '1차+2차' : participant.session}
-                                  </div>
-                                )}
-                              </div>
-                            ) : (
-                              <div className="my-auto text-[10.5px] text-[#aaa] font-serif">
-                                빈 자리
-                              </div>
-                            )}
-
-                            {/* 좌석 의자 발판 마크 */}
-                            <div className="w-3 h-0.5 rounded-full bg-[#8b6f4e]/30 mt-0.5"></div>
-                          </div>
+                        return (
+                          <MiniStudentIdBadge
+                            key={`seat-${divIndex}-${sIdx}-${participant.id}`}
+                            participant={participant}
+                            seatNumber={seatNumber}
+                          />
                         );
                       })}
                     </div>
