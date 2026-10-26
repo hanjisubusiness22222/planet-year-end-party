@@ -1912,8 +1912,9 @@
           });
         } catch (postErr) {
           // 백업: URLSearchParams form-urlencoded 전송
-          const formBody = new URLSearchParams();
-          Object.keys(googlePayload).forEach(k => formBody.append(k, String(googlePayload[k] ?? '')));
+          try {
+            const formBody = new URLSearchParams();
+            Object.keys(googlePayload).forEach(k => formBody.append(k, String(googlePayload[k] ?? '')));
             await fetch(GOOGLE_SCRIPT_URL, {
               method: 'POST',
               mode: 'no-cors',
