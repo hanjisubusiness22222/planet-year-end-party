@@ -244,20 +244,20 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
     if (sessionType === 'both') {
       return {
         sessionLabel: '1부 새학기 + 2부 수학여행',
-        feeAmount: 80000,
-        feeText: '80,000원'
+        feeAmount: 60000,
+        feeText: '60,000원'
       };
     } else if (sessionType === 'session1') {
       return {
         sessionLabel: '1부 플래닛의 새학기 (낮)',
-        feeAmount: 45000,
-        feeText: '45,000원'
+        feeAmount: 40000,
+        feeText: '40,000원'
       };
     } else {
       return {
-        sessionLabel: '2부 플래닛의 수학여행 (밤)',
-        feeAmount: 35000,
-        feeText: '35,000원'
+        sessionLabel: '2부 플래닛의 수학여행 (밤/예약금)',
+        feeAmount: 20000,
+        feeText: '20,000원'
       };
     }
   }, [sessionType]);
@@ -945,7 +945,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                     <div className="border-2 border-stone-300 peer-checked:border-amber-800 peer-checked:bg-amber-50 p-2 text-center rounded-xl transition">
                       <div className="font-bold text-xs text-stone-900">1부 + 2부 전체</div>
                       <div className="text-[10px] text-stone-600">새학기 & 수학여행</div>
-                      <div className="font-black text-xs text-red-800 mt-1">80,000원</div>
+                      <div className="font-black text-xs text-red-800 mt-1">60,000원</div>
                     </div>
                   </label>
 
@@ -961,7 +961,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                     <div className="border-2 border-stone-300 peer-checked:border-amber-800 peer-checked:bg-amber-50 p-2 text-center rounded-xl transition">
                       <div className="font-bold text-xs text-stone-900">1부만 참석</div>
                       <div className="text-[10px] text-stone-600">새학기 본파티(낮)</div>
-                      <div className="font-black text-xs text-red-800 mt-1">45,000원</div>
+                      <div className="font-black text-xs text-red-800 mt-1">40,000원</div>
                     </div>
                   </label>
 
@@ -976,8 +976,8 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                     />
                     <div className="border-2 border-stone-300 peer-checked:border-amber-800 peer-checked:bg-amber-50 p-2 text-center rounded-xl transition">
                       <div className="font-bold text-xs text-stone-900">2부만 참석</div>
-                      <div className="text-[10px] text-stone-600">수학여행 뒤풀이</div>
-                      <div className="font-black text-xs text-red-800 mt-1">35,000원</div>
+                      <div className="text-[10px] text-stone-600">수학여행 (예약금)</div>
+                      <div className="font-black text-xs text-red-800 mt-1">20,000원</div>
                     </div>
                   </label>
                 </div>
