@@ -116,110 +116,145 @@ export function getStagesV3(customHairMain = '#3b332b', customHairSub = '#54493f
             {
               name: '포근 멍뭉 덮머',
               gender: 'M',
-              backSvg: `<path d="M 44 88 C 38 42, 162 42, 156 88 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6"/>`,
+              backSvg: `<path d="M 38 88 C 30 26, 170 26, 162 88 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6"/>`,
               frontSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
-                <path d="M 45 96 C 42 40, 158 40, 155 96 L 149 104 L 146 82 C 136 74, 126 78, 118 76 C 112 68, 106 78, 96 77 C 86 68, 78 78, 68 75 C 60 74, 56 78, 54 82 L 51 104 Z"/>
-                <path d="M 68 52 Q 100 43 132 52" fill="none" stroke="${HAIR_SUB}" stroke-width="2"/>
+                <path d="M 39 96 C 34 24, 166 24, 161 96 L 153 104 L 148 80 C 136 72, 126 76, 118 73 C 112 65, 104 75, 96 73 C 86 65, 78 75, 68 72 C 58 72, 54 76, 52 80 L 47 104 Z"/>
+                <path d="M 64 42 Q 100 30 136 42" fill="none" stroke="${HAIR_SUB}" stroke-width="2.2"/>
+                <path d="M 72 58 Q 100 48 128 58" fill="none" stroke="${HAIR_SUB}" stroke-width="1.8"/>
               </g>`
             },
             {
               name: '몽글 단발 보브',
               gender: 'F',
-              backSvg: `<path d="M 40 84 C 30 112, 32 146, 48 156 L 152 156 C 168 146, 170 112, 160 84 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round"/>`,
-              frontSvg: `<path d="M 42 94 C 40 40, 160 40, 158 94 C 150 74, 136 74, 126 84 C 118 70, 82 70, 74 84 C 64 74, 50 74, 42 94 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round"/>
-                         <path d="M 66 54 Q 100 44 134 54" fill="none" stroke="${HAIR_SUB}" stroke-width="2" stroke-linecap="round"/>`
+              backSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round">
+                <path d="M 36 84 C 18 108, 20 152, 40 166 L 160 166 C 180 152, 182 108, 164 84 C 172 22, 28 22, 36 84 Z"/>
+              </g>`,
+              frontSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+                <path d="M 36 94 C 30 24, 170 24, 164 94 C 154 72, 138 72, 126 83 C 116 68, 84 68, 74 83 C 62 72, 46 72, 36 94 Z"/>
+                <path d="M 58 44 Q 100 32 142 44" fill="none" stroke="${HAIR_SUB}" stroke-width="2.2"/>
+                <path d="M 28 116 Q 24 142 38 156 M 172 116 Q 176 142 162 156" fill="none" stroke="${HAIR_SUB}" stroke-width="2"/>
+              </g>`
             },
             {
               name: '훈훈 가름마 애즈펌',
               gender: 'M',
-              backSvg: `<path d="M 44 88 C 38 40, 162 40, 156 88 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6"/>`,
+              backSvg: `<path d="M 40 88 C 32 30, 168 30, 160 88 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6"/>`,
               frontSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
-                <path d="M 45 96 C 40 40, 96 36, 102 44 C 108 36, 160 40, 155 96 L 149 103 L 145 82 C 134 80, 116 74, 103 60 C 98 72, 80 80, 66 78 C 58 78, 55 80, 54 82 L 51 103 Z"/>
-                <path d="M 62 56 Q 82 50 96 58 M 138 56 Q 118 50 106 58" fill="none" stroke="${HAIR_SUB}" stroke-width="1.8"/>
+                <path d="M 41 96 C 36 28, 96 26, 102 36 C 108 26, 164 28, 159 96 L 151 103 L 147 80 C 134 78, 116 72, 103 58 C 98 70, 80 78, 66 76 C 58 76, 53 78, 52 80 L 49 103 Z"/>
+                <path d="M 58 48 Q 80 40 96 50 M 142 48 Q 120 40 106 50" fill="none" stroke="${HAIR_SUB}" stroke-width="2"/>
               </g>`
             },
             {
               name: '구름 웨이브 여신롱',
               gender: 'F',
-              backSvg: `<path d="M 38 86 C 24 115, 28 155, 34 186 C 55 192, 145 192, 166 186 C 172 155, 176 115, 162 86 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round"/>`,
-              frontSvg: `<path d="M 43 94 C 40 42, 160 42, 157 94 C 144 68, 122 60, 100 68 C 78 60, 56 68, 43 94 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round"/>`
+              backSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round">
+                <path d="M 36 80 C 16 24, 184 24, 164 80 C 184 108, 188 150, 172 194 C 150 198, 50 198, 28 194 C 12 150, 16 108, 36 80 Z"/>
+                <path d="M 24 136 Q 16 160 30 182 M 176 136 Q 184 160 170 182" fill="none" stroke="${HAIR_SUB}" stroke-width="2.2" stroke-linecap="round"/>
+              </g>`,
+              frontSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+                <path d="M 36 94 C 28 24, 172 24, 164 94 C 150 64, 126 56, 100 64 C 74 56, 50 64, 36 94 Z"/>
+                <path d="M 56 42 Q 100 30 144 42" fill="none" stroke="${HAIR_SUB}" stroke-width="2.2"/>
+                <path d="M 36 92 Q 26 122 36 148 M 164 92 Q 174 122 164 148" fill="none" stroke="${HAIR_MAIN}" stroke-width="4.5"/>
+              </g>`
             },
             {
               name: '복슬 멍뭉 베이비펌',
               gender: 'M',
               backSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.5">
-                <circle cx="52" cy="68" r="16"/><circle cx="76" cy="50" r="18"/><circle cx="100" cy="46" r="19"/><circle cx="124" cy="50" r="18"/><circle cx="148" cy="68" r="16"/>
+                <circle cx="48" cy="62" r="18"/><circle cx="74" cy="42" r="20"/><circle cx="100" cy="36" r="22"/><circle cx="126" cy="42" r="20"/><circle cx="152" cy="62" r="18"/>
               </g>`,
               frontSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M 44 92 Q 38 72 54 62 Q 64 44 84 52 Q 100 40 116 52 Q 136 44 146 62 Q 162 72 156 92 Q 146 82 138 76 Q 124 82 112 72 Q 100 82 88 72 Q 76 82 62 76 Q 54 82 44 92 Z"/>
-                <path d="M 66 60 Q 74 54 80 62 M 96 56 Q 104 50 110 58 M 122 60 Q 130 54 134 62" fill="none" stroke="${HAIR_SUB}" stroke-width="1.8"/>
+                <path d="M 40 92 Q 32 66 50 56 Q 62 36 84 46 Q 100 32 116 46 Q 138 36 150 56 Q 168 66 160 92 Q 148 82 138 76 Q 124 82 112 72 Q 100 82 88 72 Q 76 82 62 76 Q 52 82 40 92 Z"/>
+                <path d="M 64 54 Q 74 48 80 56 M 96 50 Q 104 44 110 52 M 122 54 Q 130 48 134 56" fill="none" stroke="${HAIR_SUB}" stroke-width="2"/>
               </g>`
             },
             {
               name: '동글 똥머리(번)',
               gender: 'F',
-              backSvg: `<circle cx="100" cy="30" r="22" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6"/>
-                        <path d="M 83 34 Q 100 22 117 34" fill="none" stroke="#e11d48" stroke-width="3" stroke-linecap="round"/>`,
-              frontSvg: `<path d="M 45 92 C 43 42, 157 42, 155 92 C 145 68, 125 62, 100 66 C 75 62, 55 68, 45 92 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round"/>
-                         <path d="M 48 90 Q 42 114 49 132 M 152 90 Q 158 114 151 132" fill="none" stroke="${HAIR_MAIN}" stroke-width="5" stroke-linecap="round"/>`
+              backSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round">
+                <path d="M 38 84 C 28 22, 172 22, 162 84 Z"/>
+                <circle cx="100" cy="20" r="27"/>
+                <path d="M 78 24 Q 100 8 122 24" fill="none" stroke="#e11d48" stroke-width="3.5" stroke-linecap="round"/>
+                <circle cx="76" cy="25" r="4.5" fill="#fb7185" stroke="${LINE}" stroke-width="1.8"/>
+                <circle cx="124" cy="25" r="4.5" fill="#fb7185" stroke="${LINE}" stroke-width="1.8"/>
+              </g>`,
+              frontSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+                <path d="M 38 92 C 30 22, 170 22, 162 92 C 148 64, 126 58, 100 62 C 74 58, 52 64, 38 92 Z"/>
+                <path d="M 58 42 Q 100 30 142 42" fill="none" stroke="${HAIR_SUB}" stroke-width="2"/>
+                <path d="M 44 90 Q 36 116 45 136 M 156 90 Q 164 116 155 136" fill="none" stroke="${HAIR_MAIN}" stroke-width="5"/>
+              </g>`
             },
             {
               name: '깔끔 리젠트 숏컷',
               gender: 'M',
-              backSvg: `<path d="M 46 86 C 42 44, 158 44, 154 86 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6"/>`,
+              backSvg: `<path d="M 42 86 C 36 34, 164 34, 158 86 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6"/>`,
               frontSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
-                <path d="M 46 96 C 43 56, 54 44, 76 42 C 88 30, 118 30, 132 42 C 148 44, 157 56, 154 96 L 148 103 L 145 76 C 140 64, 122 58, 96 60 C 74 58, 58 64, 55 76 L 52 103 Z"/>
-                <path d="M 78 46 Q 102 36 124 46" fill="none" stroke="${HAIR_SUB}" stroke-width="2"/>
+                <path d="M 43 96 C 39 48, 52 34, 76 30 C 88 18, 118 18, 132 30 C 150 34, 161 48, 157 96 L 150 103 L 146 76 C 140 64, 122 58, 96 60 C 74 58, 58 64, 55 76 L 50 103 Z"/>
+                <path d="M 76 38 Q 102 28 126 38" fill="none" stroke="${HAIR_SUB}" stroke-width="2.2"/>
               </g>`
             },
             {
               name: '복슬 푸들 히피펌',
               gender: 'F',
               backSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.5">
-                <circle cx="42" cy="96" r="18"/><circle cx="38" cy="122" r="19"/><circle cx="46" cy="146" r="18"/>
-                <circle cx="158" cy="96" r="18"/><circle cx="162" cy="122" r="19"/><circle cx="154" cy="146" r="18"/>
-                <circle cx="65" cy="52" r="20"/><circle cx="100" cy="46" r="22"/><circle cx="135" cy="52" r="20"/>
+                <circle cx="38" cy="94" r="19"/><circle cx="34" cy="122" r="20"/><circle cx="42" cy="148" r="19"/>
+                <circle cx="162" cy="94" r="19"/><circle cx="166" cy="122" r="20"/><circle cx="158" cy="148" r="19"/>
+                <circle cx="62" cy="46" r="22"/><circle cx="100" cy="38" r="24"/><circle cx="138" cy="46" r="22"/>
               </g>`,
-              frontSvg: `<path d="M 44 90 Q 52 68 70 78 Q 85 64 100 78 Q 115 64 130 78 Q 148 68 156 90 C 154 44, 46 44, 44 90 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.5" stroke-linejoin="round"/>`
+              frontSvg: `<path d="M 40 90 Q 50 64 70 76 Q 85 60 100 76 Q 115 60 130 76 Q 150 64 160 90 C 160 32, 40 32, 40 90 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.5" stroke-linejoin="round"/>`
             },
             {
               name: '밤톨 귀염 크롭컷',
               gender: 'M',
-              backSvg: `<path d="M 46 88 C 44 44, 156 44, 154 88 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6"/>`,
+              backSvg: `<path d="M 40 88 C 34 26, 166 26, 160 88 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6"/>`,
               frontSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
-                <path d="M 46 95 C 44 42, 156 42, 154 95 L 149 102 L 146 74 L 132 68 L 118 70 L 100 68 L 82 70 L 68 68 L 54 74 L 51 102 Z"/>
-                <path d="M 70 52 Q 100 45 130 52" fill="none" stroke="${HAIR_SUB}" stroke-width="2"/>
+                <path d="M 40 95 C 34 25, 166 25, 160 95 L 154 102 L 150 72 L 134 65 L 118 68 L 100 65 L 82 68 L 66 65 L 50 72 L 46 102 Z"/>
+                <path d="M 62 42 Q 100 32 138 42" fill="none" stroke="${HAIR_SUB}" stroke-width="2.2"/>
+                <path d="M 72 54 Q 100 46 128 54" fill="none" stroke="${HAIR_SUB}" stroke-width="1.8"/>
               </g>`
             },
             {
               name: '양갈래 땋은머리',
               gender: 'F',
-              backSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.5">
-                <circle cx="44" cy="136" r="11"/><circle cx="40" cy="154" r="10"/><circle cx="38" cy="170" r="8"/>
-                <circle cx="156" cy="136" r="11"/><circle cx="160" cy="154" r="10"/><circle cx="162" cy="170" r="8"/>
-                <circle cx="38" cy="162" r="4" fill="#f43f5e"/><circle cx="162" cy="162" r="4" fill="#f43f5e"/>
+              backSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round">
+                <path d="M 38 84 C 28 22, 172 22, 162 84 Z"/>
+                <circle cx="36" cy="98" r="16"/><circle cx="32" cy="124" r="15"/><circle cx="28" cy="148" r="13"/><circle cx="26" cy="168" r="10"/>
+                <circle cx="26" cy="160" r="5" fill="#f43f5e" stroke="${LINE}" stroke-width="2"/>
+                <circle cx="164" cy="98" r="16"/><circle cx="168" cy="124" r="15"/><circle cx="172" cy="148" r="13"/><circle cx="174" cy="168" r="10"/>
+                <circle cx="174" cy="160" r="5" fill="#f43f5e" stroke="${LINE}" stroke-width="2"/>
               </g>`,
-              frontSvg: `<path d="M 44 92 C 42 42, 158 42, 156 92 C 142 72, 118 68, 100 76 C 82 68, 58 72, 44 92 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round"/>`
+              frontSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+                <path d="M 38 92 C 30 22, 170 22, 162 92 C 146 66, 120 62, 100 70 C 80 62, 54 66, 38 92 Z"/>
+                <path d="M 58 42 Q 100 30 142 42" fill="none" stroke="${HAIR_SUB}" stroke-width="2.2"/>
+              </g>`
             },
             {
               name: '문예부 감성 리프컷',
               gender: 'M',
-              backSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
-                <path d="M 42 86 C 34 110, 36 134, 30 146 C 42 148, 50 142, 54 134 L 146 134 C 150 142, 158 148, 170 146 C 164 134, 166 110, 158 86 Z"/>
+              backSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+                <path d="M 38 84 C 26 22, 174 22, 162 84 C 172 108, 170 134, 178 146 C 164 148, 154 140, 150 132 L 50 132 C 46 140, 36 148, 22 146 C 30 134, 28 108, 38 84 Z"/>
               </g>`,
               frontSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
-                <path d="M 43 96 C 38 40, 162 40, 157 96 C 150 84, 144 74, 134 78 C 122 68, 108 62, 100 56 C 92 62, 78 68, 66 78 C 56 74, 50 84, 43 96 Z"/>
-                <path d="M 47 92 Q 43 112 49 124 M 153 92 Q 157 112 151 124" fill="none" stroke="${HAIR_MAIN}" stroke-width="4"/>
-                <path d="M 64 54 Q 84 48 98 56 M 136 54 Q 116 48 102 56" fill="none" stroke="${HAIR_SUB}" stroke-width="1.8"/>
+                <path d="M 38 96 C 28 22, 172 22, 162 96 C 154 80, 146 70, 136 74 C 122 62, 108 56, 100 50 C 92 56, 78 62, 64 74 C 54 70, 46 80, 38 96 Z"/>
+                <path d="M 42 90 Q 36 114 44 128 M 158 90 Q 164 114 156 128" fill="none" stroke="${HAIR_MAIN}" stroke-width="4.5"/>
+                <path d="M 58 42 Q 82 32 98 42 M 142 42 Q 118 32 102 42" fill="none" stroke="${HAIR_SUB}" stroke-width="2"/>
               </g>`
             },
             {
               name: '사랑스런 반묶음',
               gender: 'F',
-              backSvg: `<path d="M 40 86 C 32 120, 34 155, 42 176 L 158 176 C 166 155, 168 120, 160 86 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6"/>
-                        <circle cx="42" cy="76" r="10" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.4"/>
-                        <circle cx="158" cy="76" r="10" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.4"/>`,
-              frontSvg: `<path d="M 44 92 C 42 42, 158 42, 156 92 C 144 70, 120 66, 100 74 C 80 66, 56 70, 44 92 Z" fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round"/>`
+              backSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round">
+                <path d="M 38 84 C 26 22, 174 22, 162 84 C 176 120, 178 156, 164 182 L 36 182 C 22 156, 24 120, 38 84 Z"/>
+                <path d="M 100 34 C 80 16, 54 28, 46 50 C 56 44, 74 44, 88 54 Z" fill="${HAIR_MAIN}"/>
+                <path d="M 100 34 C 120 16, 146 28, 154 50 C 144 44, 126 44, 112 54 Z" fill="${HAIR_MAIN}"/>
+                <circle cx="100" cy="36" r="7.5" fill="#fb7185" stroke="${LINE}" stroke-width="2"/>
+                <path d="M 94 40 L 84 58 M 106 40 L 116 58" stroke="#fb7185" stroke-width="3" stroke-linecap="round"/>
+              </g>`,
+              frontSvg: `<g fill="${HAIR_MAIN}" stroke="${LINE}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
+                <path d="M 38 92 C 30 22, 170 22, 162 92 C 148 66, 122 62, 100 70 C 78 62, 52 66, 38 92 Z"/>
+                <path d="M 56 42 Q 100 30 144 42" fill="none" stroke="${HAIR_SUB}" stroke-width="2.2"/>
+                <path d="M 42 90 Q 32 118 42 142 M 158 90 Q 168 118 158 142" fill="none" stroke="${HAIR_MAIN}" stroke-width="4.5"/>
+              </g>`
             }
           ]
         },
