@@ -31,14 +31,20 @@ export const PHOTO_BG_COLORS = [
 ];
 
 export const BADGE_OPTIONS = [
-  '📚 새학기 설레는 독서왕',
-  '☕ 책보다 디저트&커피파',
-  '✏️ 밑줄 긋기 & 필사 장인',
-  '🌙 심야 책맥 뒤풀이 요정',
-  '🎒 호기심 가득 전학생',
-  '🍀 2026 행운의 다독러',
-  '🦉 밤샘 완독 올빼미족'
+  '🌸 스프링토',
+  '☀️ 썸머데이',
+  '🍁 어텀',
+  '❄️ 윈터블'
 ];
+
+export function getBadgeSeasonStyle(badge?: string): string {
+  const b = String(badge || '');
+  if (b.includes('스프링')) return 'bg-rose-50 text-rose-800 border-rose-300';
+  if (b.includes('썸머')) return 'bg-sky-50 text-sky-800 border-sky-300';
+  if (b.includes('어텀')) return 'bg-amber-50 text-amber-900 border-amber-600';
+  if (b.includes('윈터')) return 'bg-indigo-50 text-indigo-900 border-indigo-300';
+  return 'bg-amber-50 text-amber-900 border-amber-700';
+}
 
 export function getStagesV3(customHairMain = '#3b332b', customHairSub = '#54493f'): Stage[] {
   const LINE = "#3b332b";

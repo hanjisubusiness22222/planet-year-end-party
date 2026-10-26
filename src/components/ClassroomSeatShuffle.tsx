@@ -7,7 +7,7 @@ import confetti from 'canvas-confetti';
 import { toPng } from 'html-to-image';
 import planetLogo from '../assets/planet-logo.png';
 import { EVENT_CONFIG } from '../constants/eventConfig';
-import { getStagesV3 } from './pencilDataV3';
+import { getStagesV3, getBadgeSeasonStyle } from './pencilDataV3';
 
 export interface Participant {
   id: string;
@@ -96,8 +96,8 @@ const MiniStudentIdBadge: React.FC<{ participant: Participant; seatNumber: numbe
         <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-[#5c4033] text-white">
           #{seatNumber < 10 ? `0${seatNumber}` : seatNumber}
         </span>
-        <span className="text-[8px] font-serif bg-amber-50 text-amber-900 border border-amber-300 px-1.5 py-0.2 rounded-full truncate max-w-[85px]">
-          {participant.badge || participant.memberType || '플래닛 학우'}
+        <span className={`text-[8px] font-serif border px-1.5 py-0.2 rounded-full truncate max-w-[85px] ${getBadgeSeasonStyle(participant.badge || participant.memberType)}`}>
+          {participant.badge || participant.memberType || '🌸 스프링토'}
         </span>
       </div>
 

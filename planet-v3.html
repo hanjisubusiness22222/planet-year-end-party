@@ -227,13 +227,10 @@
         <div class="flex items-center justify-between gap-1.5">
           <span class="font-bold text-stone-700 shrink-0">🏷️ 반 뱃지:</span>
           <select id="badge-select" onchange="syncCardText()" class="w-full border border-stone-400 rounded-lg px-2 py-1 bg-white text-xs font-round focus:outline-none">
-            <option value="📚 새학기 설레는 독서왕">📚 새학기 설레는 독서왕</option>
-            <option value="☕ 책보다 디저트&커피파">☕ 책보다 디저트&커피파</option>
-            <option value="✏️ 밑줄 긋기 & 필사 장인">✏️ 밑줄 긋기 & 필사 장인</option>
-            <option value="🌙 심야 책맥 뒤풀이 요정">🌙 심야 책맥 뒤풀이 요정</option>
-            <option value="🎒 호기심 가득 전학생">🎒 호기심 가득 전학생</option>
-            <option value="🍀 2026 행운의 다독러">🍀 2026 행운의 다독러</option>
-            <option value="🦉 밤샘 완독 올빼미족">🦉 밤샘 완독 올빼미족</option>
+            <option value="🌸 스프링토">🌸 스프링토 (봄)</option>
+            <option value="☀️ 썸머데이">☀️ 썸머데이 (여름)</option>
+            <option value="🍁 어텀">🍁 어텀 (가을)</option>
+            <option value="❄️ 윈터블">❄️ 윈터블 (겨울)</option>
           </select>
         </div>
       </div>
@@ -304,8 +301,8 @@
                 <div class="text-[10px] font-bold text-stone-500 tracking-widest">PLANET BOOK SCHOOL</div>
                 <div class="font-hwp-title font-black text-lg text-stone-900 leading-none mt-0.5">학 생 증</div>
               </div>
-              <span id="card-badge-chip" class="text-[10px] font-round font-bold border border-amber-700 px-2 py-0.5 bg-amber-50 text-amber-900 rounded-full">
-                📚 새학기 설레는 독서왕
+              <span id="card-badge-chip" class="text-[10px] font-round font-bold border border-rose-300 px-2 py-0.5 bg-rose-50 text-rose-800 rounded-full shadow-2xs">
+                🌸 스프링토
               </span>
             </div>
 
@@ -1652,7 +1649,13 @@
       document.getElementById('lib-book').textContent = bookVal;
       document.getElementById('card-motto').textContent = mottoVal;
       document.getElementById('lib-motto').textContent = `"${mottoVal}"`;
-      document.getElementById('card-badge-chip').textContent = badgeVal;
+      const chip = document.getElementById('card-badge-chip');
+      chip.textContent = badgeVal;
+      chip.className = "text-[10px] font-round font-bold border px-2 py-0.5 rounded-full shadow-2xs " + 
+        (badgeVal.includes('스프링') ? "bg-rose-50 text-rose-800 border-rose-300" :
+         badgeVal.includes('썸머') ? "bg-sky-50 text-sky-800 border-sky-300" :
+         badgeVal.includes('어텀') ? "bg-amber-50 text-amber-900 border-amber-600" :
+         badgeVal.includes('윈터') ? "bg-indigo-50 text-indigo-900 border-indigo-300" : "bg-amber-50 text-amber-900 border-amber-700");
       document.getElementById('card-session').textContent = sessionVal;
     }
 
@@ -1752,7 +1755,7 @@
         session: '1부 새학기 + 2부 수학여행',
         book: sampleBooks[Math.floor(Math.random() * sampleBooks.length)],
         motto: '새학기 친구들 반가워요!',
-        badge: '🍀 2026 행운의 다독러',
+        badge: '🌸 스프링토',
         indices: randIndices,
         hair: [HAIR_MAIN, HAIR_SUB]
       });

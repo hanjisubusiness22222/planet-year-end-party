@@ -7,7 +7,7 @@ import {
   ChevronDown, ChevronUp, User, BookOpen, Clock, ShieldCheck
 } from 'lucide-react';
 import { 
-  getStagesV3, HAIR_COLORS, PHOTO_BG_COLORS, BADGE_OPTIONS, Stage 
+  getStagesV3, HAIR_COLORS, PHOTO_BG_COLORS, BADGE_OPTIONS, getBadgeSeasonStyle, Stage 
 } from './pencilDataV3';
 import { EVENT_CONFIG } from '../constants/eventConfig';
 import { sanitizeText, validatePhone, formatPhone } from '../utils/validation';
@@ -20,7 +20,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
   // 1. 헤어 컬러 및 배경톤, 반 뱃지 상태
   const [hairColorIdx, setHairColorIdx] = useState(0);
   const [photoBg, setPhotoBg] = useState('#fffdf9');
-  const [badge, setBadge] = useState('📚 새학기 설레는 독서왕');
+  const [badge, setBadge] = useState('🌸 스프링토');
   const [cardMode, setCardMode] = useState<'id' | 'library'>('id');
 
   const currentHairMain = HAIR_COLORS[hairColorIdx].main;
@@ -59,9 +59,9 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
 
   // 운영진 수합 조판 그리드 (초기 샘플 3명 포함)
   const [submittedRoster, setSubmittedRoster] = useState<any[]>([
-    { name: '김동효', session: '1부 새학기 + 2부 수학여행', book: '우리가 사랑한 소설 1권', motto: '새학기처럼 신선하게!', badge: '📚 새학기 설레는 독서왕', indices: [0, 2, 0, 0, 0, 0, 0, 0], hair: ['#3b332b', '#5e5044'] },
-    { name: '한지수', session: '1부 새학기 + 2부 수학여행', book: '원고는 불타지 않는다', motto: '자율주행 정상화 완료!', badge: '✏️ 밑줄 긋기 & 필사 장인', indices: [4, 6, 1, 1, 2, 1, 5, 1], hair: ['#3b332b', '#5e5044'] },
-    { name: '이플래닛', session: '1부 플래닛의 새학기 (낮)', book: '겨울밤에 읽기 좋은 시집', motto: '꺾이지 않는 텐션!', badge: '🍀 2026 행운의 다독러', indices: [1, 3, 3, 4, 1, 2, 1, 2], hair: ['#6f4e37', '#8a6449'] }
+    { name: '김동효', session: '1부 새학기 + 2부 수학여행', book: '우리가 사랑한 소설 1권', motto: '새학기처럼 신선하게!', badge: '🌸 스프링토', indices: [0, 2, 0, 0, 0, 0, 0, 0], hair: ['#3b332b', '#5e5044'] },
+    { name: '한지수', session: '1부 새학기 + 2부 수학여행', book: '원고는 불타지 않는다', motto: '자율주행 정상화 완료!', badge: '☀️ 썸머데이', indices: [4, 6, 1, 1, 2, 1, 5, 1], hair: ['#3b332b', '#5e5044'] },
+    { name: '이플래닛', session: '1부 플래닛의 새학기 (낮)', book: '겨울밤에 읽기 좋은 시집', motto: '꺾이지 않는 텐션!', badge: '🍁 어텀', indices: [1, 3, 3, 4, 1, 2, 1, 2], hair: ['#6f4e37', '#8a6449'] }
   ]);
 
   // 허용된 파츠 인덱스 목록 (헤어 성별 필터 고려)
@@ -700,7 +700,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                       <div className="text-[10px] font-bold text-stone-500 tracking-widest">PLANET BOOK SCHOOL</div>
                       <div className="font-hwp-title font-black text-lg text-stone-900 leading-none mt-0.5">학 생 증</div>
                     </div>
-                    <span className="text-[10px] font-round font-bold border border-amber-700 px-2 py-0.5 bg-amber-50 text-amber-900 rounded-full">
+                    <span className={`text-[10px] font-round font-bold border px-2 py-0.5 rounded-full shadow-2xs ${getBadgeSeasonStyle(badge)}`}>
                       {badge}
                     </span>
                   </div>

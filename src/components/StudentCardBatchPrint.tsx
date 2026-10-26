@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import { EVENT_CONFIG } from '../constants/eventConfig';
 import planetLogo from '../assets/planet-logo.png';
-import { getStagesV3 } from './pencilDataV3';
+import { getStagesV3, getBadgeSeasonStyle } from './pencilDataV3';
 import { parseAvatarIndices } from './ClassroomSeatShuffle';
 
 export interface StudentCardRecord {
@@ -43,7 +43,7 @@ export const StudentCardBatchPrint: React.FC<StudentCardBatchPrintProps> = ({ on
             phone: item.phone || item.연락처 || '',
             session: item.session || item.sessionLabel || item.참석세션 || '전체 참석',
             bookTitle: item.bookTitle || item.bookHint || item.도서제목 || '(선물 책 준비 중)',
-            badge: item.badge || item.반뱃지 || item.memberType || item.기존회원 || '📚 새학기 설레는 독서왕',
+            badge: item.badge || item.반뱃지 || item.memberType || item.기존회원 || '🌸 스프링토',
             avatarCode: item.avatarCode || item.아바타코드 || item.croquisCode || '',
             avatarRecipe: item.avatarRecipe || item.아바타코디요약 || '',
             motto: item.motto || item.새학기한마디 || '꺾이지 않는 텐션으로 완독!',
@@ -64,7 +64,7 @@ export const StudentCardBatchPrint: React.FC<StudentCardBatchPrintProps> = ({ on
         name: '한지수',
         session: '1부 새학기 + 2부 수학여행',
         bookTitle: '원고는 불타지 않는다',
-        badge: '✏️ 밑줄 긋기 & 필사 장인',
+        badge: '☀️ 썸머데이',
         avatarCode: '5-7-2-2-3-2-6-2',
         motto: '자율주행 정상화 완료! 올해도 완독!',
         memo: '운영 총괄'
@@ -75,7 +75,7 @@ export const StudentCardBatchPrint: React.FC<StudentCardBatchPrintProps> = ({ on
         name: '김동효',
         session: '1부 새학기 + 2부 수학여행',
         bookTitle: '꺾이지 않는 강한 마음',
-        badge: '📚 새학기 설레는 독서왕',
+        badge: '🌸 스프링토',
         avatarCode: '1-3-1-1-1-1-1-1',
         motto: '새학기처럼 신선하게 시작합시다!',
         memo: ''
@@ -86,7 +86,7 @@ export const StudentCardBatchPrint: React.FC<StudentCardBatchPrintProps> = ({ on
         name: '이플래닛',
         session: '1부 플래닛의 새학기 (낮)',
         bookTitle: '겨울밤에 읽기 좋은 시집',
-        badge: '🍀 2026 행운의 다독러',
+        badge: '🍁 어텀',
         avatarCode: '2-4-4-5-2-3-2-3',
         motto: '모두와 함께 나누는 따뜻한 책 한 권',
         memo: ''
@@ -135,7 +135,7 @@ export const StudentCardBatchPrint: React.FC<StudentCardBatchPrintProps> = ({ on
           const studentNumber = String(item?.학번 || item?.studentNumber || `2026-PLANET-${1001 + idx}`);
           const session = String(item?.참석세션 || item?.session || item?.sessionLabel || '1부 새학기 + 2부 수학여행');
           const bookTitle = String(item?.도서제목 || item?.선물도서힌트 || item?.bookTitle || item?.bookHint || '(선물 책 준비 중)');
-          const badge = String(item?.반뱃지 || item?.기존회원 || item?.badge || item?.memberType || '📚 새학기 설레는 독서왕');
+          const badge = String(item?.반뱃지 || item?.기존회원 || item?.badge || item?.memberType || '🌸 스프링토');
           const avatarCode = String(item?.아바타코드 || item?.avatarCode || item?.croquisCode || '');
           const avatarRecipe = String(item?.아바타코디요약 || item?.avatarRecipe || '');
           const motto = String(item?.새학기한마디 || item?.motto || '꺾이지 않는 텐션으로 완독!');
@@ -222,7 +222,7 @@ export const StudentCardBatchPrint: React.FC<StudentCardBatchPrintProps> = ({ on
     const sampleNames = ['강도서', '정문학', '윤완독', '최새벽', '박종각', '조프레피'];
     const sampleBooks = ['밤에 읽는 에세이', '우주를 건너는 SF', '밑줄 가득한 고전', '시와 함께 걷는 겨울'];
     const sampleMottos = ['완독의 기쁨을 함께!', '다정함이 이기는 밤', '책과 함께하는 새학기'];
-    const sampleBadges = ['📚 새학기 설레는 독서왕', '✏️ 밑줄 긋기 & 필사 장인', '☕ 책맥 & 밤샘 수다반', '🍀 2026 행운의 다독러'];
+    const sampleBadges = ['🌸 스프링토', '☀️ 썸머데이', '🍁 어텀', '❄️ 윈터블'];
     const randCode = Array.from({ length: 8 }, () => Math.floor(1 + Math.random() * 8)).join('-');
 
     const newStudent: StudentCardRecord = {
@@ -524,8 +524,8 @@ export const StudentCardBatchPrint: React.FC<StudentCardBatchPrintProps> = ({ on
                       </span>
                     </div>
                     
-                    <span className="text-[9px] sm:text-[10px] font-serif font-bold bg-amber-100 border border-amber-800 text-amber-950 px-2 py-0.5 rounded-full truncate max-w-[130px] shadow-2xs">
-                      {st.badge || '📚 독서학교 학우'}
+                    <span className={`text-[9px] sm:text-[10px] font-serif font-bold border px-2 py-0.5 rounded-full truncate max-w-[130px] shadow-2xs ${getBadgeSeasonStyle(st.badge)}`}>
+                      {st.badge || '🌸 스프링토'}
                     </span>
                   </div>
 
