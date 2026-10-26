@@ -1871,35 +1871,13 @@
       if (btnText) btnText.textContent = "참가 신청서를 등록하는 중입니다...";
 
       try {
-        // 브라우저 CORS/Preflight 차단을 원천 방지하는 text/plain 전송
-        try {
-          await fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify(googlePayload)
-          });
-        } catch (postErr) {
-          // 백업: URLSearchParams form-urlencoded 전송 후 GET 비콘
-          try {
-            const formBody = new URLSearchParams();
-            Object.keys(googlePayload).forEach(k => formBody.append(k, String(googlePayload[k] ?? '')));
-            await fetch(GOOGLE_SCRIPT_URL, {
-              method: 'POST',
-              mode: 'no-cors',
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              body: formBody.toString()
-            });
-          } catch (e2) {
-            try {
-              const getParams = new URLSearchParams();
-              Object.keys(googlePayload).forEach(k => getParams.append(k, String(googlePayload[k] ?? '')));
-              const beaconUrl = `${GOOGLE_SCRIPT_URL}?${getParams.toString()}`;
-              const pingImg = new Image();
-              pingImg.src = beaconUrl;
-            } catch (beaconErr) {}
-          }
-        }
+        // 단일 POST 전송 (중복 행 입력 방지를 위해 다중 백업 요청 제거)
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(googlePayload)
+        });
 
         // 브라우저 로컬 저장소 캐싱 (운영진 대시보드 및 오프라인 연동)
         try {

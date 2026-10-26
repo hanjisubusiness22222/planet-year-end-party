@@ -80,6 +80,17 @@ function doPost(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
 
+    // 중복 학번(동일 요청 2회 도달) 방지 체크
+    if (studentNumber && sheet.getLastRow() > 1) {
+      var existingValues = sheet.getDataRange().getValues();
+      for (var rIdx = 1; rIdx < existingValues.length; rIdx++) {
+        if (String(existingValues[rIdx][9] || '') === String(studentNumber)) {
+          return ContentService.createTextOutput(JSON.stringify({ status: 'duplicate_ignored', name: name }))
+            .setMimeType(ContentService.MimeType.JSON);
+        }
+      }
+    }
+
     // 3. 구글 시트 행 추가:
     // [이름, 연락처, 참석세션, 도서제목, 회비, 회비납부여부, 조배치, 기존회원, 반뱃지, 학번, 아바타코드, 아바타코디요약, 새학기한마디, 메모사항, 접수일시]
     sheet.appendRow([

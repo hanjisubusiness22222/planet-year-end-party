@@ -275,6 +275,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
   // 참가 신청서 제출 (구글 시트 연동)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
     if (hpCheck.trim() !== '') return;
 
     const cleanName = sanitizeText(name, 20);
@@ -337,35 +338,13 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
     try {
       const scriptUrl = EVENT_CONFIG.googleScriptUrl || "https://script.google.com/macros/s/AKfycbwXzDlUsRy3fFI6gGW0fCoAYaEuQEoJwHu1a2-I4ULhpl3wUj_5vq_yi22xG85WGBXV/exec";
       if (scriptUrl && !scriptUrl.includes('YOUR_SCRIPT_ID')) {
-        // 1. 브라우저 CORS/Preflight 차단을 원천 방지하는 text/plain POST 전송 (15개 컬럼 JSON)
-        try {
-          await fetch(scriptUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify(payload)
-          });
-        } catch (postErr) {
-          // 2. POST 실패 시에만 백업: URLSearchParams form-urlencoded 전송 후 GET 비콘 안전망 실행
-          try {
-            const formBody = new URLSearchParams();
-            Object.entries(payload).forEach(([k, v]) => formBody.append(k, String(v ?? '')));
-            await fetch(scriptUrl, {
-              method: 'POST',
-              mode: 'no-cors',
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              body: formBody.toString()
-            });
-          } catch (e2) {
-            try {
-              const getParams = new URLSearchParams();
-              Object.entries(payload).forEach(([k, v]) => getParams.append(k, String(v ?? '')));
-              const beaconUrl = `${scriptUrl}?${getParams.toString()}`;
-              const pingImg = new Image();
-              pingImg.src = beaconUrl;
-            } catch (beaconErr) {}
-          }
-        }
+        // 단일 POST 전송 (중복 행 입력 방지를 위해 백업 다중 요청 제거)
+        await fetch(scriptUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
       }
 
       // 로컬스토리지 캐싱 (관리자 대시보드 연동)
