@@ -1083,9 +1083,6 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                   <p className="text-xs text-stone-600 font-hwp-body">운영진 참가자 명부 및 학생증 조판 대기열에 실시간으로 정상 등록되었습니다.</p>
                 </div>
               </div>
-              <span className="text-[11px] font-mono px-2.5 py-1 bg-emerald-100 text-emerald-800 border border-emerald-400 rounded-full font-bold">
-                LIVE 접수 완료
-              </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-hwp-body">
