@@ -5,7 +5,7 @@
  * 
  * [구글 시트 탭 구성]:
  * 1. [시트1] (신청자 명단 - 자동 등록):
- *    A열: 이름 | B열: 연락처 | C열: 참석세션 | D열: 도서제목 | E열: 회비 | F열: 회비납부여부 | G열: 조배치 | H열: 기존회원
+ *    A열: 이름 | B열: 연락처 | C열: 참석세션 | D열: 도서제목 | E열: 회비 | F열: 회비납부여부 | G열: 조배치 | H열: 기존회원 | I열: 반뱃지 | J열: 학번 | K열: 아바타코드 | L열: 아바타코디요약 | M열: 새학기한마디 | N열: 메모사항 | O열: 접수일시
  * 
  * 2. [시트2] (정산 내역 - 운영진 직접 입력):
  *    A열: 구분 | B열: 항목 및 세부내용 | C열: 거래처 | D열: 일자 | E열: 금액 | F열: 증빙(영수증 URL 또는 번호)
@@ -17,7 +17,7 @@
  * 4. 우측 상단 파란색 [배포] 버튼 > [새 배포] 클릭
  * 5. 톱니바퀴 아이콘 클릭 > [웹 앱] 선택
  * 6. 설정:
- *    - 설명: 2026 플래닛 연말모임 신청 및 정산 연동
+ *    - 설명: 2026 플래닛 연말모임 신청 및 정산 연동 (아바타 데이터 포함 v3)
  *    - 다음 사용자로 실행: 나 (your-email@gmail.com)
  *    - 액세스 권한이 있는 사용자: 모든 사용자 (Anyone)  <-- ★ 반드시 '모든 사용자'로 선택
  * 7. [배포] 클릭 후 승인 절차(고급 > ...으로 이동) 완료
@@ -31,6 +31,14 @@ function doPost(e) {
     // 1번째 시트(신청자 명단) 명시적 타겟팅 (시트2가 활성화되어 있어도 안전하게 시트1에 기록)
     var sheet = ss.getSheetByName('시트1') || ss.getSheetByName('신청자명단') || ss.getSheetByName('Sheet1') || ss.getSheets()[0];
     var data = {};
+    
+    // 시트가 완전히 비어있는 경우 1행 헤더 자동 생성
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow([
+        '이름', '연락처', '참석세션', '도서제목', '회비', '회비납부여부', 
+        '조배치', '기존회원', '반뱃지', '학번', '아바타코드', '아바타코디요약', '새학기한마디', '메모사항', '접수일시'
+      ]);
+    }
     
     // 1. 요청 데이터 파싱 (JSON 또는 파라미터)
     if (e.postData && e.postData.contents) {
@@ -53,9 +61,18 @@ function doPost(e) {
     var name = data.name || data.cleanName || '';
     var phone = data.phone || '';
     var session = data.session || data.sessionLabel || '';
-    var bookTitle = data.bookTitle || data.bookHint || '(미정)';
+    var bookTitle = data.bookTitle || data.bookHint || '(선물 책 준비 중)';
     var fee = data.fee || data.totalFee || 0;
     var paymentStatus = data.paymentStatus || '입금 대기';
+    var seatGroup = data.seatGroup || data.group || '';
+    var existingMember = data.existingMember || data.fellowType || ''; // H열: 운영진 조배치용 기존회원 여부
+    var badge = data.badge || data.memberType || '';                  // I열: 학우 선택 반 뱃지
+    var studentNumber = data.studentNumber || '';
+    var avatarCode = data.avatarCode || data.croquisCode || '';
+    var avatarRecipe = data.avatarRecipe || data.recipe || '';
+    var motto = data.motto || data.새학기한마디 || '';
+    var memo = data.memo || data.메모사항 || '';
+    var submittedAt = data.submittedAt || new Date().toLocaleString('ko-KR');
 
     // 필수 항목 누락 시 처리
     if (!name || !phone) {
@@ -63,7 +80,8 @@ function doPost(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
 
-    // 3. 구글 시트 행 추가: [이름, 연락처, 참석세션, 도서제목, 회비, 회비납부여부, 조배치, 기존회원]
+    // 3. 구글 시트 행 추가:
+    // [이름, 연락처, 참석세션, 도서제목, 회비, 회비납부여부, 조배치, 기존회원, 반뱃지, 학번, 아바타코드, 아바타코디요약, 새학기한마디, 메모사항, 접수일시]
     sheet.appendRow([
       name,
       phone,
@@ -71,8 +89,15 @@ function doPost(e) {
       bookTitle,
       fee,
       paymentStatus,
-      data.seatGroup || data.group || '', 
-      data.memberType || data.fellowType || '' 
+      seatGroup,
+      existingMember,
+      badge,
+      studentNumber,
+      avatarCode,
+      avatarRecipe,
+      motto,
+      memo,
+      submittedAt
     ]);
 
     // 성공 응답 반환

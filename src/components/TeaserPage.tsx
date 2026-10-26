@@ -421,16 +421,6 @@ export const TeaserPage: React.FC<TeaserPageProps> = ({ onExploreFullPage, onGoT
       <footer className="w-full max-w-4xl py-4 border-t border-[#e8e4dc] text-center text-[11px] text-[#777] font-serif space-y-1.5 z-20">
         <p>© 2026 플래닛 독서학교 (PLANET since 2017). All Rights Reserved.</p>
         <p className="text-[10px] text-[#999]">책과 대화로 따뜻해지는 2026 플래닛 연말모임</p>
-        {onGoToAdmin && (
-          <div className="pt-1">
-            <button
-              onClick={onGoToAdmin}
-              className="text-[10px] text-[#888] hover:text-[#b82828] underline font-mono transition-colors"
-            >
-              [운영진 관리자 대시보드]
-            </button>
-          </div>
-        )}
       </footer>
 
       {/* 사전 알림 등록 모달 */}

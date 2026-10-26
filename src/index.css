@@ -150,6 +150,9 @@
     transform: rotate(-6deg);
     mix-blend-mode: multiply;
   }
+  .font-round {
+    font-family: 'Gowun Dodum', sans-serif;
+  }
 }
 
 /* 커스텀 아날로그 스크롤바 */

@@ -17,8 +17,12 @@ interface RsvpRecord {
   fee: number;
   paymentStatus: '입금 완료' | '입금 대기';
   seatGroup?: string; // 조배치
-  memberType?: string; // 기존회원
+  memberType?: string; // 반뱃지 / 기존회원
   submittedAt?: string;
+  avatarCode?: string;
+  avatarRecipe?: string;
+  motto?: string;
+  memo?: string;
 }
 
 interface AdminDashboardProps {
@@ -107,9 +111,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           const paymentStatusStr = String(item?.회비납부여부 || item?.입금상태 || item?.paymentStatus || '');
           const paymentStatus: '입금 완료' | '입금 대기' = paymentStatusStr.includes('완료') ? '입금 완료' : '입금 대기';
           const seatGroup = String(item?.조배치 || item?.seatGroup || item?.group || item?.하우스조 || '');
-          const memberType = String(item?.기존회원 || item?.memberType || item?.학우구분 || item?.fellowType || '');
+          const memberType = String(item?.반뱃지 || item?.기존회원 || item?.memberType || item?.학우구분 || item?.fellowType || '');
           const submittedAt = item?.신청일시 || item?.접수일시 || item?.submittedAt;
           const studentNumber = String(item?.학번 || item?.studentNumber || `2026-PLANET-${1001 + idx}`);
+          const avatarCode = String(item?.아바타코드 || item?.avatarCode || '');
+          const avatarRecipe = String(item?.아바타코디요약 || item?.avatarRecipe || '');
+          const motto = String(item?.새학기한마디 || item?.motto || '');
+          const memo = String(item?.메모사항 || item?.memo || '');
 
           const record: RsvpRecord = {
             studentNumber,
@@ -121,7 +129,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             paymentStatus,
             seatGroup,
             memberType,
-            submittedAt: submittedAt ? new Date(submittedAt).toLocaleDateString('ko-KR') : '-'
+            submittedAt: submittedAt ? new Date(submittedAt).toLocaleDateString('ko-KR') : '-',
+            avatarCode,
+            avatarRecipe,
+            motto,
+            memo
           };
           return record;
         }).filter(r => r.name.trim() !== ''); // 빈 행 필터링
