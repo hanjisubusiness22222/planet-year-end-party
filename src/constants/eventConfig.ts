@@ -95,5 +95,5 @@ export const EVENT_CONFIG: EventConfig = {
   },
   
   // 배포된 Google Apps Script Web App URL (.env.local 우선 참조)
-  googleScriptUrl: (import.meta.env.VITE_GOOGLE_SCRIPT_URL as string) || "https://script.google.com/macros/s/AKfycbwundzXPh6V07GOlwPVlGApvr7FU64BWfZ2Y8eMgxPWYUjDpwDe0ZVeQAtEEJJc3X7o/exec"
+  googleScriptUrl: (import.meta.env.VITE_GOOGLE_SCRIPT_URL as string) || "https://script.google.com/macros/s/AKfycbwN_dYoQ3xW0zWp3m5C9lZ5Hvh0pQHC7JA3QyfbqtF_a4ydjLHsxOGtx0k2HWMppx9r/exec"
 };

@@ -323,7 +323,10 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
       fee: feeAmount,
       paymentStatus: '입금 대기',
       seatGroup: '',
+      existingMember: '',
+      badge: badge,
       memberType: badge,
+      motto: safeMotto,
       memo: safeMemo,
       studentNumber: studentNumber,
       avatarCode: avatarCode,
@@ -332,7 +335,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
     };
 
     try {
-      const scriptUrl = EVENT_CONFIG.googleScriptUrl || "https://script.google.com/macros/s/AKfycbwundzXPh6V07GOlwPVlGApvr7FU64BWfZ2Y8eMgxPWYUjDpwDe0ZVeQAtEEJJc3X7o/exec";
+      const scriptUrl = EVENT_CONFIG.googleScriptUrl || "https://script.google.com/macros/s/AKfycbwN_dYoQ3xW0zWp3m5C9lZ5Hvh0pQHC7JA3QyfbqtF_a4ydjLHsxOGtx0k2HWMppx9r/exec";
       if (scriptUrl && !scriptUrl.includes('YOUR_SCRIPT_ID')) {
         await fetch(scriptUrl, {
           method: 'POST',
