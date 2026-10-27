@@ -410,7 +410,7 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                         2026 플래닛 연말모임 가정통신문 회신서
                       </h3>
                       <p className="text-xs text-[#555] font-serif">
-                        참석 여부 및 선물 도서 힌트를 제출하고 모바일 학생증을 발급받으세요.
+                        참석 여부를 제출하고 모바일 학생증을 발급받으세요.
                       </p>
                     </div>
 

@@ -338,10 +338,6 @@
                   <span class="text-stone-500 font-bold block text-[10px]">수강 과정</span>
                   <span id="card-session" class="font-bold text-amber-900 text-[11px]">1부 새학기 + 2부 수학여행</span>
                 </div>
-                <div class="border-b border-stone-300 pb-1">
-                  <span class="text-stone-500 font-bold block text-[10px]">기증 도서 힌트</span>
-                  <span id="card-book" class="text-stone-800 text-[11px] line-clamp-1">삶의 쉼표가 되어준 소설 1권</span>
-                </div>
                 <div>
                   <span class="text-stone-500 font-bold block text-[10px]">새학기 한마디</span>
                   <span id="card-motto" class="font-hand text-xs text-stone-700 line-clamp-1">꺾이지 않는 텐션으로 완독!</span>
@@ -381,13 +377,9 @@
                 <div class="col-span-4 bg-stone-200 font-bold p-1.5 border-r border-stone-800">청구기호</div>
                 <div class="col-span-8 p-1.5 font-mono text-[10px]" id="lib-code">813.5-플2026-11111111</div>
               </div>
-              <div class="grid grid-cols-12 border-b border-stone-800">
+              <div class="grid grid-cols-12">
                 <div class="col-span-4 bg-stone-200 font-bold p-1.5 border-r border-stone-800">기증 학우</div>
                 <div class="col-span-8 p-1.5 font-bold" id="lib-name">김플래닛</div>
-              </div>
-              <div class="grid grid-cols-12">
-                <div class="col-span-4 bg-stone-200 font-bold p-1.5 border-r border-stone-800">블라인드 힌트</div>
-                <div class="col-span-8 p-1.5 text-amber-900 font-bold" id="lib-book">삶의 쉼표가 되어준 소설 1권</div>
               </div>
             </div>
 
@@ -476,13 +468,8 @@
             </div>
           </div>
 
-          <!-- 선물할 도서 제목 또는 힌트 -->
-          <div>
-            <label class="block font-bold text-stone-800 mb-1">선물할 도서 제목 또는 한 줄 힌트 <span class="text-stone-500 font-normal">(대출카드 인쇄용)</span></label>
-            <input type="text" id="input-book" placeholder="예: 삶의 쉼표가 되어준 따뜻한 소설 1권"
-              oninput="syncCardText()"
-              class="w-full border-2 border-stone-800 rounded-lg bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-600 font-sans text-sm">
-          </div>
+          <!-- 선물할 도서 (히든 필드 보존) -->
+          <input type="hidden" id="input-book" value="(선물 책 준비 중)">
 
           <!-- 새학기 한 줄 다짐 / 좌우명 (신규 입력 콤포넌트) -->
           <div>
@@ -527,7 +514,6 @@
           <div class="font-bold text-stone-700 border-b border-stone-200 pb-1 mb-1">📋 내 접수 정보</div>
           <div><b class="text-stone-500">학우 성함:</b> <span id="res-name" class="font-bold text-stone-900"></span></div>
           <div><b class="text-stone-500">신청 세션:</b> <span id="res-session" class="font-bold text-amber-900"></span></div>
-          <div><b class="text-stone-500">선물 도서:</b> <span id="res-book" class="text-stone-700"></span></div>
           <div><b class="text-stone-500">발급 학번:</b> <span id="res-student-no" class="font-mono text-red-700 font-bold"></span></div>
         </div>
 
@@ -1645,8 +1631,8 @@
 
       document.getElementById('card-name').textContent = nameVal;
       document.getElementById('lib-name').textContent = nameVal;
-      document.getElementById('card-book').textContent = bookVal;
-      document.getElementById('lib-book').textContent = bookVal;
+      if (document.getElementById('card-book')) document.getElementById('card-book').textContent = bookVal;
+      if (document.getElementById('lib-book')) document.getElementById('lib-book').textContent = bookVal;
       document.getElementById('card-motto').textContent = mottoVal;
       document.getElementById('lib-motto').textContent = `"${mottoVal}"`;
       const chip = document.getElementById('card-badge-chip');
@@ -1901,7 +1887,7 @@
         // 결과 카드 업데이트
         document.getElementById('res-name').textContent = nameVal;
         document.getElementById('res-session').textContent = sessionVal;
-        document.getElementById('res-book').textContent = bookVal;
+        if (document.getElementById('res-book')) document.getElementById('res-book').textContent = bookVal;
         document.getElementById('res-student-no').textContent = studentNo;
         document.getElementById('res-fee').textContent = feeText;
 

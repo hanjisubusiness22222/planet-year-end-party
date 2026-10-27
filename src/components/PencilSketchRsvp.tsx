@@ -762,10 +762,6 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                         <span className="text-stone-500 font-bold block text-[10px]">수강 과정</span>
                         <span className="font-bold text-amber-900 text-[11px]">{sessionLabel}</span>
                       </div>
-                      <div className="border-b border-stone-300 pb-1">
-                        <span className="text-stone-500 font-bold block text-[10px]">기증 도서 힌트</span>
-                        <span className="text-stone-800 text-[11px] line-clamp-1">{bookHint.trim() || '삶의 쉼표가 되어준 소설 1권'}</span>
-                      </div>
                       <div>
                         <span className="text-stone-500 font-bold block text-[10px]">새학기 한마디</span>
                         <span className="font-hand text-xs text-stone-700 line-clamp-1">"{motto.trim() || '꺾이지 않는 텐션으로 완독!'}"</span>
@@ -807,13 +803,9 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                       <div className="col-span-4 bg-stone-200 font-bold p-1.5 border-r border-stone-800">청구기호</div>
                       <div className="col-span-8 p-1.5 font-mono text-[10px]">{libraryCallNumber}</div>
                     </div>
-                    <div className="grid grid-cols-12 border-b border-stone-800">
+                    <div className="grid grid-cols-12">
                       <div className="col-span-4 bg-stone-200 font-bold p-1.5 border-r border-stone-800">기증 학우</div>
                       <div className="col-span-8 p-1.5 font-bold">{name.trim() || '김플래닛'}</div>
-                    </div>
-                    <div className="grid grid-cols-12">
-                      <div className="col-span-4 bg-stone-200 font-bold p-1.5 border-r border-stone-800">블라인드 힌트</div>
-                      <div className="col-span-8 p-1.5 text-amber-900 font-bold">{bookHint.trim() || '삶의 쉼표가 되어준 소설 1권'}</div>
                     </div>
                   </div>
 
@@ -997,19 +989,6 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                 </div>
               </div>
 
-              {/* 선물할 도서 */}
-              <div>
-                <label className="block font-bold text-stone-800 mb-1">
-                  선물할 도서 제목 또는 한 줄 힌트 <span className="text-stone-500 font-normal">(대출카드 인쇄용)</span>
-                </label>
-                <input
-                  type="text"
-                  value={bookHint}
-                  onChange={(e) => setBookHint(e.target.value)}
-                  placeholder="예: 삶의 쉼표가 되어준 따뜻한 소설 1권"
-                  className="w-full border-2 border-stone-800 rounded-lg bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-600 font-sans text-sm"
-                />
-              </div>
 
               {/* 새학기 한마디 */}
               <div>
@@ -1100,7 +1079,6 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                 <div className="font-bold text-stone-700 border-b border-stone-200 pb-1 mb-1">📋 내 접수 정보</div>
                 <div><b className="text-stone-500">학우 성함:</b> <span className="font-bold text-stone-900">{submittedData.name}</span></div>
                 <div><b className="text-stone-500">신청 세션:</b> <span className="font-bold text-amber-900">{submittedData.session}</span></div>
-                <div><b className="text-stone-500">선물 도서:</b> <span className="text-stone-700">{submittedData.bookTitle}</span></div>
                 <div><b className="text-stone-500">발급 학번:</b> <span className="font-mono text-red-700 font-bold">{submittedData.studentNumber}</span></div>
               </div>
 
