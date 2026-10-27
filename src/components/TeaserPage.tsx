@@ -204,7 +204,7 @@ export const TeaserPage: React.FC<TeaserPageProps> = ({ onExploreFullPage, onGoT
             <span>2026 연말모임 특별 개교 안내</span>
           </div>
           <div className="text-[11px] sm:text-xs font-serif text-[#666]">
-            2026년 12월 19일 (토요일) 오전 10:00 개학식
+            2026년 12월 19일 (토요일) 낮 12:00 개학식
           </div>
         </div>
 
@@ -318,7 +318,7 @@ export const TeaserPage: React.FC<TeaserPageProps> = ({ onExploreFullPage, onGoT
                   <tbody>
                     <tr className="bg-white/80">
                       <td className="border border-[#1f1b18] p-2 font-mono text-[11px]">
-                        2026. 12. 19. (토)<br />10:00 ~ 17:00
+                        2026. 12. 19. (토)<br />12:00 ~ 17:00
                       </td>
                       <td className="border border-[#1f1b18] p-2 font-bold text-[#b82828]">
                         플래닛 연말모임<br />「플래닛의 새학기」
@@ -392,7 +392,7 @@ export const TeaserPage: React.FC<TeaserPageProps> = ({ onExploreFullPage, onGoT
         <div className="w-full max-w-xl mt-6 p-4 rounded-xl border border-[#e0dad0] bg-white text-center shadow-md">
           <div className="flex items-center justify-center space-x-1.5 text-[#1f1b18] text-xs font-serif mb-2.5">
             <Clock className="w-3.5 h-3.5 text-[#b82828]" />
-            <span className="font-bold">개학식 D-Day 카운트다운 • 2026. 12. 19. (토) 오전 10:00</span>
+            <span className="font-bold">개학식 D-Day 카운트다운 • 2026. 12. 19. (토) 낮 12:00</span>
           </div>
 
           <div className="grid grid-cols-4 gap-2 text-[#1f1b18]">

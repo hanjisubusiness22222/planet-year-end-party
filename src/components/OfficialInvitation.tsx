@@ -354,7 +354,7 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                   <tbody>
                     <tr className="bg-white/80">
                       <td className="border border-[#1f1b18] p-2.5 sm:p-3 font-mono text-[11px] sm:text-xs">
-                        2026. 12. 19. (토)<br />10:00 ~ 17:00
+                        2026. 12. 19. (토)<br />12:00 ~ 17:00
                       </td>
                       <td className="border border-[#1f1b18] p-2.5 sm:p-3 font-bold text-[#b82828]">
                         플래닛 연말파티<br />「플래닛의 새학기」
@@ -460,34 +460,34 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                   </h3>
                   <div className="text-xs text-[#666] flex items-center space-x-1 mt-1">
                     <Clock className="w-3.5 h-3.5" />
-                    <span>10:00 ~ 17:00 (공간나인 강남점)</span>
+                    <span>12:00 ~ 17:00 (공간나인 강남점)</span>
                   </div>
                 </div>
 
                 <div className="space-y-3 text-xs font-serif">
                   <div className="p-3 bg-[#f8f6f0] rounded-lg border border-[#e8e4dc]">
-                    <div className="font-bold text-[#b82828]">1교시 (10:00 ~ 10:30) • 등교 및 자리배치</div>
+                    <div className="font-bold text-[#b82828]">1교시 (12:00 ~ 12:30) • 등교 및 자리배치</div>
                     <p className="text-[#666] text-[11px] mt-0.5">
                       명찰 및 웰컴 북마크 수령, 추억의 교실 자리뽑기 프로그램으로 조별 책상 착석
                     </p>
                   </div>
 
                   <div className="p-3 bg-[#f8f6f0] rounded-lg border border-[#e8e4dc]">
-                    <div className="font-bold text-[#1f1b18]">2교시 (10:30 ~ 12:30) • 아카이브 회고 & 북 스피치</div>
+                    <div className="font-bold text-[#1f1b18]">2교시 (12:30 ~ 14:00) • 아카이브 회고 & 북 스피치</div>
                     <p className="text-[#666] text-[11px] mt-0.5">
                       올 한 해 함께 읽은 도서 회고, 학우별 '올해의 인생 문장' 1분 릴레이 스피치
                     </p>
                   </div>
 
                   <div className="p-3 bg-[#f8f6f0] rounded-lg border border-[#e8e4dc]">
-                    <div className="font-bold text-[#b82828]">3교시 (12:30 ~ 15:00) • 블라인드 책 선물 교환회</div>
+                    <div className="font-bold text-[#b82828]">3교시 (14:00 ~ 15:30) • 블라인드 책 선물 교환회</div>
                     <p className="text-[#666] text-[11px] mt-0.5">
                       포장된 책과 정성 담긴 추천 편지를 무작위로 교환하는 플래닛 연말 시그니처 행사
                     </p>
                   </div>
 
                   <div className="p-3 bg-[#f8f6f0] rounded-lg border border-[#e8e4dc]">
-                    <div className="font-bold text-[#1f1b18]">4교시 (15:00 ~ 17:00) • 2026 명예의 전당 어워즈</div>
+                    <div className="font-bold text-[#1f1b18]">4교시 (15:30 ~ 17:00) • 2026 명예의 전당 어워즈</div>
                     <p className="text-[#666] text-[11px] mt-0.5">
                       다독상, 토론상, 다정한 플래닛상 시상 및 1부 단체 기념 촬영
                     </p>

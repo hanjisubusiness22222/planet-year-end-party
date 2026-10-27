@@ -47,13 +47,13 @@ export const EVENT_CONFIG: EventConfig = {
   organization: "플래닛 독서학교 (PLANET since 2017)",
   establishedYear: 2017,
   eventDate: "2026년 12월 19일 (토요일)",
-  targetDateTime: "2026-12-19T10:00:00+09:00",
+  targetDateTime: "2026-12-19T12:00:00+09:00",
   recipientTitle: "플래닛 여러분 귀하",
   
   session1: {
     name: "플래닛 연말모임 「플래닛의 새학기」",
     subName: "1부 메인 모임",
-    time: "10:00 ~ 17:00",
+    time: "12:00 ~ 17:00",
     location: "공간나인 강남점 (서울 강남구)",
     description: "올해의 플래닛 아카이브 회고, 블라인드 책 선물 교환회 및 2026 명예의 전당 어워즈",
     capacity: 35,
