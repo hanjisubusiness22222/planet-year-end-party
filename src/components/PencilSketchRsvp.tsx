@@ -992,7 +992,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                 <div className="mt-2.5 bg-amber-50/80 border border-amber-300 rounded-xl p-2.5 sm:p-3 flex flex-wrap items-center justify-between gap-2">
                   <div className="space-y-0.5">
                     <div className="text-[11px] font-bold text-amber-950 flex items-center gap-1">
-                      <span>🏦</span> 회비 입금 계좌 안내 <span className="font-normal text-stone-500">(사전 입금 가능)</span>
+                      <span>🏦</span> 회비 입금 계좌 안내
                     </div>
                     <div className="font-mono text-xs sm:text-sm text-stone-900 font-bold">
                       하나은행 439-911050-56507 <span className="font-sans font-normal text-xs text-stone-600">(예금주: 한지수)</span>
