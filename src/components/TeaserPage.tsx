@@ -328,12 +328,12 @@ export const TeaserPage: React.FC<TeaserPageProps> = ({ onExploreFullPage, onGoT
                     </tr>
                     <tr className="bg-white/80">
                       <td className="border border-[#1f1b18] p-2 font-mono text-[11px]">
-                        2026. 12. 19. (토)<br />18:00 ~ LATE
+                        2026. 12. 19. (토)<br />17:00 ~ 24:00
                       </td>
                       <td className="border border-[#1f1b18] p-2 font-bold text-[#2e5238]">
                         연말모임 뒷풀이<br />「플래닛의 수학여행」
                       </td>
-                      <td className="border border-[#1f1b18] p-2">미정</td>
+                      <td className="border border-[#1f1b18] p-2">포켓데이라운지</td>
                       <td className="border border-[#1f1b18] p-2">연말모임 참여자<br />中 희망자</td>
                     </tr>
                   </tbody>

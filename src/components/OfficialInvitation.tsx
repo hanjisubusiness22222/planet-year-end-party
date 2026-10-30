@@ -364,12 +364,12 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                     </tr>
                     <tr className="bg-white/80">
                       <td className="border border-[#1f1b18] p-2.5 sm:p-3 font-mono text-[11px] sm:text-xs">
-                        2026. 12. 19. (토)<br />18:00 ~ LATE
+                        2026. 12. 19. (토)<br />17:00 ~ 24:00
                       </td>
                       <td className="border border-[#1f1b18] p-2.5 sm:p-3 font-bold text-[#2e5238]">
                         연말파티 뒷풀이<br />「플래닛의 수학여행」
                       </td>
-                      <td className="border border-[#1f1b18] p-2.5 sm:p-3">미정</td>
+                      <td className="border border-[#1f1b18] p-2.5 sm:p-3">포켓데이라운지</td>
                       <td className="border border-[#1f1b18] p-2.5 sm:p-3">연말파티 참여자<br />中 희망자</td>
                     </tr>
                   </tbody>
@@ -506,20 +506,20 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                   </h3>
                   <div className="text-xs text-[#666] flex items-center space-x-1 mt-1">
                     <Clock className="w-3.5 h-3.5" />
-                    <span>18:00 ~ LATE (미정)</span>
+                    <span>17:00 ~ 24:00 (포켓데이라운지)</span>
                   </div>
                 </div>
 
                 <div className="space-y-3 text-xs font-serif">
                   <div className="p-3 bg-[#f8f6f0] rounded-lg border border-[#e8e4dc]">
-                    <div className="font-bold text-[#2e5238]">18:00 ~ 19:00 • 숙소 체크인 & 웰컴 드링크</div>
+                    <div className="font-bold text-[#2e5238]">17:00 ~ 18:30 • 포켓데이라운지 체크인 & 웰컴 드링크</div>
                     <p className="text-[#666] text-[11px] mt-0.5">
-                      파티룸 이동 및 체크인, 웰컴 음료와 함께하는 수학여행 분위기 환담
+                      포켓데이라운지 이동 및 체크인, 웰컴 음료와 함께하는 수학여행 분위기 환담
                     </p>
                   </div>
 
                   <div className="p-3 bg-[#f8f6f0] rounded-lg border border-[#e8e4dc]">
-                    <div className="font-bold text-[#1f1b18]">19:00 ~ 20:30 • 추억의 야간 살롱 토크</div>
+                    <div className="font-bold text-[#1f1b18]">18:30 ~ 20:30 • 추억의 야간 살롱 토크</div>
                     <p className="text-[#666] text-[11px] mt-0.5">
                       핑거푸드와 간식을 나누며 편안한 옷(파자마/이지웨어)으로 이어지는 깊은 대화
                     </p>
@@ -533,9 +533,9 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                   </div>
 
                   <div className="p-3 bg-[#f8f6f0] rounded-lg border border-[#e8e4dc]">
-                    <div className="font-bold text-[#1f1b18]">21:30 ~ LATE • 심야 북토크 & 보드게임</div>
+                    <div className="font-bold text-[#1f1b18]">21:30 ~ 24:00 • 심야 북토크 & 보드게임</div>
                     <p className="text-[#666] text-[11px] mt-0.5">
-                      밤새 도란도란 이어지는 자유로운 친교와 심야 책 이야기
+                      도란도란 이어지는 자유로운 친교와 심야 책 이야기 (24:00 마무리)
                     </p>
                   </div>
                 </div>
