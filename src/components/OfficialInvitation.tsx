@@ -384,7 +384,7 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                 <ol className="list-decimal list-inside space-y-1.5 text-[#2c2621] leading-relaxed">
                   <li><strong>신청 오픈:</strong> 2026. 10. 26. (월)</li>
                   <li><strong>참여 비용:</strong> 1차 40,000원 / 2차 예약금 20,000원 (※ 추가비 발생 가능, 2부는 추가 금액 정산 예정)</li>
-                  <li><strong>준비물:</strong> 학우에게 선물할 도서 1권 이상, 필기구, 꺾이지 않는 텐션과 열린 마음</li>
+                  <li><strong>준비물:</strong> 필기구, 꺾이지 않는 텐션과 열린 마음</li>
                 </ol>
               </div>
 
@@ -595,11 +595,11 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
 
               <div className="p-4 rounded-xl border border-[#e0dad0] bg-white shadow-md space-y-3">
                 <div className="w-10 h-10 rounded-full border border-[#d8d3c7] bg-[#f0ece1] flex items-center justify-center text-[#b82828]">
-                  <BookOpen className="w-5 h-5" />
+                  <Sparkles className="w-5 h-5" />
                 </div>
-                <h4 className="font-serif font-bold text-sm text-[#1f1b18]">3. 선물할 도서 1권 이상</h4>
+                <h4 className="font-serif font-bold text-sm text-[#1f1b18]">3. 꺾이지 않는 텐션</h4>
                 <p className="text-xs text-[#555] font-serif leading-relaxed">
-                  학우에게 선물할 정성스런 도서 1권(추천사 카드 동봉)과 꺾이지 않는 텐션!
+                  한 해를 따뜻하게 돌아보는 열린 마음과 즐거운 대화를 나눌 꺾이지 않는 텐션!
                 </p>
               </div>
 
