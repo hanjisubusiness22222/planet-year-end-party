@@ -4,7 +4,8 @@ import { toPng } from 'html-to-image';
 import { 
   Download, Shuffle, Eraser, 
   Scissors, AlertCircle, Copy, CheckCircle2,
-  ChevronDown, ChevronUp, User, BookOpen, Clock, ShieldCheck
+  ChevronDown, ChevronUp, User, BookOpen, Clock, ShieldCheck,
+  MessageCircle, ExternalLink
 } from 'lucide-react';
 import { 
   getStagesV3, HAIR_COLORS, PHOTO_BG_COLORS, BADGE_OPTIONS, getBadgeSeasonStyle, Stage 
@@ -55,6 +56,8 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedData, setSubmittedData] = useState<any>(null);
   const [copiedAccount, setCopiedAccount] = useState(false);
+  const [copiedChatUrl, setCopiedChatUrl] = useState(false);
+  const resultCardRef = useRef<HTMLDivElement | null>(null);
   const [showAdminPrint, setShowAdminPrint] = useState(false);
 
   // 운영진 수합 조판 그리드 (초기 샘플 3명 포함)
@@ -233,6 +236,17 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
     });
   };
 
+  // 단톡방(카카오톡 오픈채팅) 주소 원클릭 복사
+  const handleCopyChatUrl = () => {
+    const url = EVENT_CONFIG.kakaoOpenChatUrl || 'https://open.kakao.com/o/gK0wFgVi';
+    navigator.clipboard.writeText(url).then(() => {
+      setCopiedChatUrl(true);
+      setTimeout(() => setCopiedChatUrl(false), 2500);
+    }).catch(() => {
+      alert(url);
+    });
+  };
+
   // 전화번호 포맷팅
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPhone(formatPhone(e.target.value));
@@ -365,6 +379,13 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
         ...payload,
         feeText: feeText
       });
+
+      // 제출 완료 카드로 부드럽게 스크롤
+      setTimeout(() => {
+        if (resultCardRef.current) {
+          resultCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
 
       if (onSuccess) onSuccess();
 
@@ -1083,13 +1104,54 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
         {/* 4. 제출 완료 결과 카드 (참가 접수 완료 + 계좌 안내) */}
         {/* ======================================================= */}
         {submittedData && (
-          <div className="mt-6 bg-[#fffdf9] text-stone-900 border-3 border-stone-800 p-5 sm:p-6 rounded-2xl shadow-2xl relative animate-fadeIn">
+          <div ref={resultCardRef} className="mt-6 bg-[#fffdf9] text-stone-900 border-3 border-stone-800 p-5 sm:p-6 rounded-2xl shadow-2xl relative animate-fadeIn">
             <div className="border-b-2 border-dashed border-stone-300 pb-3 mb-4 flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <span className="text-2xl">🎉</span>
                 <div>
                   <h4 className="font-black text-base sm:text-lg text-emerald-800">2026 플래닛 새학기 참가 접수가 완료되었습니다!</h4>
                   <p className="text-xs text-stone-600 font-hwp-body">운영진 참가자 명부 및 학생증 조판 대기열에 실시간으로 정상 등록되었습니다.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* 💬 플래닛 연말모임 공식 단톡방 안내 배너 */}
+            <div className="mb-4 bg-[#FEE500]/20 border-2 border-[#E5CA00] rounded-xl p-3.5 sm:p-4 text-stone-900 shadow-sm relative">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#FEE500] text-[#3C1E1E] text-xs font-black shadow-xs shrink-0">
+                      톡
+                    </span>
+                    <h5 className="font-black text-sm sm:text-base text-[#3C1E1E]">
+                      플래닛 연말모임 공식 단톡방에 입장해 주세요!
+                    </h5>
+                  </div>
+                  <p className="text-[11px] sm:text-xs text-stone-700 leading-relaxed font-hwp-body">
+                    행사 세부 안내, 블라인드 책 선물 교환 공지, 실시간 문의 및 행사 당일 소통이 단톡방에서 진행됩니다.
+                  </p>
+                  <div className="text-[11px] font-mono text-stone-600 select-all pt-0.5 break-all">
+                    주소: <span className="font-semibold text-stone-800">{EVENT_CONFIG.kakaoOpenChatUrl}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 w-full sm:w-auto shrink-0 pt-1 sm:pt-0">
+                  <button
+                    type="button"
+                    onClick={handleCopyChatUrl}
+                    className="flex-1 sm:flex-initial px-3 py-2 bg-white hover:bg-stone-50 border border-stone-300 text-stone-800 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-95"
+                  >
+                    <Copy className="w-3.5 h-3.5 text-stone-600" />
+                    <span>{copiedChatUrl ? '✓ 주소 복사완료' : '단톡방 주소 복사'}</span>
+                  </button>
+                  <a
+                    href={EVENT_CONFIG.kakaoOpenChatUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 sm:flex-initial px-4 py-2 bg-[#FEE500] hover:bg-[#fedb00] text-[#3C1E1E] border border-[#d8c200] rounded-xl text-xs font-black transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5 fill-[#3C1E1E]" />
+                    <span>단톡방 입장하기 ↗</span>
+                  </a>
                 </div>
               </div>
             </div>

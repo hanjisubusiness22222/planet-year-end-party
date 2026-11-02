@@ -554,6 +554,37 @@
       </div>
 
       <!-- 하단 액션 버튼들 -->
+      <!-- 💬 플래닛 연말모임 공식 단톡방 안내 배너 -->
+      <div class="mt-4 bg-[#FEE500]/20 border-2 border-[#E5CA00] rounded-xl p-3.5 sm:p-4 text-stone-900 shadow-sm relative">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-[#FEE500] text-[#3C1E1E] text-xs font-black shadow-xs shrink-0">
+                톡
+              </span>
+              <h5 class="font-black text-sm sm:text-base text-[#3C1E1E]">
+                플래닛 연말모임 공식 단톡방에 입장해 주세요!
+              </h5>
+            </div>
+            <p class="text-[11px] sm:text-xs text-stone-700 leading-relaxed font-hwp-body">
+              행사 세부 안내, 블라인드 책 선물 교환 공지, 실시간 문의 및 행사 당일 소통이 단톡방에서 진행됩니다.
+            </p>
+            <div class="text-[11px] font-mono text-stone-600 select-all pt-0.5 break-all">
+              주소: <span class="font-semibold text-stone-800">https://open.kakao.com/o/gK0wFgVi</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 w-full sm:w-auto shrink-0 pt-1 sm:pt-0">
+            <button type="button" onclick="copyKakaoChatUrl(this)" id="copy-chat-btn"
+              class="flex-1 sm:flex-initial px-3 py-2 bg-white hover:bg-stone-50 border border-stone-300 text-stone-800 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-95">
+              📋 단톡방 주소 복사
+            </button>
+            <a href="https://open.kakao.com/o/gK0wFgVi" target="_blank" rel="noopener noreferrer"
+              class="flex-1 sm:flex-initial px-4 py-2 bg-[#FEE500] hover:bg-[#fedb00] text-[#3C1E1E] border border-[#d8c200] rounded-xl text-xs font-black transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95">
+              💬 단톡방 입장하기 ↗
+            </a>
+          </div>
+        </div>
+      </div>
       <div class="mt-4 pt-3 border-t border-stone-200 flex flex-wrap items-center justify-between gap-2">
         <div class="text-[11px] text-stone-500">
           💡 왼쪽 화면에서 <b>[완성된 학생증/대출증 PNG 저장하기]</b>를 눌러 소장하실 수 있습니다.
@@ -1781,6 +1812,24 @@
         }
       }).catch(() => {
         alert("계좌번호: 하나은행 439-911050-56507 (예금주: 한지수)");
+      });
+    }
+
+    function copyKakaoChatUrl(btn) {
+      const targetBtn = btn || document.getElementById('copy-chat-btn');
+      const chatUrl = "https://open.kakao.com/o/gK0wFgVi";
+      navigator.clipboard.writeText(chatUrl).then(() => {
+        if (targetBtn) {
+          const prev = targetBtn.textContent;
+          targetBtn.textContent = "✓ 주소 복사완료!";
+          targetBtn.classList.add('bg-emerald-700', 'text-white');
+          setTimeout(() => {
+            targetBtn.textContent = prev;
+            targetBtn.classList.remove('bg-emerald-700', 'text-white');
+          }, 2500);
+        }
+      }).catch(() => {
+        alert("단톡방 주소: " + chatUrl);
       });
     }
 

@@ -3,7 +3,7 @@ import {
   BookOpen, Calendar, Clock, MapPin, Sparkles, Glasses, 
   CheckCircle2, ArrowLeft, Send, ShieldCheck, Award, 
   Wine, HelpCircle, Heart, Tag, Bookmark, Check,
-  ChevronRight, AlertCircle, Info, User, Download, Copy
+  ChevronRight, AlertCircle, Info, User, Download, Copy, MessageCircle
 } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import { EVENT_CONFIG } from '../constants/eventConfig';
@@ -58,6 +58,7 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
 
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedAccount, setCopiedAccount] = useState(false);
+  const [copiedChatUrl, setCopiedChatUrl] = useState(false);
   const [isDownloadingId, setIsDownloadingId] = useState(false);
   const studentIdCardRef = useRef<HTMLDivElement>(null);
 
@@ -728,6 +729,39 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                 <Copy className="w-3.5 h-3.5 text-[#2e5238]" />
                 <span>{copiedAccount ? '계좌번호 복사 완료!' : '계좌번호 복사하기'}</span>
               </button>
+            </div>
+
+            {/* 공식 단톡방 안내 바 */}
+            <div className="bg-[#FEE500]/20 border border-[#E5CA00] rounded-xl p-3 text-center space-y-2 shadow-sm">
+              <div className="flex items-center justify-center gap-1.5 text-xs font-serif font-bold text-[#3C1E1E]">
+                <MessageCircle className="w-3.5 h-3.5 fill-[#3C1E1E]" />
+                <span>플래닛 연말모임 공식 단톡방</span>
+              </div>
+              <p className="text-[10px] text-[#555] font-serif">
+                공지사항 및 모임 당일 소통을 위해 단톡방에 꼭 입장해 주세요!
+              </p>
+              <div className="flex gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText(EVENT_CONFIG.kakaoOpenChatUrl);
+                    setCopiedChatUrl(true);
+                    setTimeout(() => setCopiedChatUrl(false), 2000);
+                  }}
+                  className="flex-1 py-1.5 text-[11px] font-serif rounded bg-white hover:bg-[#f5f5f5] border border-[#bbb] text-[#1f1b18] flex items-center justify-center space-x-1 transition cursor-pointer"
+                >
+                  <Copy className="w-3 h-3 text-[#555]" />
+                  <span>{copiedChatUrl ? '주소 복사완료!' : '단톡방 주소 복사'}</span>
+                </button>
+                <a
+                  href={EVENT_CONFIG.kakaoOpenChatUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 py-1.5 text-[11px] font-serif font-bold rounded bg-[#FEE500] hover:bg-[#fedb00] text-[#3C1E1E] border border-[#d8c200] flex items-center justify-center space-x-1 transition cursor-pointer"
+                >
+                  <span>단톡방 입장하기 ↗</span>
+                </a>
+              </div>
             </div>
 
             {/* 모바일 저장 / 닫기 액션 버튼 */}

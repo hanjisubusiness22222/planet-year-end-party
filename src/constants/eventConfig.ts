@@ -36,6 +36,7 @@ export interface EventConfig {
     accountInfo: string;
     inquiryEmail: string;
   };
+  kakaoOpenChatUrl: string;
   googleScriptUrl: string;
 }
 
@@ -94,6 +95,8 @@ export const EVENT_CONFIG: EventConfig = {
     inquiryEmail: "contact@planet-school.org",
   },
   
+  // 플래닛 연말모임 공식 단톡방(카카오톡 오픈채팅) 주소
+  kakaoOpenChatUrl: "https://open.kakao.com/o/gK0wFgVi",
   // 배포된 Google Apps Script Web App URL (.env.local 우선 참조)
   googleScriptUrl: "https://script.google.com/macros/s/AKfycbwXzDlUsRy3fFI6gGW0fCoAYaEuQEoJwHu1a2-I4ULhpl3wUj_5vq_yi22xG85WGBXV/exec"
 };
