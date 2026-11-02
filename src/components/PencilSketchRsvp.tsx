@@ -1128,7 +1128,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                     </h5>
                   </div>
                   <p className="text-[11px] sm:text-xs text-stone-700 leading-relaxed font-hwp-body">
-                    행사 세부 안내, 블라인드 책 선물 교환 공지, 실시간 문의 및 행사 당일 소통이 단톡방에서 진행됩니다.
+                    행사 세부 안내는 단톡방에서 진행됩니다.
                   </p>
                   <div className="text-[11px] font-mono text-stone-600 select-all pt-0.5 break-all">
                     주소: <span className="font-semibold text-stone-800">{EVENT_CONFIG.kakaoOpenChatUrl}</span>

@@ -738,7 +738,7 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                 <span>플래닛 연말모임 공식 단톡방</span>
               </div>
               <p className="text-[10px] text-[#555] font-serif">
-                공지사항 및 모임 당일 소통을 위해 단톡방에 꼭 입장해 주세요!
+                행사 세부 안내는 단톡방에서 진행됩니다.
               </p>
               <div className="flex gap-1.5">
                 <button
