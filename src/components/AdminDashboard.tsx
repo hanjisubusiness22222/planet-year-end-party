@@ -503,6 +503,29 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </div>
             <span className="text-xs text-[#8c6b1b] font-serif font-bold group-hover:translate-x-1 transition-transform">이동 →</span>
           </div>
+
+          {onGoToPrint && (
+            <div 
+              onClick={onGoToPrint}
+              className="cursor-pointer bg-white hover:bg-[#fbf9f4] border-2 border-[#854d0e]/30 hover:border-[#854d0e] rounded-xl p-4 shadow-sm hover:shadow transition-all flex items-center justify-between group"
+            >
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-lg bg-[#854d0e]/10 text-[#854d0e] flex items-center justify-center group-hover:scale-105 transition-transform">
+                  <Printer className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="font-serif font-bold text-sm text-[#1f1b18] flex items-center space-x-1.5">
+                    <span>학생증 인쇄</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#854d0e] text-white">조판기</span>
+                  </div>
+                  <p className="text-[11px] text-[#666] font-serif mt-0.5">
+                    교무실 A4 8구 학생증 일괄 조판 및 인쇄
+                  </p>
+                </div>
+              </div>
+              <span className="text-xs text-[#854d0e] font-serif font-bold group-hover:translate-x-1 transition-transform">이동 →</span>
+            </div>
+          )}
         </div>
 
         {/* 필터 및 검색 바 */}
