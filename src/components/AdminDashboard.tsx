@@ -554,7 +554,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   <th className="p-3 font-bold">성명</th>
                   <th className="p-3 font-bold">연락처</th>
                   <th className="p-3 font-bold">참석 세션</th>
-                  <th className="p-3 font-bold text-center">조배치</th>
                   <th className="p-3 font-bold">선물 도서 제목</th>
                   <th className="p-3 font-bold">회비</th>
                   <th className="p-3 font-bold text-center">입금 여부 (토글)</th>
@@ -564,7 +563,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               <tbody className="divide-y divide-[#e8e4dc]">
                 {records.length === 0 ? (
                   <tr>
-                    <td colSpan={9} className="py-16 text-center text-[#666] font-serif bg-[#fdfcfb]">
+                    <td colSpan={8} className="py-16 text-center text-[#666] font-serif bg-[#fdfcfb]">
                       <div className="flex flex-col items-center justify-center space-y-3 max-w-sm mx-auto">
                         <div className="w-12 h-12 rounded-full bg-[#f0ece1] flex items-center justify-center text-[#888] shadow-inner">
                           <Users className="w-6 h-6 text-[#777]" />
@@ -611,15 +610,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         <span className="px-2 py-0.5 rounded text-[10px] bg-[#f0ece1] text-[#333] border border-[#d8d3c7]">
                           {r.session}
                         </span>
-                      </td>
-                      <td className="p-3 text-center">
-                        {r.seatGroup && r.seatGroup !== '-' ? (
-                          <span className="px-2 py-0.5 rounded text-[10px] bg-[#2e5238] text-white font-bold font-mono">
-                            {r.seatGroup}
-                          </span>
-                        ) : (
-                          <span className="text-[#aaa] text-xs">-</span>
-                        )}
                       </td>
                       <td className="p-3 text-[#555] max-w-xs truncate" title={r.bookTitle}>
                         {r.bookTitle || '-'}
