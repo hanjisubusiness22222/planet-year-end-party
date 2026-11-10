@@ -1172,7 +1172,7 @@ export const PencilSketchRsvp: React.FC<PencilSketchRsvpProps> = ({ onSuccess })
                   <span className="font-black text-sm text-red-700">{submittedData.feeText}</span>
                 </div>
                 <p className="text-[11px] text-stone-700 leading-relaxed">
-                  원활한 행사 대관 및 기념품(학생증/웰컴키트) 준비를 위해 아래 계좌로 입금해 주시면 입금 확인이 완료됩니다.
+                  원활한 행사 대관 및 다과, 식사 준비를 위해 아래 계좌로 입금해 주시면 입금 확인이 완료됩니다.
                 </p>
                 <div className="bg-white border border-amber-300 rounded-lg p-2.5 flex items-center justify-between gap-2">
                   <div className="font-mono text-xs text-stone-900">
