@@ -360,7 +360,19 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                       <td className="border border-[#1f1b18] p-2.5 sm:p-3 font-bold text-[#b82828]">
                         플래닛 연말파티<br />「플래닛의 새학기」
                       </td>
-                      <td className="border border-[#1f1b18] p-2.5 sm:p-3">공간나인 강남점</td>
+                      <td className="border border-[#1f1b18] p-2.5 sm:p-3">
+                        <div className="font-bold text-[#1f1b18]">공간나인 강남점</div>
+                        <a
+                          href={EVENT_CONFIG.session1.mapUrl || "https://naver.me/5YFcRJ4m"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-0.5 text-[11px] text-[#2e5238] hover:text-[#1b3323] underline decoration-dotted font-medium mt-1 transition-colors"
+                          title="네이버 지도에서 위치 보기"
+                        >
+                          <MapPin className="w-3 h-3 text-[#2e5238]" />
+                          <span>지도보기 ↗</span>
+                        </a>
+                      </td>
                       <td className="border border-[#1f1b18] p-2.5 sm:p-3">플래닛 멤버<br />누구나</td>
                     </tr>
                     <tr className="bg-white/80">
@@ -370,7 +382,19 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                       <td className="border border-[#1f1b18] p-2.5 sm:p-3 font-bold text-[#2e5238]">
                         연말파티 뒷풀이<br />「플래닛의 수학여행」
                       </td>
-                      <td className="border border-[#1f1b18] p-2.5 sm:p-3">포켓데이라운지</td>
+                      <td className="border border-[#1f1b18] p-2.5 sm:p-3">
+                        <div className="font-bold text-[#1f1b18]">포켓데이라운지</div>
+                        <a
+                          href={EVENT_CONFIG.session2.mapUrl || "https://naver.me/FRoU25qb"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-0.5 text-[11px] text-[#2e5238] hover:text-[#1b3323] underline decoration-dotted font-medium mt-1 transition-colors"
+                          title="네이버 지도에서 위치 보기"
+                        >
+                          <MapPin className="w-3 h-3 text-[#2e5238]" />
+                          <span>지도보기 ↗</span>
+                        </a>
+                      </td>
                       <td className="border border-[#1f1b18] p-2.5 sm:p-3">연말파티 참여자<br />中 희망자</td>
                     </tr>
                   </tbody>
@@ -461,7 +485,17 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                   </h3>
                   <div className="text-xs text-[#666] flex items-center space-x-1 mt-1">
                     <Clock className="w-3.5 h-3.5" />
-                    <span>12:00 ~ 17:00 (공간나인 강남점)</span>
+                    <span>12:00 ~ 17:00</span>
+                    <a
+                      href={EVENT_CONFIG.session1.mapUrl || "https://naver.me/5YFcRJ4m"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center space-x-0.5 text-[#2e5238] hover:text-[#1b3323] underline decoration-dotted font-medium transition-colors ml-1"
+                      title="네이버 지도에서 위치 보기"
+                    >
+                      <MapPin className="w-3.5 h-3.5 text-[#2e5238]" />
+                      <span>공간나인 강남점 (지도보기 ↗)</span>
+                    </a>
                   </div>
                 </div>
 
@@ -507,7 +541,17 @@ export const OfficialInvitation: React.FC<OfficialInvitationProps> = ({
                   </h3>
                   <div className="text-xs text-[#666] flex items-center space-x-1 mt-1">
                     <Clock className="w-3.5 h-3.5" />
-                    <span>17:00 ~ 24:00 (포켓데이라운지)</span>
+                    <span>17:00 ~ 24:00</span>
+                    <a
+                      href={EVENT_CONFIG.session2.mapUrl || "https://naver.me/FRoU25qb"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center space-x-0.5 text-[#2e5238] hover:text-[#1b3323] underline decoration-dotted font-medium transition-colors ml-1"
+                      title="네이버 지도에서 위치 보기"
+                    >
+                      <MapPin className="w-3.5 h-3.5 text-[#2e5238]" />
+                      <span>포켓데이라운지 (지도보기 ↗)</span>
+                    </a>
                   </div>
                 </div>
 

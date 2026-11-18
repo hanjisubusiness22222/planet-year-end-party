@@ -323,7 +323,19 @@ export const TeaserPage: React.FC<TeaserPageProps> = ({ onExploreFullPage, onGoT
                       <td className="border border-[#1f1b18] p-2 font-bold text-[#b82828]">
                         플래닛 연말모임<br />「플래닛의 새학기」
                       </td>
-                      <td className="border border-[#1f1b18] p-2">공간나인 강남점</td>
+                      <td className="border border-[#1f1b18] p-2">
+                        <div className="font-bold text-[#1f1b18]">공간나인 강남점</div>
+                        <a
+                          href={EVENT_CONFIG.session1.mapUrl || "https://naver.me/5YFcRJ4m"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-0.5 text-[10px] text-[#2e5238] hover:text-[#1b3323] underline decoration-dotted font-medium mt-0.5 transition-colors"
+                          title="네이버 지도에서 위치 보기"
+                        >
+                          <MapPin className="w-2.5 h-2.5 text-[#2e5238]" />
+                          <span>지도보기 ↗</span>
+                        </a>
+                      </td>
                       <td className="border border-[#1f1b18] p-2">플래닛 멤버<br />누구나</td>
                     </tr>
                     <tr className="bg-white/80">
@@ -333,7 +345,19 @@ export const TeaserPage: React.FC<TeaserPageProps> = ({ onExploreFullPage, onGoT
                       <td className="border border-[#1f1b18] p-2 font-bold text-[#2e5238]">
                         연말모임 뒷풀이<br />「플래닛의 수학여행」
                       </td>
-                      <td className="border border-[#1f1b18] p-2">포켓데이라운지</td>
+                      <td className="border border-[#1f1b18] p-2">
+                        <div className="font-bold text-[#1f1b18]">포켓데이라운지</div>
+                        <a
+                          href={EVENT_CONFIG.session2.mapUrl || "https://naver.me/FRoU25qb"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-0.5 text-[10px] text-[#2e5238] hover:text-[#1b3323] underline decoration-dotted font-medium mt-0.5 transition-colors"
+                          title="네이버 지도에서 위치 보기"
+                        >
+                          <MapPin className="w-2.5 h-2.5 text-[#2e5238]" />
+                          <span>지도보기 ↗</span>
+                        </a>
+                      </td>
                       <td className="border border-[#1f1b18] p-2">연말모임 참여자<br />中 희망자</td>
                     </tr>
                   </tbody>

@@ -3,6 +3,7 @@ export interface SessionConfig {
   subName?: string;
   time: string;
   location: string;
+  mapUrl?: string;
   description: string;
   capacity: number;
   fee: number;
@@ -56,6 +57,7 @@ export const EVENT_CONFIG: EventConfig = {
     subName: "1부 메인 모임",
     time: "12:00 ~ 17:00",
     location: "공간나인 강남점 (서울 강남구)",
+    mapUrl: "https://naver.me/5YFcRJ4m",
     description: "올해의 플래닛 아카이브 회고, 블라인드 책 선물 교환회 및 2026 명예의 전당 어워즈",
     capacity: 35,
     fee: 30000,
@@ -66,6 +68,7 @@ export const EVENT_CONFIG: EventConfig = {
     subName: "2부 애프터 모임",
     time: "17:00 ~ 24:00",
     location: "포켓데이라운지",
+    mapUrl: "https://naver.me/FRoU25qb",
     description: "추억의 수학여행 밤, 파자마/프라이빗 야간 토크, 심야 책이야기 및 자유 네트워킹 (예약금 1만원)",
     capacity: 25,
     fee: 10000,
