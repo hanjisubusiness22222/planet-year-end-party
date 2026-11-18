@@ -444,7 +444,7 @@
                 <div class="border-2 border-stone-300 peer-checked:border-amber-800 peer-checked:bg-amber-50 p-2 text-center rounded-xl transition">
                   <div class="font-bold text-xs text-stone-900">1부 + 2부 전체</div>
                   <div class="text-[10px] text-stone-600">새학기 & 수학여행</div>
-                  <div class="font-black text-xs text-red-800 mt-1">60,000원</div>
+                  <div class="font-black text-xs text-red-800 mt-1">40,000원</div>
                 </div>
               </label>
 
@@ -453,7 +453,7 @@
                 <div class="border-2 border-stone-300 peer-checked:border-amber-800 peer-checked:bg-amber-50 p-2 text-center rounded-xl transition">
                   <div class="font-bold text-xs text-stone-900">1부만 참석</div>
                   <div class="text-[10px] text-stone-600">새학기 본파티(낮)</div>
-                  <div class="font-black text-xs text-red-800 mt-1">40,000원</div>
+                  <div class="font-black text-xs text-red-800 mt-1">30,000원</div>
                 </div>
               </label>
 
@@ -462,7 +462,7 @@
                 <div class="border-2 border-stone-300 peer-checked:border-amber-800 peer-checked:bg-amber-50 p-2 text-center rounded-xl transition">
                   <div class="font-bold text-xs text-stone-900">2부만 참석</div>
                   <div class="text-[10px] text-stone-600">수학여행 (예약금)</div>
-                  <div class="font-black text-xs text-red-800 mt-1">20,000원</div>
+                  <div class="font-black text-xs text-red-800 mt-1">10,000원</div>
                 </div>
               </label>
             </div>
@@ -536,7 +536,7 @@
         <div class="bg-amber-50/80 border-2 border-amber-800/40 rounded-xl p-3.5 space-y-2">
           <div class="flex justify-between items-center border-b border-amber-200 pb-1">
             <span class="font-bold text-amber-950">🏦 참가 회비 입금 안내</span>
-            <span id="res-fee" class="font-black text-sm text-red-700">60,000원</span>
+            <span id="res-fee" class="font-black text-sm text-red-700">40,000원</span>
           </div>
           <p class="text-[11px] text-stone-700 leading-relaxed">
             원활한 행사 대관 및 다과, 식사 준비를 위해 아래 계좌로 입금해 주시면 입금 확인이 완료됩니다.
@@ -1860,17 +1860,17 @@
       }
 
       // 회비 계산
-      let fee = 60000;
-      let feeText = '60,000원';
+      let fee = 40000;
+      let feeText = '40,000원';
       if (sessionVal.includes('1부 + 2부') || sessionVal.includes('전체') || sessionVal.includes('1부 새학기 + 2부 수학여행')) {
-        fee = 60000;
-        feeText = '60,000원';
-      } else if (sessionVal.includes('1부')) {
         fee = 40000;
         feeText = '40,000원';
+      } else if (sessionVal.includes('1부')) {
+        fee = 30000;
+        feeText = '30,000원';
       } else if (sessionVal.includes('2부')) {
-        fee = 20000;
-        feeText = '20,000원';
+        fee = 10000;
+        feeText = '10,000원';
       }
 
       const STAGES_LIST = getStages();

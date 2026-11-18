@@ -347,7 +347,7 @@ export const TeaserPage: React.FC<TeaserPageProps> = ({ onExploreFullPage, onGoT
                 </div>
                 <ol className="list-decimal list-inside space-y-1 text-[#333] text-[11px] leading-relaxed">
                   <li><strong>신청 오픈:</strong> 2026. 10. 26. (월)</li>
-                  <li><strong>참여 비용:</strong> 1차 40,000원 / 2차 예약금 20,000원 (※ 추가비 발생 가능, 2부는 추가 금액 정산 예정)</li>
+                  <li><strong>참여 비용:</strong> 1차 30,000원 / 2차 예약금 10,000원 (1+2차 40,000원 ※ 추가비 발생 가능, 2부는 추가 금액 정산 예정)</li>
                   <li><strong>드레스 코드:</strong> 학생다운 프레피룩 복장 (※ 드레스 코드는 선택 참여)</li>
                   <li><strong>준비물:</strong> 필기구, 꺾이지 않는 텐션과 열린 마음</li>
                 </ol>
